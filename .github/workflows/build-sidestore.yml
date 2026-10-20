@@ -1,5 +1,6 @@
 name: Build SideStore IPA (manual)
 
+# Entry point on this fork's default branch (fennec-ios).
 # Do not spend macOS runner time on every UI edit. This builds the standard
 # variant only; SideStore performs the final development signing on-device.
 on:
