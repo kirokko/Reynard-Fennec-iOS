@@ -97,7 +97,7 @@ final class BrowserPreferences {
             
             // Appearance
             key("AppearanceSettings", "appAppearance"): AppAppearance.system.rawValue,
-            key("AppearanceSettings", "addressBarPosition"): BrowserChromePosition.bottom.rawValue,
+            key("AppearanceSettings", "addressBarPosition"): BrowserChromePosition.top.rawValue,
             key("AppearanceSettings", "showsFullWebsiteAddress"): false,
             key("AppearanceSettings", "showsLandscapeTabBar"): true,
             key("AppearanceSettings", "pullToRefreshEnabled"): true,
@@ -991,8 +991,8 @@ final class BrowserPreferences {
         
         static var addressBarPosition: BrowserChromePosition {
             get {
-                let rawValue = prefs.string(forSetting: "AppearanceSettings", key: "addressBarPosition") ?? BrowserChromePosition.bottom.rawValue
-                return BrowserChromePosition(rawValue: rawValue) ?? .bottom
+                let rawValue = prefs.string(forSetting: "AppearanceSettings", key: "addressBarPosition") ?? BrowserChromePosition.top.rawValue
+                return BrowserChromePosition(rawValue: rawValue) ?? .top
             }
             set {
                 prefs.set(newValue.rawValue, forSetting: "AppearanceSettings", key: "addressBarPosition")

@@ -453,7 +453,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
             )
         }
         browserChrome.onLibrary = { [weak self] in
-            self?.presentLibrary()
+            self?.presentFennecMenu()
         }
         browserChrome.onDownloads = { [weak self] in
             self?.presentLibrary(initialSection: .downloads)
@@ -767,7 +767,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
             orientation: .portrait,
             chromeMode: .phone,
             chromePosition: .bottom,
-            tabOverviewToolbarPosition: .bottom,
+            tabOverviewToolbarPosition: .top,
             overlayHost: .embedded
         )
     }
@@ -781,7 +781,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
             orientation: orientation,
             chromeMode: .compact,
             chromePosition: interfaceIdiom == .phone ? .top : .bottom,
-            tabOverviewToolbarPosition: .bottom,
+            tabOverviewToolbarPosition: .top,
             overlayHost: .embedded
         )
     }
@@ -1082,6 +1082,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
     }
     
     func updateNavigationButtons() {
+        browserChrome.setTabCount(tabManager.activeTabs.count)
         guard let tab = tabManager.selectedTab else {
             contentView.setHistoryNavigation(
                 canGoBack: false,

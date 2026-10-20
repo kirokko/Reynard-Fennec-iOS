@@ -22,9 +22,9 @@ struct BrowserLayout: Equatable {
         BrowserLayout(
             interfaceIdiom: interfaceIdiom,
             orientation: .portrait,
-            chromeMode: interfaceIdiom == .pad ? .pad : .phone,
-            chromePosition: .bottom,
-            tabOverviewToolbarPosition: interfaceIdiom == .pad ? .top : .bottom,
+            chromeMode: interfaceIdiom == .pad ? .pad : (Prefs.AppearanceSettings.addressBarPosition == .top ? .compact : .phone),
+            chromePosition: interfaceIdiom == .pad ? .bottom : Prefs.AppearanceSettings.addressBarPosition,
+            tabOverviewToolbarPosition: .top,
             overlayHost: interfaceIdiom == .pad ? .detached : .embedded
         )
     }

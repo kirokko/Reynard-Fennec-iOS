@@ -15,7 +15,7 @@ final class FavoritesSectionViewController: UIViewController {
     private enum UX {
         static let horizontalInset: CGFloat = 2
         static let titleBottomSpacing: CGFloat = 3
-        static let titleFontSize: CGFloat = 22
+        static let titleFontSize: CGFloat = 20
         static let reorderMinimumPressDuration: TimeInterval = 0.25
         static let contextMenuPresentationDelay: TimeInterval = 0.55
         static let reorderMovementThreshold: CGFloat = 8
@@ -59,7 +59,7 @@ final class FavoritesSectionViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = FavoritesSectionViewController.titleFont
         label.textColor = .label
-        label.text = NSLocalizedString("Favorites", comment: "")
+        label.text = FennecTheme.text("Shortcuts")
         label.adjustsFontForContentSizeCategory = true
         return label
     }()

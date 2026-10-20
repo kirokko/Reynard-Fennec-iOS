@@ -1,0 +1,23 @@
+name: Build SideStore IPA (manual)
+
+# Do not spend macOS runner time on every UI edit. This builds the standard
+# variant only; SideStore performs the final development signing on-device.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sidestore-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      checkout_ref: ${{ github.sha }}
+      nightly: false
+      build_normal_ipa: true
+      build_trollstore_tipa: false
+      build_jailbroken_ipa: false

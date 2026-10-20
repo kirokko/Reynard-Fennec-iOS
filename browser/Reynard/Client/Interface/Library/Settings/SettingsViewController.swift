@@ -1,251 +1,161 @@
-//
-//  SettingsViewController.swift
-//  Reynard
-//
-//  Created by Minh Ton on 18/6/26.
-//
-
+// Settings order follows Fennec 158; unsupported Android-only entries are omitted.
+// Reynard-specific controls remain available under Advanced and iOS / JIT. GPL-3.0.
 import UIKit
 
 final class SettingsViewController: SettingsTableViewController {
-    enum Section: Int, CaseIterable {
-        case updates
-        case jit
-        case general
-        case privacy
-        case advanced
-        case about
-        
-        var text: SettingsSectionText {
-            switch self {
-            case .updates:
-                return SettingsSectionText(headerTitle: NSLocalizedString("Update Available", comment: ""))
-            case .jit:
-                return SettingsSectionText(headerTitle: NSLocalizedString("JIT", comment: ""))
-            case .general:
-                return SettingsSectionText(headerTitle: NSLocalizedString("General", comment: ""))
-            case .privacy:
-                return SettingsSectionText(headerTitle: NSLocalizedString("Privacy", comment: ""))
-            case .advanced:
-                return SettingsSectionText(headerTitle: NSLocalizedString("Advanced", comment: ""))
-            case .about:
-                return SettingsSectionText(headerTitle: NSLocalizedString("About", comment: ""))
-            }
-        }
-    }
-    
-    private let updatesSection = UpdatesSettingsSection()
+    private enum Section: CaseIterable { case general, privacy, advanced, jit, about }
     private let jitSection = JITSettingsSection()
-    private let generalSection = GeneralSettingsSection()
     private let privacySection = PrivacySettingsSection()
-    private let advancedSection = AdvancedSettingsSection()
-    private let aboutSection = AboutSettingsSection()
-    
-    private var allowUpdate: Bool {
-        let unsandboxed = getEntitlementValue("com.apple.private.security.no-sandbox")
-        return !unsandboxed || updatesSection.installedThroughTrollStore
+    private let externalLinksSwitch = UISwitch()
+    private var sections: [Section] {
+        Section.allCases.filter { $0 != .jit || !getEntitlementValue("com.apple.private.security.no-sandbox") }
     }
-    
-    var displayedSections: [Section] {
-        var hiddenSections: Set<Section> = []
-        let unsandboxed = getEntitlementValue("com.apple.private.security.no-sandbox")
-        
-        if !BrowserUpdates.shared.hasUpdate {
-            hiddenSections.insert(.updates)
-        }
-        
-        if unsandboxed {
-            hiddenSections.insert(.jit)
-        }
-        
-        return Section.allCases.filter { !hiddenSections.contains($0) }
-    }
-    
-    // MARK: - Lifecycle
-    
+    private let generalTitles = ["Search", "Tabs", "Homepage", "Customize", "Accessibility", "Language"]
+    private let advancedTitles = ["Extensions", "Open links in apps", "Reynard-specific"]
+
     init() {
-        super.init(style: .insetGrouped)
-        configureViewController()
+        super.init(style: .plain)
+        title = FennecTheme.text("Settings")
+        jitSection.attach(to: self)
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     override func viewDidLoad() {
         super.viewDidLoad()
-        observeJITMode()
-        jitSection.refreshDisplayedState()
+        externalLinksSwitch.addTarget(self, action: #selector(externalLinksChanged), for: .valueChanged)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshJIT), name: .jitlessModeDidActivate, object: nil)
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         jitSection.refreshDisplayedState()
+        externalLinksSwitch.isOn = Prefs.BrowsingSettings.openLinksInExternalApps
         tableView.reloadData()
     }
-    
-    // MARK: - Table Data Source
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        displayedSections.count
-    }
-    
+    override func numberOfSections(in tableView: UITableView) -> Int { sections.count }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard displayedSections.indices.contains(section) else {
-            return 0
-        }
-        
-        switch displayedSections[section] {
-        case .updates:
-            return updatesSection.rowCount(allowUpdate: allowUpdate)
-        case .jit:
-            return jitSection.rowCount
-        case .general:
-            return generalSection.rowCount
-        case .privacy:
-            return privacySection.rowCount
-        case .advanced:
-            return advancedSection.rowCount
-        case .about:
-            return aboutSection.rowCount
+        switch sections[section] {
+        case .general: return generalTitles.count
+        case .privacy: return privacySection.rowCount
+        case .advanced: return advancedTitles.count
+        case .jit: return jitSection.rowCount
+        case .about: return 1
         }
     }
-    
+    override func sectionText(for section: Int) -> SettingsSectionText {
+        let key: String
+        switch sections[section] {
+        case .general: key = "General"
+        case .privacy: key = "Privacy and security"
+        case .advanced: key = "Advanced"
+        case .jit: key = "iOS / JIT"
+        case .about: key = "About"
+        }
+        return SettingsSectionText(headerTitle: FennecTheme.text(key))
+    }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard displayedSections.indices.contains(indexPath.section) else {
-            return UITableViewCell()
-        }
-        
-        switch displayedSections[indexPath.section] {
-        case .updates:
-            return updatesSection.cell(
-                at: indexPath.row,
-                allowUpdate: allowUpdate,
-                tintColor: view.tintColor
-            )
-        case .jit:
-            return jitSection.cell(at: indexPath.row, tintColor: view.tintColor)
-        case .general:
-            return generalSection.cell(at: indexPath.row)
-        case .privacy:
-            return privacySection.cell(at: indexPath.row)
+        switch sections[indexPath.section] {
+        case .general: return cell(generalTitles[indexPath.row])
+        case .privacy: return privacySection.cell(at: indexPath.row)
         case .advanced:
-            return advancedSection.cell(at: indexPath.row)
-        case .about:
-            let cell = aboutSection.cell(at: indexPath.row)
-            if aboutSection.isAppVersionRow(at: indexPath.row) {
-                let gestureRecognizer = UITapGestureRecognizer(
-                    target: self,
-                    action: #selector(revealExperimentalFeatures(_:))
-                )
-                gestureRecognizer.numberOfTapsRequired = 10
-                cell.addGestureRecognizer(gestureRecognizer)
-            }
-            return cell
+            let result = cell(advancedTitles[indexPath.row])
+            if indexPath.row == 1 { result.accessoryView = externalLinksSwitch; result.selectionStyle = .none }
+            return result
+        case .jit: return jitSection.cell(at: indexPath.row, tintColor: FennecTheme.accent)
+        case .about: return cell("About Reynard Fennec")
         }
     }
-    
-    // MARK: - Table Delegate
-    
+    private func cell(_ key: String) -> UITableViewCell {
+        let result = SettingsTableViewCell(style: .default, reuseIdentifier: nil)
+        result.textLabel?.text = FennecTheme.text(key)
+        return result
+    }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         defer { tableView.deselectRow(at: indexPath, animated: true) }
-        guard displayedSections.indices.contains(indexPath.section) else {
-            return
-        }
-        
-        switch displayedSections[indexPath.section] {
-        case .updates:
-            updatesSection.selectRow(at: indexPath.row, allowUpdate: allowUpdate, from: self)
-        case .jit:
-            jitSection.selectRow(at: indexPath.row, from: self)
+        switch sections[indexPath.section] {
         case .general:
-            generalSection.selectRow(at: indexPath.row, from: self)
-        case .privacy:
-            privacySection.selectRow(at: indexPath.row, from: self)
+            let page: UIViewController
+            switch indexPath.row {
+            case 0: page = SearchPreferencesViewController()
+            case 1: page = FennecSettingsListController(title: "Tabs", entries: [
+                ("New tab", { NewTabPreferencesViewController() }),
+                ("Open links in new tabs", { OpenLinksInNewTabsPreferencesViewController() }),
+            ])
+            case 2: page = HomepagePreferencesViewController()
+            case 3: page = AppearancePreferencesViewController()
+            case 4: page = FennecSettingsListController(title: "Accessibility", entries: [
+                ("Page zoom", { PageZoomPreferencesViewController() }),
+                ("Reader", { ReaderPreferencesViewController() }),
+            ])
+            default: page = LanguagesPreferencesViewController()
+            }
+            navigationController?.pushViewController(page, animated: true)
+        case .privacy: privacySection.selectRow(at: indexPath.row, from: self)
         case .advanced:
-            advancedSection.selectRow(at: indexPath.row, from: self)
-        case .about:
-            aboutSection.selectRow(at: indexPath.row, from: self)
+            switch indexPath.row {
+            case 0: navigationController?.pushViewController(AddonsPreferencesViewController(), animated: true)
+            case 2: navigationController?.pushViewController(ReynardSpecificPreferencesViewController(), animated: true)
+            default: break
+            }
+        case .jit: jitSection.selectRow(at: indexPath.row, from: self)
+        case .about: navigationController?.pushViewController(FennecAboutViewController(), animated: true)
         }
     }
-    
-    override func sectionText(for section: Int) -> SettingsSectionText {
-        guard displayedSections.indices.contains(section) else {
-            return SettingsSectionText()
-        }
-        return displayedSections[section].text
-    }
-    
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard displayedSections.indices.contains(section) else {
-            return nil
-        }
-        
-        switch displayedSections[section] {
-        case .updates where !allowUpdate:
-            return updatesSection.unsupportedUpdatesFooterView()
-        case .updates where updatesSection.installedThroughTrollStore:
-            return updatesSection.trollStoreFooterView()
-        case .jit:
-            return jitSection.footerView()
-        default:
-            return nil
-        }
+        sections[section] == .jit ? jitSection.footerView() : nil
     }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard displayedSections.indices.contains(indexPath.section),
-              displayedSections[indexPath.section] == .updates else {
-            return UITableView.automaticDimension
-        }
-        
-        return updatesSection.rowHeight(at: indexPath.row, allowUpdate: allowUpdate, in: tableView)
-    }
-    
-    // MARK: - View Setup
-    
-    private func configureViewController() {
-        title = NSLocalizedString("Settings", comment: "")
-        jitSection.attach(to: self)
-    }
-    
-    private func observeJITMode() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(syncJITModeBanner(_:)),
-            name: .jitlessModeDidActivate,
-            object: nil
-        )
-    }
-    
-    @objc private func syncJITModeBanner(_ notification: Notification) {
-        jitSection.refreshDisplayedState()
-        tableView.reloadData()
-    }
-    
-    @objc private func revealExperimentalFeatures(_ gestureRecognizer: UITapGestureRecognizer) {
-        guard gestureRecognizer.state == .ended,
-              aboutSection.revealExperimentalFeatures(),
-              let section = displayedSections.firstIndex(of: .about) else {
-            return
-        }
-        
-        tableView.insertRows(
-            at: [IndexPath(row: 0, section: section)],
-            with: .automatic
-        )
-    }
-    
+    @objc private func externalLinksChanged() { Prefs.BrowsingSettings.openLinksInExternalApps = externalLinksSwitch.isOn }
+    @objc private func refreshJIT() { jitSection.refreshDisplayedState(); tableView.reloadData() }
 }
-
-// MARK: - UIDocumentPickerDelegate
 
 extension SettingsViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        guard let url = urls.first else {
-            return
-        }
-        
+        guard let url = urls.first else { return }
         jitSection.savePairingFile(from: url)
+    }
+}
+
+final class FennecSettingsListController: SettingsTableViewController {
+    private let entries: [(String, () -> UIViewController)]
+    init(title: String, entries: [(String, () -> UIViewController)]) {
+        self.entries = entries
+        super.init(style: .plain)
+        self.title = FennecTheme.text(title)
+    }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { entries.count }
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        SettingsViewUtils.disclosureCell(title: FennecTheme.text(entries[indexPath.row].0))
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        navigationController?.pushViewController(entries[indexPath.row].1(), animated: true)
+    }
+}
+
+final class FennecAboutViewController: SettingsTableViewController {
+    private let section = AboutSettingsSection()
+    init() {
+        super.init(style: .plain)
+        title = FennecTheme.text("About Reynard Fennec")
+    }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { self.section.rowCount }
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let result = section.cell(at: indexPath.row)
+        if section.isAppVersionRow(at: indexPath.row) {
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(reveal(_:)))
+            gesture.numberOfTapsRequired = 10
+            result.addGestureRecognizer(gesture)
+        }
+        return result
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        section.selectRow(at: indexPath.row, from: self)
+    }
+    override func sectionText(for section: Int) -> SettingsSectionText {
+        SettingsSectionText(footerTitle: FennecTheme.text("Manual updates only. This is an unofficial Reynard fork, not a Mozilla product."))
+    }
+    @objc private func reveal(_ gesture: UITapGestureRecognizer) {
+        if gesture.state == .ended, section.revealExperimentalFeatures() { tableView.reloadData() }
     }
 }

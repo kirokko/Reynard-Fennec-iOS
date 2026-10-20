@@ -12,6 +12,14 @@ class SettingsTableViewController: UITableViewController {
         static let sectionHeaderTopPadding: CGFloat = 0
     }
     
+    override init(style: UITableView.Style) {
+        super.init(style: .plain)
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
@@ -25,11 +33,31 @@ class SettingsTableViewController: UITableViewController {
         return sectionText(for: section).footerTitle
     }
     
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = FennecTheme.surface
+        cell.textLabel?.font = .preferredFont(forTextStyle: .body)
+        cell.textLabel?.adjustsFontForContentSizeCategory = true
+        cell.textLabel?.numberOfLines = 0
+        cell.detailTextLabel?.adjustsFontForContentSizeCategory = true
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else { return }
+        header.textLabel?.textColor = FennecTheme.accent
+        header.textLabel?.font = .preferredFont(forTextStyle: .subheadline)
+        header.contentView.backgroundColor = FennecTheme.surface
+    }
+
     func sectionText(for section: Int) -> SettingsSectionText {
         return SettingsSectionText()
     }
     
     private func configureTableView() {
+        view.tintColor = FennecTheme.accent
+        tableView.backgroundColor = FennecTheme.surface
+        tableView.separatorStyle = .none
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 56
         tableView.alwaysBounceVertical = true
         tableView.keyboardDismissMode = .interactive
         if #available(iOS 14.0, *) {

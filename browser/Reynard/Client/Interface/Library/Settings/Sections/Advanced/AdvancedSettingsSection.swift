@@ -7,10 +7,12 @@
 
 import UIKit
 
-struct AdvancedSettingsSection {
+// Kept intact behind Advanced > Reynard-specific so no engine controls are lost.
+struct ReynardSpecificSettingsSection {
     enum Row: CaseIterable {
         case developer
         case compatibility
+        case browsing
     }
     
     var rowCount: Int {
@@ -27,6 +29,8 @@ struct AdvancedSettingsSection {
             return SettingsViewUtils.disclosureCell(title: NSLocalizedString("Developer", comment: ""))
         case .compatibility:
             return SettingsViewUtils.disclosureCell(title: NSLocalizedString("Compatibility", comment: ""))
+        case .browsing:
+            return SettingsViewUtils.disclosureCell(title: NSLocalizedString("Browsing", comment: ""))
         }
     }
     
@@ -42,6 +46,8 @@ struct AdvancedSettingsSection {
         case .compatibility:
             let destination = CompatibilityPreferencesViewController()
             viewController.navigationController?.pushViewController(destination, animated: true)
+        case .browsing:
+            viewController.navigationController?.pushViewController(BrowsingPreferencesViewController(), animated: true)
         }
     }
 }

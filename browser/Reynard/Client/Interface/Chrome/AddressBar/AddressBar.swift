@@ -42,7 +42,7 @@ final class AddressBar: UIView {
         static let addressBarDismissButtonAnimationDuration: TimeInterval = 0.2
         static let addressBarAudioButtonAnimationDuration: TimeInterval = 0.18
         static let addressBarBackgroundDarkModeShadowAlpha: CGFloat = 0.3
-        static let addressBarBackgroundShadowOpacity: Float = 0.18
+        static let addressBarBackgroundShadowOpacity: Float = 0
         static let addressBarBackgroundShadowRadius: CGFloat = 14
         static let addressBarBackgroundShadowOffset = CGSize(width: 0, height: 2)
         static let borderWidth: CGFloat = 0.5
@@ -161,9 +161,7 @@ final class AddressBar: UIView {
     private let addressBarContent: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? .tertiarySystemBackground : .systemBackground
-        }
+        view.backgroundColor = FennecTheme.container
         view.layer.cornerCurve = .continuous
         view.layer.cornerRadius = UX.addressBarBackgroundCornerRadius
         view.clipsToBounds = true
@@ -177,7 +175,7 @@ final class AddressBar: UIView {
         view.isUserInteractionEnabled = false
         view.layer.cornerCurve = .continuous
         view.layer.cornerRadius = UX.addressBarBackgroundCornerRadius
-        view.layer.borderWidth = UX.borderWidth
+        view.layer.borderWidth = 0
         view.layer.borderColor = UIColor.separator.withAlphaComponent(0.2).cgColor
         return view
     }()
@@ -818,9 +816,7 @@ final class AddressBar: UIView {
     }
     
     private func resolveTrailingButtonState(for content: ContentState) -> TrailingButtonState {
-        guard editingState == .inactive else { return .hidden }
-        if case .loading = loadingState { return .stop }
-        if case .page = content { return .reload }
+        // Reload/stop and hard reload are in Fennec's main menu navigation row.
         return .hidden
     }
     
@@ -884,8 +880,7 @@ final class AddressBar: UIView {
     }
     
     @objc private func handleReaderButtonTap() {
-        guard isReaderActive else { return }
-        delegate?.addressBarDidRequestReader(self)
+        delegate?.addressBarDidRequestWebsiteSettings(self)
     }
     
     private func applyLeadingButtonState(_ state: LeadingButtonState) {
@@ -908,19 +903,20 @@ final class AddressBar: UIView {
         
         if state == .loading {
             leadingButton.tintColor = .secondaryLabel
-            leadingButton.setImage(UIImage(named: "reynard.list.bullet.below.rectangle"), for: .normal)
+            leadingButton.setImage(UIImage(systemName: "checkmark.shield"), for: .normal)
             leadingButton.setMenuPreservingPresentation(nil)
             leadingButton.isUserInteractionEnabled = false
             return
         }
         
         leadingButton.tintColor = .label
-        leadingButton.setImage(UIImage(named: isReaderActive ? "reynard.text.page" : "reynard.list.bullet.below.rectangle"), for: .normal)
+        leadingButton.setImage(UIImage(systemName: "checkmark.shield"), for: .normal)
+        leadingButton.accessibilityLabel = FennecTheme.text("Site settings")
         if #available(iOS 14.0, *) {
-            leadingButton.showsMenuAsPrimaryAction = !isReaderActive
+            leadingButton.showsMenuAsPrimaryAction = false
         }
-        leadingButton.setMenuPreservingPresentation(isReaderActive ? nil : addonsMenu)
-        leadingButton.isUserInteractionEnabled = isReaderActive || addonsMenu != nil
+        leadingButton.setMenuPreservingPresentation(nil)
+        leadingButton.isUserInteractionEnabled = true
     }
     
     private func applyTrailingButtonState(_ state: TrailingButtonState) {

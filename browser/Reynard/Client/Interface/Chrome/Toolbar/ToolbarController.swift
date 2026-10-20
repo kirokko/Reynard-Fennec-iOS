@@ -135,7 +135,7 @@ final class ToolbarController {
         case .phone:
             return (bottomToolbarHeight, 0)
         case .compact:
-            return (topToolbarHeight + bottomToolbarHeight, topToolbarHeight)
+            return (topToolbarHeight, topToolbarHeight)
         case .pad:
             let topChromeHeight = topToolbarHeight + (tabBar.visibility != .hidden ? tabBar.bounds.height : 0)
             return (topChromeHeight, topChromeHeight)

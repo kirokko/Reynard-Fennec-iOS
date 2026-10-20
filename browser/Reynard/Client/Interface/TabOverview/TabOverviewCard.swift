@@ -9,10 +9,10 @@ import UIKit
 
 final class TabOverviewCard: UICollectionViewCell {
     private enum UX {
-        static let webpagePreviewCornerRadius: CGFloat = 18
+        static let webpagePreviewCornerRadius: CGFloat = 6
         static let webpagePreviewRestingInset: CGFloat = 1
         static let webpagePreviewLiftedInset: CGFloat = -4
-        static let webpagePreviewRestingShadowOpacity: Float = 0.12
+        static let webpagePreviewRestingShadowOpacity: Float = 0
         static let webpagePreviewLiftedShadowOpacity: Float = 0.18
         static let webpagePreviewRestingShadowRadius: CGFloat = 8
         static let webpagePreviewLiftedShadowRadius: CGFloat = 12
@@ -24,11 +24,11 @@ final class TabOverviewCard: UICollectionViewCell {
         static let closeButtonSideLength: CGFloat = 24
         static let closeButtonTouchTargetScale: CGFloat = 2
         static let closeButtonCornerRadius: CGFloat = 12
-        static let closeButtonSymbolPointSize: CGFloat = 12
+        static let closeButtonSymbolPointSize: CGFloat = 18
         static let closeButtonBackgroundAlpha: CGFloat = 0.6
         static let tabMetadataTopSpacing: CGFloat = 4
         static let tabMetadataHorizontalInset: CGFloat = 6
-        static let tabMetadataHeight: CGFloat = 18
+        static let tabMetadataHeight: CGFloat = 44
         static let tabMetadataItemSpacing: CGFloat = 4
         static let faviconSideLength: CGFloat = 16
         static let faviconCornerRadius: CGFloat = 3
@@ -57,6 +57,19 @@ final class TabOverviewCard: UICollectionViewCell {
     private static let fallbackFaviconImage = UIImage(named: "reynard.globe")
     private(set) var reorderState: ReorderState = .resting
     private(set) var previewImage: UIImage?
+    private var isCurrentTab = false
+
+    func setCurrentTab(_ current: Bool) {
+        isCurrentTab = current
+        contentView.backgroundColor = current ? FennecTheme.accent : FennecTheme.container
+        tabTitleLabel.textColor = current ? .systemBackground : .label
+        closeTabButton.tintColor = current ? .systemBackground : .label
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        setCurrentTab(isCurrentTab)
+    }
     
     private let webpagePreviewShadowView: UIView = {
         let view = UIView()
@@ -112,8 +125,9 @@ final class TabOverviewCard: UICollectionViewCell {
             UIImage.SymbolConfiguration(pointSize: UX.closeButtonSymbolPointSize, weight: .medium),
             forImageIn: .normal
         )
-        button.backgroundColor = .systemGray.withAlphaComponent(UX.closeButtonBackgroundAlpha)
-        button.tintColor = .white
+        button.backgroundColor = .clear
+        button.tintColor = .label
+        button.accessibilityLabel = FennecTheme.text("Close tab")
         button.layer.cornerRadius = UX.closeButtonCornerRadius
         button.layer.cornerCurve = .continuous
         return button
@@ -123,7 +137,7 @@ final class TabOverviewCard: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: UX.tabTitleFontSize, weight: .medium)
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.textColor = .label
         label.numberOfLines = 1
         return label
@@ -341,8 +355,9 @@ final class TabOverviewCard: UICollectionViewCell {
     private func configureAppearance() {
         clipsToBounds = false
         backgroundColor = .clear
-        contentView.backgroundColor = .clear
-        contentView.clipsToBounds = false
+        contentView.backgroundColor = FennecTheme.container
+        contentView.layer.cornerRadius = 18
+        contentView.clipsToBounds = true
     }
     
     private func configureHierarchy() {
@@ -350,7 +365,7 @@ final class TabOverviewCard: UICollectionViewCell {
         webpagePreviewRegionView.addSubview(webpagePreviewShadowView)
         webpagePreviewRegionView.addSubview(webpagePreviewClippingView)
         webpagePreviewClippingView.addSubview(webpagePreviewImageView)
-        webpagePreviewRegionView.addSubview(closeTabButton)
+        contentView.addSubview(closeTabButton)
         contentView.addSubview(tabMetadataContainerView)
         tabMetadataContainerView.addSubview(tabMetadataStackView)
         tabMetadataStackView.addArrangedSubview(faviconImageView)
@@ -368,9 +383,10 @@ final class TabOverviewCard: UICollectionViewCell {
         webpagePreviewBottomConstraint = webpagePreviewClippingView.bottomAnchor.constraint(equalTo: webpagePreviewRegionView.bottomAnchor)
         
         NSLayoutConstraint.activate([
-            webpagePreviewRegionView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            webpagePreviewRegionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            webpagePreviewRegionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            webpagePreviewRegionView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 44),
+            webpagePreviewRegionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
+            webpagePreviewRegionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),
+            webpagePreviewRegionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
             webpagePreviewShadowTopConstraint,
             webpagePreviewShadowLeadingConstraint,
             webpagePreviewShadowTrailingConstraint,
@@ -383,17 +399,15 @@ final class TabOverviewCard: UICollectionViewCell {
             webpagePreviewImageView.leadingAnchor.constraint(equalTo: webpagePreviewClippingView.leadingAnchor),
             webpagePreviewImageView.trailingAnchor.constraint(equalTo: webpagePreviewClippingView.trailingAnchor),
             webpagePreviewImageView.bottomAnchor.constraint(equalTo: webpagePreviewClippingView.bottomAnchor),
-            closeTabButton.topAnchor.constraint(equalTo: webpagePreviewImageView.topAnchor, constant: UX.closeButtonTopInset),
-            closeTabButton.trailingAnchor.constraint(equalTo: webpagePreviewImageView.trailingAnchor, constant: -UX.closeButtonTrailingInset),
+            closeTabButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: UX.closeButtonTopInset),
+            closeTabButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -UX.closeButtonTrailingInset),
             closeTabButton.widthAnchor.constraint(equalToConstant: UX.closeButtonSideLength),
             closeTabButton.heightAnchor.constraint(equalToConstant: UX.closeButtonSideLength),
-            tabMetadataContainerView.topAnchor.constraint(equalTo: webpagePreviewRegionView.bottomAnchor, constant: UX.tabMetadataTopSpacing),
+            tabMetadataContainerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             tabMetadataContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: UX.tabMetadataHorizontalInset),
-            tabMetadataContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -UX.tabMetadataHorizontalInset),
+            tabMetadataContainerView.trailingAnchor.constraint(equalTo: closeTabButton.leadingAnchor, constant: -8),
             tabMetadataContainerView.heightAnchor.constraint(equalToConstant: UX.tabMetadataHeight),
-            tabMetadataContainerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            tabMetadataStackView.centerXAnchor.constraint(equalTo: tabMetadataContainerView.centerXAnchor),
-            tabMetadataStackView.leadingAnchor.constraint(greaterThanOrEqualTo: tabMetadataContainerView.leadingAnchor),
+            tabMetadataStackView.leadingAnchor.constraint(equalTo: tabMetadataContainerView.leadingAnchor),
             tabMetadataStackView.trailingAnchor.constraint(lessThanOrEqualTo: tabMetadataContainerView.trailingAnchor),
             tabMetadataStackView.centerYAnchor.constraint(equalTo: tabMetadataContainerView.centerYAnchor),
             faviconImageView.widthAnchor.constraint(equalToConstant: UX.faviconSideLength),

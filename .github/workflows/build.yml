@@ -33,7 +33,6 @@ permissions:
 
 jobs:
   prepare:
-    if: ${{ github.repository_owner == 'minh-ton' }}
     name: Select build variants
     runs-on: ubuntu-latest
     outputs:
@@ -80,6 +79,7 @@ jobs:
     if: ${{ needs.prepare.outputs.should_build == 'true' }}
     name: "${{ matrix.variant == 'standard' && 'Build Standard / TrollStore' || 'Build Jailbroken' }}"
     runs-on: macos-26
+    timeout-minutes: 350
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
@@ -99,6 +99,12 @@ jobs:
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '26.6'
+
+      - name: Source policy and localization checks
+        run: node --test tests/*.test.mjs
+
+      - name: Parse Swift sources before compiling Gecko
+        run: find browser -name '*.swift' -print0 | xargs -0 xcrun swiftc -frontend -parse
 
       - name: Install build dependencies
         run: |
@@ -126,7 +132,10 @@ jobs:
 
       - name: Hash Rust toolchain for cache
         id: rust_toolchain
-        run: echo "hash=$(rustc -Vv | shasum -a 256 | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "hash=$(rustc -Vv | shasum -a 256 | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
+          echo "xcode_hash=$(xcodebuild -version | shasum -a 256 | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
+          echo "engine_sha=$(git rev-parse HEAD:engine/firefox)" >> "$GITHUB_OUTPUT"
 
       - name: Restore Gecko dependency cache
         uses: actions/cache@v4
@@ -152,12 +161,43 @@ jobs:
       - name: Set up sccache
         uses: mozilla-actions/sccache-action@v0.0.11
 
+      # Save a self-contained, dereferenced engine SDK before building the UI.
+      # If a Swift type error occurs, fixing UI code need not rebuild Gecko.
+      - name: Restore packaged Gecko SDK
+        id: gecko_dist
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/reynard-gecko-dist.tar.gz
+          key: gecko-sdk-v1-${{ runner.os }}-${{ runner.arch }}-${{ matrix.variant }}-${{ steps.rust_toolchain.outputs.engine_sha }}-${{ steps.rust_toolchain.outputs.xcode_hash }}-${{ steps.rust_toolchain.outputs.hash }}-${{ hashFiles('engine/release.txt', 'patches/**', 'tools/development/build-gecko.sh') }}
+
+      - name: Extract cached Gecko SDK
+        if: steps.gecko_dist.outputs.cache-hit == 'true'
+        run: |
+          mkdir -p engine/firefox/obj-aarch64-apple-ios/dist
+          tar -xzf "$RUNNER_TEMP/reynard-gecko-dist.tar.gz" -C engine/firefox/obj-aarch64-apple-ios/dist
+          test -f engine/firefox/obj-aarch64-apple-ios/dist/bin/XUL
+
       - name: Build Gecko
+        if: steps.gecko_dist.outputs.cache-hit != 'true'
         env:
           CC: clang
           CXX: clang++
           LD: ld64.lld
         run: ./tools/development/build-gecko.sh ${{ matrix.build_args }}
+
+      - name: Package Gecko SDK for later UI builds
+        id: package_gecko
+        if: steps.gecko_dist.outputs.cache-hit != 'true'
+        continue-on-error: true
+        run: tar -chzf "$RUNNER_TEMP/reynard-gecko-dist.tar.gz" -C engine/firefox/obj-aarch64-apple-ios/dist bin include
+
+      - name: Save packaged Gecko SDK
+        if: steps.gecko_dist.outputs.cache-hit != 'true' && steps.package_gecko.outcome == 'success'
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/reynard-gecko-dist.tar.gz
+          key: ${{ steps.gecko_dist.outputs.cache-primary-key }}
 
       - name: Build idevice support library
         run: ./tools/development/build-idevice.sh
@@ -184,7 +224,7 @@ jobs:
         if: ${{ matrix.variant == 'standard' && inputs.build_normal_ipa }}
         uses: actions/upload-artifact@v4
         with:
-          name: Reynard.ipa
+          name: Reynard-Fennec-SideStore
           path: dist/Reynard.ipa
           if-no-files-found: error
 

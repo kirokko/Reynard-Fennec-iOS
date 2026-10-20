@@ -47,7 +47,7 @@ final class TabOverview: UIView {
         static let tabCollectionContentInset: CGFloat = 16
         static let tabCollectionItemSpacing: CGFloat = 16
         static let bottomToolbarContainerHeight: CGFloat = 144
-        static let topToolbarContainerHeight: CGFloat = 76
+        static let topToolbarContainerHeight: CGFloat = 56
         static let layoutAnimationDuration: TimeInterval = 0.22
     }
     
@@ -174,6 +174,7 @@ final class TabOverview: UIView {
         let usesBottomToolbar = toolbarPosition == .bottom
         topToolbar.isHidden = usesBottomToolbar
         bottomToolbar.isHidden = !usesBottomToolbar
+        topToolbar.floatingControls.isHidden = usesBottomToolbar
         regularTabsCollectionTopToContainerConstraint.isActive = usesBottomToolbar
         regularTabsCollectionTopToToolbarConstraint.isActive = !usesBottomToolbar
         regularTabsCollectionBottomToContainerConstraint.isActive = !usesBottomToolbar
@@ -195,6 +196,7 @@ final class TabOverview: UIView {
         switch toolbarPosition {
         case .top:
             topToolbar.alpha = alpha
+            topToolbar.floatingControls.alpha = alpha
         case .bottom:
             bottomToolbar.alpha = alpha
         }
@@ -274,7 +276,7 @@ final class TabOverview: UIView {
     
     private func configureAppearance() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .systemGray6
+        backgroundColor = FennecTheme.surface
         alpha = 0
         isHidden = true
     }
@@ -285,6 +287,7 @@ final class TabOverview: UIView {
         addSubview(statusBarBlurView)
         addSubview(bottomToolbar)
         addSubview(topToolbar)
+        addSubview(topToolbar.floatingControls)
     }
     
     private func configureConstraints() {
@@ -306,6 +309,10 @@ final class TabOverview: UIView {
             topToolbar.trailingAnchor.constraint(equalTo: trailingAnchor),
             topToolbar.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             topToolbar.heightAnchor.constraint(equalToConstant: UX.topToolbarContainerHeight),
+            topToolbar.floatingControls.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            topToolbar.floatingControls.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            topToolbar.floatingControls.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            topToolbar.floatingControls.heightAnchor.constraint(equalToConstant: 64),
             
             bottomToolbar.leadingAnchor.constraint(equalTo: leadingAnchor),
             bottomToolbar.trailingAnchor.constraint(equalTo: trailingAnchor),

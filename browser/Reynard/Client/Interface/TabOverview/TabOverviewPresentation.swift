@@ -77,7 +77,7 @@ final class TabOverviewPresentation {
     func cardSize(in collectionView: UICollectionView) -> CGSize {
         let horizontalInsets = collectionView.adjustedContentInset.left + collectionView.adjustedContentInset.right
         let availableWidth = collectionView.bounds.width - horizontalInsets
-        let tabViewAspectRatio = max(UX.cardMinimumPreviewAspectRatio, tabOverview.previewAspectRatio)
+        let tabViewAspectRatio = min(1.25, max(1, tabOverview.previewAspectRatio))
         
         let targetWidth = context.browserLayout.chromeMode == .phone
         ? UX.phoneCardTargetWidth
@@ -87,7 +87,7 @@ final class TabOverviewPresentation {
         
         let totalSpacing = CGFloat(columns - 1) * UX.cardCollectionItemSpacing
         let itemWidth = floor((availableWidth - totalSpacing) / CGFloat(columns))
-        let itemHeight = floor((itemWidth * tabViewAspectRatio) + UX.cardMetadataHeight)
+        let itemHeight = floor((itemWidth * tabViewAspectRatio) + 44)
         return CGSize(width: itemWidth, height: itemHeight)
     }
     

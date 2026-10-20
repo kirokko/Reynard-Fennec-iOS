@@ -1,6 +1,18 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "iOS / JIT" : {
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "iOS / JIT" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "iOS / JIT" } }
+      }
+    },
+    "Reynard-specific" : {
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "Reynard 专属" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "Reynard 專屬" } }
+      }
+    },
     "All Cookies" : {
       "localizations" : {
         "am" : {

@@ -1,332 +1,110 @@
-//
-//  BottomToolbar.swift
-//  Reynard
-//
-//  Created by Minh Ton on 10/6/26.
-//
-
+// Fennec-inspired bottom toolbar; same actions as the top toolbar. GPL-3.0.
 import UIKit
 
 final class BottomToolbar: UIView {
-    private enum UX {
-        static let bottomToolbarStandardContentHeight: CGFloat = 94
-        static let bottomToolbarCompactContentHeight: CGFloat = 44
-        static let bottomToolbarButtonStackHeight: CGFloat = 30
-        static let bottomToolbarButtonStackBottomInset: CGFloat = 5
-        static let addressBarHorizontalInset: CGFloat = 12
-        static let addressBarTopInset: CGFloat = 8
-        static let bottomToolbarButtonStackHorizontalInset: CGFloat = 24
-        static let bottomToolbarButtonStackTopSpacing: CGFloat = 7
-        static let bottomToolbarButtonSpacing: CGFloat = 8
-        static let backgroundViewHorizontalExtension: CGFloat = 16
-        static let addressBarDockedVerticalAdjustment: CGFloat = 36
-        static let keyboardDockedBlurTopExtension: CGFloat = 24
-        static let borderWidth: CGFloat = 0.5
-    }
-    
-    enum LayoutState {
-        case hidden
-        case collapsed // visually hidden but still takes up space
-        case standard
-        case compact
-    }
-    
+    enum LayoutState { case hidden, collapsed, standard, compact }
     var onBack: (() -> Void)?
     var onForward: (() -> Void)?
     var onShare: (() -> Void)?
     var onLibrary: (() -> Void)?
     var onDownloads: (() -> Void)?
+    var onNewTab: (() -> Void)?
     var onTabOverview: (() -> Void)?
-    
-    private let contentView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
-    }()
-    
-    private let backgroundView: UIVisualEffectView = {
-        let effect: UIVisualEffect
-        if #available(iOS 26.0, *) {
-            effect = UIGlassEffect.nonAdaptive(style: .regular)
-        } else {
-            effect = UIBlurEffect(style: .systemChromeMaterial)
-        }
-        let view = UIVisualEffectView(effect: effect)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private let backgroundTopBorderView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.separator.withAlphaComponent(0.2)
-        if #available(iOS 26.0, *) {
-            view.isHidden = true
-        }
-        return view
-    }()
-    
-    private let keyboardDockedBlurView: UIView = {
-        let view = VariableBlurView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.direction = .up
-        view.isHidden = true
-        return view
-    }()
-    
-    private lazy var backButton = ToolbarButton(buttonType: .back, target: self, action: #selector(backTapped))
-    private lazy var forwardButton = ToolbarButton(buttonType: .forward, target: self, action: #selector(forwardTapped))
-    private lazy var shareButton = ToolbarButton(buttonType: .share, target: self, action: #selector(shareTapped))
-    private lazy var libraryButton = ToolbarButton(buttonType: .library, target: self, action: #selector(libraryTapped))
-    private lazy var downloadButton = ToolbarButton(buttonType: .download, target: self, action: #selector(downloadsTapped))
-    private lazy var tabOverviewButton = ToolbarButton(buttonType: .tabOverview, target: self, action: #selector(tabOverviewTapped))
+
+    private let contentView = UIView()
+    private let backgroundView = UIView()
+    private let controls = FennecToolbarControls()
     private let buttonMenus = ToolbarButtonMenus()
-    
-    private lazy var buttons: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [backButton, forwardButton, shareButton, libraryButton, downloadButton, tabOverviewButton])
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .horizontal
-        stack.distribution = .fillEqually
-        stack.alignment = .center
-        stack.spacing = UX.bottomToolbarButtonSpacing
-        return stack
-    }()
-    
     private var topConstraint: NSLayoutConstraint!
-    private var contentHeightConstraint: NSLayoutConstraint!
-    private var standardButtonsBottomConstraint: NSLayoutConstraint!
-    private var compactButtonsTopConstraint: NSLayoutConstraint!
-    private var addressBarConstraints: [NSLayoutConstraint] = []
-    private var addressBarTopConstraint: NSLayoutConstraint?
+    private var contentHeight: NSLayoutConstraint!
+    private var addressConstraints: [NSLayoutConstraint] = []
+    private var addressTrailing: NSLayoutConstraint?
     private weak var addressBar: AddressBar?
-    
-    private var addressBarDockOffset: CGFloat = 0
-    
-    private func addressBarTopConstant(for dockOffset: CGFloat) -> CGFloat {
-        let dockedAdjustment = dockOffset == 0 ? 0 : UX.addressBarDockedVerticalAdjustment
-        return UX.addressBarTopInset + dockOffset + dockedAdjustment
-    }
-    
-    // MARK: - Lifecycle
-    
+
     init() {
         super.init(frame: .zero)
-        configureAppearance()
-        configureHierarchy()
-        configureConstraints()
-        configureInitialState()
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.backgroundColor = FennecTheme.surface
+        for child in [backgroundView, contentView] {
+            child.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(child)
+        }
+        contentView.addSubview(controls)
+        contentHeight = contentView.heightAnchor.constraint(equalToConstant: 56)
+        NSLayoutConstraint.activate([
+            backgroundView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            contentView.topAnchor.constraint(equalTo: topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            contentHeight,
+            controls.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
+            controls.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+        ])
+        controls.onNewTab = { [weak self] in self?.onNewTab?() }
+        controls.onTabs = { [weak self] in self?.onTabOverview?() }
+        controls.onMenu = { [weak self] in self?.onLibrary?() }
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Layout
-    
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     func configureTopAnchor(to safeAreaBottomAnchor: NSLayoutYAxisAnchor) {
-        topConstraint = topAnchor.constraint(equalTo: safeAreaBottomAnchor, constant: -UX.bottomToolbarStandardContentHeight)
+        topConstraint = topAnchor.constraint(equalTo: safeAreaBottomAnchor, constant: -56)
         topConstraint.isActive = true
     }
-    
     func attachAddressBar(_ addressBar: AddressBar) {
         self.addressBar = addressBar
         if addressBar.superview !== contentView {
             addressBar.removeFromSuperview()
             contentView.addSubview(addressBar)
         }
-        if addressBarConstraints.isEmpty {
-            let topConstraint = addressBar.topAnchor.constraint(
-                equalTo: contentView.topAnchor,
-                constant: addressBarTopConstant(for: addressBarDockOffset)
-            )
-            addressBarTopConstraint = topConstraint
-            addressBarConstraints = [
-                addressBar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: UX.addressBarHorizontalInset),
-                addressBar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -UX.addressBarHorizontalInset),
-                topConstraint,
-            ]
+        if addressConstraints.isEmpty {
+            let trailing = addressBar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -140)
+            addressTrailing = trailing
+            addressConstraints = [trailing,
+                addressBar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+                addressBar.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
+                addressBar.heightAnchor.constraint(equalToConstant: 44)]
         }
-        addressBarTopConstraint?.constant = addressBarTopConstant(for: addressBarDockOffset)
-        NSLayoutConstraint.activate(addressBarConstraints)
+        NSLayoutConstraint.activate(addressConstraints)
     }
-    
-    func detachAddressBar() {
-        NSLayoutConstraint.deactivate(addressBarConstraints)
-        addressBar = nil
-    }
-    
+    func detachAddressBar() { NSLayoutConstraint.deactivate(addressConstraints); addressBar = nil }
     func hitTestAddressBar(at point: CGPoint, with event: UIEvent?) -> UIView? {
-        guard !isHidden,
-              isUserInteractionEnabled,
-              alpha > 0.01,
-              !contentView.isHidden,
-              contentView.isUserInteractionEnabled,
-              contentView.alpha > 0.01,
-              let addressBar else {
-            return nil
-        }
+        guard !isHidden, alpha > 0.01, isUserInteractionEnabled, contentView.alpha > 0.01,
+              let addressBar else { return nil }
         return addressBar.hitTest(addressBar.convert(point, from: self), with: event)
     }
-    
-    func sharePopoverSourceView() -> UIView {
-        return shareButton
-    }
-    
+    func sharePopoverSourceView() -> UIView { controls.menuButton }
     func apply(state: LayoutState, hidesButtons: Bool) {
-        let contentHeight: CGFloat
-        switch state {
-        case .hidden, .standard:
-            contentHeight = UX.bottomToolbarStandardContentHeight
-        case .collapsed, .compact:
-            contentHeight = UX.bottomToolbarCompactContentHeight
-        }
-        
-        UIView.performWithoutAnimation {
-            topConstraint.constant = -contentHeight
-            contentHeightConstraint.constant = contentHeight
-            isHidden = state == .hidden || state == .collapsed
-            
-            let isCompact = state == .compact || state == .collapsed
-            standardButtonsBottomConstraint?.isActive = !isCompact
-            compactButtonsTopConstraint.isActive = isCompact
-            buttons.alpha = hidesButtons ? 0 : 1
-            buttons.isUserInteractionEnabled = !hidesButtons
-            layoutIfNeeded()
-        }
+        // In top-bar mode there is no second bottom navigation row.
+        let visible = state == .standard
+        topConstraint.constant = visible ? -56 : 0
+        contentHeight.constant = visible ? 56 : 0
+        isHidden = !visible
+        setEditing(hidesButtons)
     }
-    
-    // MARK: - Updates
-    
-    func updateNavigation(canGoBack: Bool, canGoForward: Bool, canShare: Bool) {
-        backButton.isEnabled = canGoBack
-        forwardButton.isEnabled = canGoForward
-        shareButton.isEnabled = canShare
+    func setEditing(_ editing: Bool) {
+        controls.isHidden = editing
+        addressTrailing?.constant = editing ? -8 : -140
     }
-    
-    func configureNavigationMenus(
-        itemsProvider: @escaping (ToolbarButtonMenus.NavigationDirection) -> [NavigationHistoryStore.HistoryItem],
-        onSelect: @escaping (ToolbarButtonMenus.NavigationDirection, Int) -> Void
-    ) {
-        buttonMenus.installNavigationMenus(
-            on: backButton,
-            forwardButton: forwardButton,
-            itemsProvider: itemsProvider,
-            onSelect: onSelect
-        )
-    }
-    
-    func configureLibraryMenus(onSelect: @escaping (LibrarySection) -> Void) {
-        buttonMenus.installLibraryMenus(on: [libraryButton], onSelect: onSelect)
-    }
-    
-    func configureTabOverviewMenus(
-        tabCountProvider: @escaping () -> Int,
-        onCloseAllTabs: @escaping () -> Void,
-        onCloseTab: @escaping () -> Void,
-        onNewPrivateTab: @escaping () -> Void,
-        onNewTab: @escaping () -> Void
-    ) {
-        buttonMenus.installTabOverviewMenus(
-            on: [tabOverviewButton],
-            tabCountProvider: tabCountProvider,
-            onCloseAllTabs: onCloseAllTabs,
-            onCloseTab: onCloseTab,
-            onNewPrivateTab: onNewPrivateTab,
-            onNewTab: onNewTab
-        )
-    }
-    
     func setAddressBarDockOffset(_ offset: CGFloat) {
-        addressBarDockOffset = offset
-        addressBarTopConstraint?.constant = addressBarTopConstant(for: offset)
-        keyboardDockedBlurView.transform = CGAffineTransform(translationX: 0, y: offset)
-        keyboardDockedBlurView.isHidden = offset == 0
+        contentView.transform = CGAffineTransform(translationX: 0, y: offset)
+        backgroundView.transform = CGAffineTransform(translationX: 0, y: offset)
     }
-    
-    func setContentAlpha(_ alpha: CGFloat) {
-        contentView.alpha = alpha
+    func setContentAlpha(_ alpha: CGFloat) { contentView.alpha = alpha }
+    func setTabCount(_ count: Int) { controls.setTabCount(count) }
+    func updateNavigation(canGoBack: Bool, canGoForward: Bool, canShare: Bool) {}
+    func configureNavigationMenus(itemsProvider: @escaping (ToolbarButtonMenus.NavigationDirection) -> [NavigationHistoryStore.HistoryItem], onSelect: @escaping (ToolbarButtonMenus.NavigationDirection, Int) -> Void) {}
+    func configureLibraryMenus(onSelect: @escaping (LibrarySection) -> Void) {
+        buttonMenus.installLibraryMenus(on: [controls.menuButton], onSelect: onSelect)
     }
-    
-    func updateDownload(_ summary: DownloadStoreSummary) {
-        downloadButton.applyDownloadSummary(summary)
-        downloadButton.isHidden = !downloadButton.isShowingDownloads
+    func configureRecentlyClosedTabsMenu(isAvailable: @escaping () -> Bool, itemsProvider: @escaping () -> [TabManagementStore.RecentlyClosedTabSnapshot], onSelect: @escaping (UUID) -> Void) {
+        buttonMenus.installRecentlyClosedTabsMenu(on: controls.newTabButton, isAvailable: isAvailable, itemsProvider: itemsProvider, onSelect: onSelect)
     }
-    
-    func setMenuButtonIndicatesUpdate(_ hasUpdate: Bool) {
-        libraryButton.setImage(
-            hasUpdate ? UIImage(named: "reynard.ellipsis.circle.badge") : UIImage(named: "reynard.ellipsis.circle"),
-            for: .normal
-        )
+    func configureTabOverviewMenus(tabCountProvider: @escaping () -> Int, onCloseAllTabs: @escaping () -> Void, onCloseTab: @escaping () -> Void, onNewPrivateTab: @escaping () -> Void, onNewTab: @escaping () -> Void) {
+        buttonMenus.installTabOverviewMenus(on: [controls.tabButton], tabCountProvider: tabCountProvider, onCloseAllTabs: onCloseAllTabs, onCloseTab: onCloseTab, onNewPrivateTab: onNewPrivateTab, onNewTab: onNewTab)
     }
-    
-    // MARK: - Action Wiring
-    
-    @objc private func backTapped() { onBack?() }
-    @objc private func forwardTapped() { onForward?() }
-    @objc private func shareTapped() { onShare?() }
-    @objc private func libraryTapped() { onLibrary?() }
-    @objc private func downloadsTapped() { onDownloads?() }
-    @objc private func tabOverviewTapped() { onTabOverview?() }
-    
-    // MARK: - View Setup
-    
-    private func configureAppearance() {
-        translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .clear
-    }
-    
-    private func configureHierarchy() {
-        addSubview(keyboardDockedBlurView)
-        addSubview(backgroundView)
-        addSubview(backgroundTopBorderView)
-        addSubview(contentView)
-        contentView.addSubview(buttons)
-    }
-    
-    private func configureConstraints() {
-        contentHeightConstraint = contentView.heightAnchor.constraint(equalToConstant: UX.bottomToolbarStandardContentHeight)
-        standardButtonsBottomConstraint = buttons.bottomAnchor.constraint(
-            equalTo: contentView.bottomAnchor,
-            constant: -UX.bottomToolbarButtonStackBottomInset
-        )
-        compactButtonsTopConstraint = buttons.topAnchor.constraint(equalTo: contentView.topAnchor, constant: UX.bottomToolbarButtonStackTopSpacing)
-        
-        NSLayoutConstraint.activate([
-            backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -UX.backgroundViewHorizontalExtension),
-            backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: UX.backgroundViewHorizontalExtension),
-            backgroundView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
-            backgroundTopBorderView.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor),
-            backgroundTopBorderView.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor),
-            backgroundTopBorderView.topAnchor.constraint(equalTo: backgroundView.topAnchor),
-            backgroundTopBorderView.heightAnchor.constraint(equalToConstant: UX.borderWidth),
-            
-            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentView.topAnchor.constraint(equalTo: topAnchor),
-            contentHeightConstraint,
-            
-            buttons.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: UX.bottomToolbarButtonStackHorizontalInset),
-            buttons.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -UX.bottomToolbarButtonStackHorizontalInset),
-            buttons.heightAnchor.constraint(equalToConstant: UX.bottomToolbarButtonStackHeight),
-        ])
-        
-        NSLayoutConstraint.activate([
-            keyboardDockedBlurView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -UX.backgroundViewHorizontalExtension),
-            keyboardDockedBlurView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: UX.backgroundViewHorizontalExtension),
-            keyboardDockedBlurView.topAnchor.constraint(
-                equalTo: contentView.topAnchor,
-                constant: UX.addressBarDockedVerticalAdjustment - UX.keyboardDockedBlurTopExtension
-            ),
-            keyboardDockedBlurView.bottomAnchor.constraint(equalTo: bottomAnchor),
-        ])
-    }
-    
-    private func configureInitialState() {
-        shareButton.isEnabled = false
-        downloadButton.isHidden = true
-    }
-    
+    func updateDownload(_ summary: DownloadStoreSummary) { controls.updateDownload(summary) }
+    func setMenuButtonIndicatesUpdate(_ hasUpdate: Bool) {}
 }

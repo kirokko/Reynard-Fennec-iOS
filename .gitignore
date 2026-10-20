@@ -19,3 +19,12 @@ research/
 # Build artifacts
 dist/
 browser/Reynard/JIT/RPPairing/libidevice_ffi.a
+
+# Never publish device pairing/signing credentials
+pairingFile.plist
+*.mobiledevicepairing
+*.mobiledevicepair
+*.p12
+*.mobileprovision
+.env
+.env.*

@@ -244,8 +244,10 @@ final class BrowserChrome: UIView, UIGestureRecognizerDelegate {
         )
         bottomToolbar.apply(
             state: bottomState,
-            hidesButtons: state.search == .scrollingEmbeddedSuggestions
+            hidesButtons: state.search != .inactive
         )
+        topToolbar.setEditing(state.search != .inactive)
+        bottomToolbar.setEditing(state.search != .inactive)
         addressBar.setDismissButtonVisible(
             state.search.showsAddressBarDismissButton && state.presentation == .browsing,
             animated: state.animatesChromeStateChanges
@@ -572,6 +574,11 @@ final class BrowserChrome: UIView, UIGestureRecognizerDelegate {
     
     // MARK: - Toolbar Updates
     
+    func setTabCount(_ count: Int) {
+        topToolbar.setTabCount(count)
+        bottomToolbar.setTabCount(count)
+    }
+
     func updateNavigation(canGoBack: Bool, canGoForward: Bool, canShare: Bool) {
         topToolbar.updateNavigation(canGoBack: canGoBack, canGoForward: canGoForward, canShare: canShare)
         bottomToolbar.updateNavigation(canGoBack: canGoBack, canGoForward: canGoForward, canShare: canShare)
@@ -591,6 +598,11 @@ final class BrowserChrome: UIView, UIGestureRecognizerDelegate {
         onSelect: @escaping (UUID) -> Void
     ) {
         topToolbar.configureRecentlyClosedTabsMenu(
+            isAvailable: isAvailable,
+            itemsProvider: itemsProvider,
+            onSelect: onSelect
+        )
+        bottomToolbar.configureRecentlyClosedTabsMenu(
             isAvailable: isAvailable,
             itemsProvider: itemsProvider,
             onSelect: onSelect
@@ -667,6 +679,7 @@ final class BrowserChrome: UIView, UIGestureRecognizerDelegate {
         bottomToolbar.onLibrary = { [weak self] in self?.onLibrary?() }
         bottomToolbar.onDownloads = { [weak self] in self?.onDownloads?() }
         bottomToolbar.onTabOverview = { [weak self] in self?.onTabOverview?() }
+        bottomToolbar.onNewTab = { [weak self] in self?.onNewTab?() }
         
         actionBar.onPageZoomOut = { [weak self] in self?.onPageZoomOut?() }
         actionBar.onPageZoomIn = { [weak self] in self?.onPageZoomIn?() }

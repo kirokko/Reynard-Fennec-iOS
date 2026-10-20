@@ -209,6 +209,10 @@ final class TabOverviewCollection: NSObject {
             with: tab,
             visiblePreviewCropRect: tabOverview?.visiblePreviewCropRect
         )
+        if let source = tabOverview?.dataSource {
+            let selectedTabs = source.selectedMode == .private ? source.privateTabs : source.regularTabs
+            card.setCurrentTab(selectedTabs[safe: source.selectedIndex]?.id == tab.id)
+        }
     }
     
     func prepareInsertionPlaceholder(for mode: TabOverview.Mode, completion: @escaping () -> Void) {
@@ -302,7 +306,7 @@ final class TabOverviewCollection: NSObject {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
         view.alwaysBounceVertical = true
-        view.contentInset = UIEdgeInsets(top: collectionContentInset, left: collectionContentInset, bottom: collectionContentInset, right: collectionContentInset)
+        view.contentInset = UIEdgeInsets(top: collectionContentInset, left: collectionContentInset, bottom: collectionContentInset + 88, right: collectionContentInset)
         view.dataSource = self
         view.delegate = self
         let reorderGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleTabCardReorderLongPress(_:)))

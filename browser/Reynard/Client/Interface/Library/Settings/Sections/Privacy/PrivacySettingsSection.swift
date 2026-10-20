@@ -9,11 +9,11 @@ import UIKit
 
 struct PrivacySettingsSection {
     enum Row: CaseIterable {
-        case sitePermissions
-        case clearBrowsingData
         case httpsOnlyMode
         case dnsOverHTTPS
         case trackingProtection
+        case sitePermissions
+        case clearBrowsingData
     }
     
     var rowCount: Int {

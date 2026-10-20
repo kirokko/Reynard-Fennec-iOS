@@ -28,7 +28,7 @@ protocol HomepageRecommendationViewController: UIViewController {
 
 final class HomepageRootViewController: UIViewController {
     private enum UX {
-        static let topInset: CGFloat = 48
+        static let topInset: CGFloat = 24
         static let folderTopInset: CGFloat = 20
         static let horizontalInset: CGFloat = 16
         static let bottomInset: CGFloat = 24
@@ -46,6 +46,7 @@ final class HomepageRootViewController: UIViewController {
     private var visibleContentInsets: UIEdgeInsets = .zero
     private var sectionViewControllers: [HomepageSection: UIViewController] = [:]
     private var sectionStackWidthConstraint: NSLayoutConstraint?
+    private var showsMoreHomepageContent = false
     
     private let wallpaperImageView: UIImageView = {
         let imageView = UIImageView()
@@ -222,13 +223,47 @@ final class HomepageRootViewController: UIViewController {
     }
     
     private func configureSections() {
+        sectionStackView.arrangedSubviews.forEach { sectionStackView.removeArrangedSubview($0); $0.removeFromSuperview() }
+        sectionStackView.spacing = 16
+        view.backgroundColor = FennecTheme.surface
+        let extras = UIStackView()
+        extras.axis = .vertical
+        extras.spacing = 16
+        extras.isHidden = !showsMoreHomepageContent
+        if folder == nil {
+            let brand = UILabel()
+            brand.text = "Reynard Fennec"
+            brand.font = UIFontMetrics(forTextStyle: .title1).scaledFont(for: .systemFont(ofSize: 30, weight: .bold))
+            brand.adjustsFontForContentSizeCategory = true
+            brand.textColor = FennecTheme.accent
+            brand.numberOfLines = 0
+            sectionStackView.addArrangedSubview(brand)
+        }
         displayedSections.forEach { section in
-            let viewController = makeSectionViewController(for: section)
-            addChild(viewController)
-            viewController.view.translatesAutoresizingMaskIntoConstraints = false
-            sectionStackView.addArrangedSubview(viewController.view)
-            viewController.didMove(toParent: self)
-            sectionViewControllers[section] = viewController
+            let controller = makeSectionViewController(for: section)
+            addChild(controller)
+            controller.view.translatesAutoresizingMaskIntoConstraints = false
+            let isExtra = folder == nil && (section == .recentlyClosedTabs || section == .recommendation(.donation))
+            (isExtra ? extras : sectionStackView).addArrangedSubview(controller.view)
+            controller.didMove(toParent: self)
+            sectionViewControllers[section] = controller
+        }
+        if !extras.arrangedSubviews.isEmpty {
+            let more = FennecClosureButton(frame: .zero)
+            more.contentHorizontalAlignment = .leading
+            more.setTitle(FennecTheme.text("More"), for: .normal)
+            more.setTitleColor(FennecTheme.accent, for: .normal)
+            more.titleLabel?.font = .preferredFont(forTextStyle: .headline)
+            more.heightAnchor.constraint(greaterThanOrEqualToConstant: 48).isActive = true
+            more.accessibilityValue = FennecTheme.text(showsMoreHomepageContent ? "Expanded" : "Collapsed")
+            more.onTap = { [weak self, weak extras, weak more] in
+                guard let self, let extras else { return }
+                self.showsMoreHomepageContent.toggle()
+                extras.isHidden = !self.showsMoreHomepageContent
+                more?.accessibilityValue = FennecTheme.text(extras.isHidden ? "Collapsed" : "Expanded")
+            }
+            sectionStackView.addArrangedSubview(more)
+            sectionStackView.addArrangedSubview(extras)
         }
     }
     
@@ -353,6 +388,9 @@ final class HomepageRootViewController: UIViewController {
         
         return sections.filter { section in
             switch section {
+            case .recommendation(.performance), .recommendation(.updateAvailable):
+                // Performance/JIT guidance is kept in iOS / JIT. No app update feed.
+                return false
             case .privateBrowsing:
                 return isPrivateBrowsing
             case .favorites:
