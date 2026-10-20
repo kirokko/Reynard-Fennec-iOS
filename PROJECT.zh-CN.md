@@ -73,6 +73,10 @@ Actions → **Build SideStore IPA (manual)** → Run workflow。
 
 成功后下载 **Reynard-Fennec-SideStore** artifact，其中是 `Reynard.ipa`。Downloads 中的手动下载工具可将最近一次成功的产物保存为 `Reynard-Fennec.ipa`；没有成功产物时应明确报错，不以原版 IPA 冒充成品。
 
+本次构建链接：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39437471654 。该次运行已通过源代码策略检查和 macOS 上的 Swift 语法解析；完整引擎/App 编译仍以运行页面为准。
+
+`tools/Watch-Build.ps1` 是有时限的一次性收件脚本：只等指定的这一次运行，成功后下载对应 IPA，失败则写状态并退出。它不重试编译、不跟踪未来版本、不安装/更新应用，也不创建开机启动项或计划任务。状态文件为 Downloads 中的 `Reynard-Fennec-build-status.txt`。
+
 本版沿用原始 bundle identifiers，避免引擎/helper 集成发生未经测试的变动。因此同一签名身份下可能覆盖原版 Reynard，不能保证与原版并存。测试前备份重要数据，不要为了测试随意卸载原应用。
 
 SideStore 安装必须保留 App Extensions。安装不等于 JIT 已启用；配对文件属于敏感资料，不上传公开仓库或 Actions。上游指南：

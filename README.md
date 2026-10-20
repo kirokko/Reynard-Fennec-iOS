@@ -51,6 +51,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Download-IPA.ps1
 
 It downloads the most recent successful manual build to `Downloads\Reynard-Fennec.ipa`, checks that app extensions are present, and writes the commit/build URL/SHA-256 beside it. If no successful build exists, it fails explicitly. It does not start a build or update an installed app.
 
+For one already-started run, `tools/Watch-Build.ps1 -RunId <id>` can wait for at most seven hours and download **only that run** if it succeeds. It writes a status file in Downloads and then exits. It is not an updater, scheduled task, or build retry service; it does not monitor later releases.
+
 Source ZIP snapshots omit the engine/support submodule contents; the pinned references remain in Git and the cloud workflow obtains them from upstream. Do not mistake a source ZIP for an IPA.
 
 ## Installing with SideStore
@@ -76,7 +78,13 @@ On macOS with Xcode:
 find browser -name '*.swift' -print0 | xargs -0 xcrun swiftc -frontend -parse
 ```
 
-These are source/syntax checks, not UI, integration or runtime tests. Full build prerequisites are in the upstream README.
+On Windows, the downloader also has four isolated mock-artifact tests (success, failed run, missing extensions, and no successful run):
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tests\download-ipa.test.ps1
+```
+
+These are source/syntax/download-tool checks, not browser UI, integration or runtime tests. Full build prerequisites are in the upstream README.
 
 ## Adopting a newer Reynard manually
 
