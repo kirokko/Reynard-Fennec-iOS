@@ -41,6 +41,18 @@ The first engine build can take hours. The engine SDK is cached **before** Swift
 
 No Apple ID, pairing record, development certificate or signing private key is needed by this workflow. SideStore performs the final development signing. A successfully packaged IPA still requires real-device testing.
 
+### Download a completed build on Windows
+
+With GitHub CLI installed and authenticated, run this from the project folder:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Download-IPA.ps1
+```
+
+It downloads the most recent successful manual build to `Downloads\Reynard-Fennec.ipa`, checks that app extensions are present, and writes the commit/build URL/SHA-256 beside it. If no successful build exists, it fails explicitly. It does not start a build or update an installed app.
+
+Source ZIP snapshots omit the engine/support submodule contents; the pinned references remain in Git and the cloud workflow obtains them from upstream. Do not mistake a source ZIP for an IPA.
+
 ## Installing with SideStore
 
 - Follow Reynard's [installation requirements](docs/UPSTREAM_README.md#installation).
