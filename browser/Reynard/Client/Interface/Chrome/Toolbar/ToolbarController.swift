@@ -254,7 +254,7 @@ final class ToolbarController {
     }
     
     private func startAnimation() {
-        guard UIView.areAnimationsEnabled else {
+        guard FennecTheme.animatesBrowserUI else {
             animationDisplayLink?.invalidate()
             animationDisplayLink = nil
             snapStartTime = nil

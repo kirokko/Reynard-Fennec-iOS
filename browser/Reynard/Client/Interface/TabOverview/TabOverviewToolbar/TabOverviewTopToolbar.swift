@@ -16,6 +16,7 @@ final class TabOverviewTopToolbar: UIView {
     private let regularButton = FennecClosureButton(frame: .zero)
     private let groupsButton = FennecClosureButton(frame: .zero)
     private let indicator = UIView()
+    private let countLabel = UILabel()
     private let overflow = UIButton(type: .system)
     private let search = FennecClosureButton(frame: .zero)
     private let add = FennecClosureButton(frame: .zero)
@@ -34,13 +35,26 @@ final class TabOverviewTopToolbar: UIView {
             button.titleLabel?.font = .preferredFont(forTextStyle: .subheadline)
             button.titleLabel?.adjustsFontForContentSizeCategory = true
         }
-        privateButton.setImage(UIImage(named: "private.mode.icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        privateButton.setImage(FennecTheme.privateBrowsingImage, for: .normal)
         privateButton.imageView?.contentMode = .scaleAspectFit
-        privateButton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 36, bottom: 12, right: 36)
         privateButton.accessibilityLabel = FennecTheme.text("Private")
-        regularButton.setTitle("0", for: .normal)
+        countLabel.translatesAutoresizingMaskIntoConstraints = false
+        countLabel.text = "0"
+        countLabel.font = .systemFont(ofSize: 12, weight: .semibold)
+        countLabel.textAlignment = .center
+        countLabel.layer.borderWidth = 1.8
+        countLabel.layer.cornerRadius = 3
+        countLabel.isUserInteractionEnabled = false
+        countLabel.isAccessibilityElement = false
+        regularButton.addSubview(countLabel)
+        NSLayoutConstraint.activate([
+            countLabel.centerXAnchor.constraint(equalTo: regularButton.centerXAnchor),
+            countLabel.centerYAnchor.constraint(equalTo: regularButton.centerYAnchor),
+            countLabel.widthAnchor.constraint(equalToConstant: 24),
+            countLabel.heightAnchor.constraint(equalToConstant: 24),
+        ])
         regularButton.accessibilityLabel = FennecTheme.text("Tabs")
-        groupsButton.setImage(UIImage(systemName: "square.grid.2x2"), for: .normal)
+        groupsButton.setImage(UIImage(systemName: "square.grid.2x2", withConfiguration: UIImage.SymbolConfiguration(pointSize: 23, weight: .regular)), for: .normal)
         groupsButton.accessibilityLabel = FennecTheme.text("Tab groups")
         groupsButton.tintColor = .secondaryLabel
         groupsButton.onTap = { [weak self] in self?.onGroups?() }
@@ -101,7 +115,8 @@ final class TabOverviewTopToolbar: UIView {
     func setMode(_ mode: TabOverview.Mode) {
         currentMode = mode
         privateButton.tintColor = mode == .privateTabs ? FennecTheme.ink : .secondaryLabel
-        regularButton.setTitleColor(mode == .regularTabs ? FennecTheme.ink : .secondaryLabel, for: .normal)
+        countLabel.textColor = mode == .regularTabs ? FennecTheme.ink : .secondaryLabel
+        countLabel.layer.borderColor = countLabel.textColor.resolvedColor(with: traitCollection).cgColor
         privateButton.accessibilityTraits = mode == .privateTabs ? [.button, .selected] : .button
         regularButton.accessibilityTraits = mode == .regularTabs ? [.button, .selected] : .button
         indicatorCenter.isActive = false
@@ -109,7 +124,7 @@ final class TabOverviewTopToolbar: UIView {
         indicatorCenter.isActive = true
     }
     func apply(tabCount: Int, visibleTabCount: Int, hasVisibleTab: Bool) {
-        regularButton.setTitle("▢ \(tabCount)", for: .normal)
+        countLabel.text = tabCount > 99 ? "∞" : String(max(0, tabCount))
         regularButton.accessibilityValue = String(tabCount)
         let clearMenu = TabOverviewClearTabsMenu.make(tabCount: visibleTabCount,
             onClearTabs: { [weak self] in self?.onClearTabs?() },

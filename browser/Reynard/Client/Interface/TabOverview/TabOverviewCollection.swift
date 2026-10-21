@@ -113,20 +113,12 @@ final class TabOverviewCollection: NSObject {
     }
     
     func setMode(_ mode: TabOverview.Mode, containerWidth: CGFloat, animated: Bool) {
-        let modeChanged = mode != self.mode
         self.mode = mode
         privateTabsCollectionView.isUserInteractionEnabled = mode == .privateTabs
         regularTabsCollectionView.isUserInteractionEnabled = mode == .regularTabs
         
         let width = max(containerWidth, 1)
-        let animations = {
-            self.applyPresentationTransforms(width: width)
-        }
-        if animated && UIView.areAnimationsEnabled && modeChanged {
-            UIView.animate(withDuration: 0.28, delay: 0, options: [.curveEaseInOut, .beginFromCurrentState], animations: animations)
-        } else {
-            animations()
-        }
+        UIView.performWithoutAnimation { self.applyPresentationTransforms(width: width) }
     }
     
     func scrollToBottom(for mode: TabOverview.Mode) {
@@ -216,7 +208,7 @@ final class TabOverviewCollection: NSObject {
     }
     
     func prepareInsertionPlaceholder(for mode: TabOverview.Mode, completion: @escaping () -> Void) {
-        guard UIView.areAnimationsEnabled,
+        guard FennecTheme.animatesBrowserUI,
               tabOverview?.isPresented == true,
               tabOverview?.isTransitionRunning == false,
               tabChangeAnimationState.insertionPlaceholderMode == nil else {
@@ -262,7 +254,7 @@ final class TabOverviewCollection: NSObject {
     }
     
     func applyTabCollectionChanges() {
-        guard UIView.areAnimationsEnabled else {
+        guard FennecTheme.animatesBrowserUI else {
             reloadTabCards()
             return
         }

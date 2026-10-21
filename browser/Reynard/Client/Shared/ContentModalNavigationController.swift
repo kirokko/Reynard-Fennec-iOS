@@ -7,13 +7,15 @@
 
 import UIKit
 
-final class ContentModalNavigationController: UINavigationController {
+final class ContentModalNavigationController: UINavigationController, UINavigationControllerDelegate {
     private let onDismissed: () -> Void
     var librarySection: LibrarySection?
     
     init(rootViewController: UIViewController, onDismissed: @escaping () -> Void) {
         self.onDismissed = onDismissed
         super.init(rootViewController: rootViewController)
+        delegate = self
+        installRootExit(on: rootViewController)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -32,8 +34,19 @@ final class ContentModalNavigationController: UINavigationController {
         navigationBar.scrollEdgeAppearance = appearance
         navigationBar.compactAppearance = appearance
         navigationBar.tintColor = FennecTheme.ink
-        viewControllers.first?.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(closePage))
+        if let root = viewControllers.first { installRootExit(on: root) }
+    }
+
+    private func installRootExit(on controller: UIViewController) {
+        let exit = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(closePage))
+        exit.accessibilityLabel = FennecTheme.text("Back to browsing")
+        exit.accessibilityIdentifier = "contentPage.close"
+        controller.navigationItem.leftBarButtonItem = exit
+    }
+
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        setNavigationBarHidden(false, animated: false)
+        if viewController === viewControllers.first { installRootExit(on: viewController) }
     }
 
     @objc private func closePage() { dismiss(animated: false) }

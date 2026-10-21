@@ -115,6 +115,14 @@ jobs:
         timeout-minutes: 8
         run: bash tools/Test-HomepageLayout.sh
 
+      - name: Upload synthetic UIKit review screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ieynec-ui-checks
+          path: ${{ runner.temp }}/ieynec-layout-smoke/screenshots
+          if-no-files-found: warn
+
       - name: Install build dependencies
         run: |
           brew install python@3.12 lld cbindgen llvm

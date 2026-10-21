@@ -43,6 +43,7 @@ final class FennecHomepageSummaryView: UIStackView {
         continueStack.addArrangedSubview(resume)
         // Attach this subtree only when there is a tab. Hiding an arranged
         // stack would impose 0pt height against the card's required minimum.
+        resume.accessibilityIdentifier = "homepage.resume"
         resume.backgroundColor = FennecTheme.card
         resume.layer.cornerRadius = 8
         resume.clipsToBounds = true
@@ -52,12 +53,21 @@ final class FennecHomepageSummaryView: UIStackView {
         }
         preview.contentMode = .scaleAspectFill
         preview.clipsToBounds = true
+        // Full-page thumbnails have huge intrinsic dimensions. They must fill
+        // the card, never determine the card height or homepage width.
+        preview.setContentCompressionResistancePriority(UILayoutPriority(1), for: .vertical)
+        preview.setContentCompressionResistancePriority(UILayoutPriority(1), for: .horizontal)
+        preview.setContentHuggingPriority(UILayoutPriority(1), for: .vertical)
         titleLabel.numberOfLines = 2
         titleLabel.font = .preferredFont(forTextStyle: .body)
         titleLabel.textColor = FennecTheme.ink
         urlLabel.font = .preferredFont(forTextStyle: .caption1)
         urlLabel.textColor = .secondaryLabel
-        for label in [titleLabel, urlLabel] { label.adjustsFontForContentSizeCategory = true }
+        urlLabel.lineBreakMode = .byTruncatingMiddle
+        for label in [titleLabel, urlLabel] {
+            label.adjustsFontForContentSizeCategory = true
+            label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        }
         let labels = UIStackView(arrangedSubviews: [titleLabel, urlLabel])
         labels.axis = .vertical
         labels.spacing = 6
@@ -67,7 +77,10 @@ final class FennecHomepageSummaryView: UIStackView {
             child.isAccessibilityElement = false
             resume.addSubview(child)
         }
+        let preferredHeight = resume.heightAnchor.constraint(equalToConstant: 88)
+        preferredHeight.priority = .defaultLow // Larger accessibility text can grow.
         NSLayoutConstraint.activate([
+            preferredHeight,
             preview.leadingAnchor.constraint(equalTo: resume.leadingAnchor),
             preview.topAnchor.constraint(equalTo: resume.topAnchor),
             preview.bottomAnchor.constraint(equalTo: resume.bottomAnchor),

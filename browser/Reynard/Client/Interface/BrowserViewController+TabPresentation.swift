@@ -147,9 +147,9 @@ extension BrowserViewController: TabBarDataSource, TabOverviewDataSource, TabOve
             homepageOverlayCoordinator.tabOverviewWillPresent()
             searchOverlayCoordinator.tabOverviewWillPresent()
         }
-        tabOverview.setPresented(visible, animated: animated)
+        tabOverview.setPresented(visible, animated: false)
         if !visible {
-            homepageOverlayCoordinator.updatePresentation(animated: animated)
+            homepageOverlayCoordinator.updatePresentation(animated: false)
         }
     }
     

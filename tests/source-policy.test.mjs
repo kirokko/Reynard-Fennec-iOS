@@ -122,9 +122,14 @@ test('native tab groups reference live UUIDs, exclude private tabs, and have per
 
 test('motion-free policy covers UIKit, toolbar display link and tab overview state machine', () => {
   assert.match(read('browser/Reynard/AppDelegate.swift'), /UIView\.setAnimationsEnabled\(false\)/);
-  assert.match(read(ui + 'Chrome/Toolbar/ToolbarController.swift'), /guard UIView\.areAnimationsEnabled else/);
-  assert.match(read(ui + 'TabOverview/TabOverviewPresentation.swift'), /let animated = animated && UIView\.areAnimationsEnabled/);
-  assert.match(read(ui + 'TabOverview/TabOverviewCollection.swift'), /guard UIView\.areAnimationsEnabled else/);
+  assert.match(read(ui + 'Chrome/Toolbar/ToolbarController.swift'), /guard FennecTheme\.animatesBrowserUI else/);
+  const presentation = read(ui + 'TabOverview/TabOverviewPresentation.swift');
+  assert.doesNotMatch(presentation, /UIView\.animate|usingSpring|scaleX:|presentOnPhone|presentOnPad/);
+  assert.match(presentation, /UIView\.performWithoutAnimation/);
+  assert.match(presentation, /presentationToken == token/);
+  assert.match(read(ui + 'TabOverview/TabOverviewCollection.swift'), /guard FennecTheme\.animatesBrowserUI else/);
+  assert.match(read(ui + 'Appearance/FennecTheme.swift'), /static let animatesBrowserUI = false/);
+  assert.match(read('tests/ui-layout-smoke/TrayFixtures.swift'), /UIView\.setAnimationsEnabled\(true\)/);
   const menu = read(ui + 'Chrome/FennecMenuViewController.swift');
   assert.doesNotMatch(menu, /animated: true/);
   const actions = read(ui + 'BrowserViewController+BrowserActions.swift');

@@ -518,6 +518,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
         animated: Bool,
         duration: TimeInterval = UX.layoutAnimationDuration
     ) {
+        let animated = animated && FennecTheme.animatesBrowserUI
         if sidebarCoordinator.hostsSidebar {
             sidebarCoordinator.updateContentLayout(
                 animated: animated,
@@ -578,6 +579,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
     }
     
     func applyBrowserLayout(animated: Bool = false) {
+        let animated = animated && FennecTheme.animatesBrowserUI
         if isShowingFullscreenMedia {
             applyFullscreenLayout()
         } else {

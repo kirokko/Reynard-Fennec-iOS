@@ -2,6 +2,7 @@
 import UIKit
 
 enum FennecTheme {
+    static let animatesBrowserUI = false
     static let surface = UIColor { $0.userInterfaceStyle == .dark
         ? UIColor(red: 0.08, green: 0.075, blue: 0.11, alpha: 1)
         : UIColor(red: 0.969, green: 0.965, blue: 0.988, alpha: 1) }
@@ -22,6 +23,18 @@ enum FennecTheme {
     static let accentContainer = UIColor { $0.userInterfaceStyle == .dark
         ? UIColor(red: 0.27, green: 0.23, blue: 0.40, alpha: 1)
         : UIColor(red: 0.90, green: 0.86, blue: 1, alpha: 1) }
+
+    static var privateBrowsingImage: UIImage? {
+        guard let source = UIImage(named: "private.mode.icon") else {
+            return UIImage(systemName: "theatermasks")
+        }
+        let size = CGSize(width: 26, height: 26)
+        let scale = min(size.width / max(1, source.size.width), size.height / max(1, source.size.height))
+        let fitted = CGSize(width: source.size.width * scale, height: source.size.height * scale)
+        return UIGraphicsImageRenderer(size: size).image { _ in
+            source.draw(in: CGRect(x: (size.width - fitted.width) / 2, y: (size.height - fitted.height) / 2, width: fitted.width, height: fitted.height))
+        }.withRenderingMode(.alwaysTemplate)
+    }
 
     static var overflowImage: UIImage {
         UIGraphicsImageRenderer(size: CGSize(width: 24, height: 24)).image { _ in

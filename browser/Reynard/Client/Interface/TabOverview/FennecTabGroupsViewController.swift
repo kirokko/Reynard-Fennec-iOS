@@ -22,14 +22,26 @@ final class FennecTabGroupsViewController: SettingsTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+        updateEmptyState()
+    }
+    private func updateEmptyState() {
+        guard store.groups.isEmpty else { tableView.backgroundView = nil; return }
+        let background = UIView()
         let message = UILabel()
+        message.translatesAutoresizingMaskIntoConstraints = false
         message.text = FennecTheme.text("Select open tabs to create a group. Groups are stored only on this device.")
         message.numberOfLines = 0
         message.textAlignment = .center
         message.textColor = .secondaryLabel
         message.font = .preferredFont(forTextStyle: .body)
         message.adjustsFontForContentSizeCategory = true
-        tableView.backgroundView = store.groups.isEmpty ? message : nil
+        background.addSubview(message)
+        NSLayoutConstraint.activate([
+            message.leadingAnchor.constraint(equalTo: background.leadingAnchor, constant: 24),
+            message.trailingAnchor.constraint(equalTo: background.trailingAnchor, constant: -24),
+            message.centerYAnchor.constraint(equalTo: background.centerYAnchor),
+        ])
+        tableView.backgroundView = background
     }
     @objc private func createGroup() {
         navigationController?.pushViewController(FennecTabGroupEditor(tabs: tabs, store: store, group: nil), animated: false)
@@ -56,6 +68,7 @@ final class FennecTabGroupsViewController: SettingsTableViewController {
         let action = UIContextualAction(style: .destructive, title: FennecTheme.text("Ungroup")) { [weak self] _, _, done in
             self?.store.remove(id: id)
             self?.tableView.reloadData()
+            self?.updateEmptyState()
             done(true)
         }
         return UISwipeActionsConfiguration(actions: [action])

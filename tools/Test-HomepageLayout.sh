@@ -17,8 +17,8 @@ for (const [runtime, devices] of Object.entries(data.devices).reverse()) {
 NODE
 )
 if [[ -z "$device" ]]; then
-  echo '::warning::No installed iOS Simulator runtime; UIKit smoke test NOT RUN. Device startup is still unverified.'
-  exit 0
+  echo '::error::No installed iOS Simulator runtime; cannot validate UIKit regressions.'
+  exit 1
 fi
 sdk=$(xcrun --sdk iphonesimulator --show-sdk-path)
 app="$work/LayoutSmoke.app"
@@ -40,13 +40,23 @@ cat > "$app/Info.plist" <<'PLIST'
 PLIST
 ui=browser/Reynard/Client/Interface
 xcrun swiftc -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" \
-  tests/ui-layout-smoke/App.swift \
+  tests/ui-layout-smoke/App.swift tests/ui-layout-smoke/TrayFixtures.swift \
   "$ui/Appearance/FennecTheme.swift" \
   "$ui/Chrome/FennecMenuViewController.swift" \
   "$ui/Homepage/Sections/HomepageSection.swift" \
   "$ui/Homepage/FennecHomepageSummaryView.swift" \
   "$ui/Homepage/HomepageRootViewController.swift" \
+  "$ui/TabOverview/TabOverviewPresentation.swift" \
+  "$ui/TabOverview/TabOverviewToolbar/TabOverviewTopToolbar.swift" \
+  "$ui/TabOverview/TabOverviewClearTabsMenu.swift" \
+  "$ui/TabOverview/FennecTabGroupsViewController.swift" \
+  "$ui/Library/Settings/SettingsTableViewController.swift" \
+  "$ui/Library/Settings/SettingsTableViewCell.swift" \
+  browser/Reynard/Client/Shared/ContentModalNavigationController.swift \
+  browser/Reynard/Client/TabManagement/TabGroupStore.swift \
   -o "$app/LayoutSmoke"
+cp browser/Reynard/Resources/Assets.xcassets/custom/taboverview/private.mode.icon.imageset/private.mode.icon.png "$app/"
+cp browser/Reynard/Resources/Assets.xcassets/ieynec-logo.imageset/logo.png "$app/ieynec-logo.png"
 codesign --force --sign - "$app"
 xcrun simctl boot "$device" 2>/dev/null || true
 xcrun simctl bootstatus "$device" -b
@@ -57,6 +67,8 @@ xcrun simctl launch --terminate-running-process --stdout="$work/stdout.log" --st
 for ((i=0; i<45; i++)); do
   if [[ -f "$container/Documents/layout-pass.txt" ]]; then
     cat "$container/Documents/layout-pass.txt"
+    mkdir -p "$work/screenshots"
+    cp "$container/Documents/"*.png "$work/screenshots/"
     xcrun simctl terminate "$device" local.ieynec.LayoutSmoke || true
     exit 0
   fi

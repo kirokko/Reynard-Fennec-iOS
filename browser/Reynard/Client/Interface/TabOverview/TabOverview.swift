@@ -189,7 +189,7 @@ final class TabOverview: UIView {
             self.layoutIfNeeded()
             self.collection.applyPresentationTransforms()
         }
-        animated ? UIView.animate(withDuration: UX.layoutAnimationDuration, animations: changes) : changes()
+        UIView.performWithoutAnimation(changes)
     }
     
     func setActiveToolbarAlpha(_ alpha: CGFloat) {

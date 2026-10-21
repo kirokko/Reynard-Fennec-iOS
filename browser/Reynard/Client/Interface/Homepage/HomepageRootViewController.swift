@@ -207,6 +207,7 @@ final class HomepageRootViewController: UIViewController {
         view.addSubview(wallpaperImageView)
         view.addSubview(scrollView)
         scrollView.addSubview(sectionStackView)
+        sectionStackView.accessibilityIdentifier = "homepage.sections"
         updateWallpaper()
     }
     
@@ -217,7 +218,7 @@ final class HomepageRootViewController: UIViewController {
         let widthConstraint = sectionStackView.widthAnchor.constraint(lessThanOrEqualToConstant: UX.embeddedMaximumWidth)
         let preferredWidth = sectionStackView.widthAnchor.constraint(
             equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -(UX.horizontalInset * 2))
-        preferredWidth.priority = .defaultHigh
+        preferredWidth.priority = UILayoutPriority(999)
         sectionStackWidthConstraint = widthConstraint
         
         NSLayoutConstraint.activate([
@@ -236,6 +237,7 @@ final class HomepageRootViewController: UIViewController {
             sectionStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
             sectionStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             widthConstraint, preferredWidth,
+            sectionStackView.widthAnchor.constraint(lessThanOrEqualTo: scrollView.frameLayoutGuide.widthAnchor, constant: -(UX.horizontalInset * 2)),
         ])
     }
     
@@ -267,6 +269,8 @@ final class HomepageRootViewController: UIViewController {
             brand.text = "ieynec"
             brand.font = UIFontMetrics(forTextStyle: .title1).scaledFont(for: .systemFont(ofSize: 30, weight: .semibold))
             brand.adjustsFontForContentSizeCategory = true
+            brand.adjustsFontSizeToFitWidth = true
+            brand.minimumScaleFactor = 0.5
             brand.textColor = FennecTheme.ink
             let logo = UIImageView(image: UIImage(named: "ieynec-logo"))
             logo.contentMode = .scaleAspectFit
@@ -280,7 +284,8 @@ final class HomepageRootViewController: UIViewController {
             header.addSubview(wordmark)
             let privacy = FennecClosureButton(frame: .zero)
             privacy.translatesAutoresizingMaskIntoConstraints = false
-            privacy.setImage(UIImage(named: "private.mode.icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
+            privacy.setImage(FennecTheme.privateBrowsingImage, for: .normal)
+            privacy.imageView?.contentMode = .scaleAspectFit
             privacy.tintColor = FennecTheme.ink
             privacy.accessibilityLabel = FennecTheme.text("New private tab")
             privacy.onTap = { [weak self] in self?.onPrivateTab?() }

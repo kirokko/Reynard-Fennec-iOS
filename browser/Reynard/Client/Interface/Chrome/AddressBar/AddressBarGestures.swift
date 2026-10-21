@@ -209,42 +209,10 @@ final class AddressBarGestures: NSObject {
     }
     
     func animateAutomaticTabTransition(to tab: Tab, returning: Bool = false, completion: @escaping () -> Void) {
-        guard let delegate,
-              delegate.chromeMode == .phone,
-              !delegate.isTabOverviewPresented,
-              !delegate.isTabOverviewTransitionRunning else {
-            DispatchQueue.main.async(execute: completion)
-            return
-        }
-        
-        let width = delegate.transitionContentView.bounds.width
-        guard width > 1 else {
-            DispatchQueue.main.async(execute: completion)
-            return
-        }
-        
-        searchPanMode = .blocked
+        // Tapping a tab is an immediate selection, not a simulated swipe. Keep
+        // interactive panning elsewhere, but never construct animated snapshots.
         resetHorizontalTransition()
-        delegate.addressBarTransitionWillBegin(prepareForGesture: false)
-        let direction = returning ? -1 : 1
-        horizontalDirection = direction
-        prepareHorizontalTarget(for: tab, direction: direction, pageWidth: width, delegate: delegate)
-        
-        let transitionGeneration = horizontalTransitionGeneration
-        UIView.animate(withDuration: UX.addressBarTabSwitchTransitionDuration, delay: 0, options: [.curveEaseOut]) {
-            let contentTransform = CGAffineTransform(translationX: -CGFloat(direction) * width, y: 0)
-            let barTransform = CGAffineTransform(translationX: -CGFloat(direction) * self.horizontalBarTravelWidth(), y: 0)
-            self.applySourceContentTransform(contentTransform, delegate: delegate)
-            self.applySourceAddressBarTransform(barTransform)
-            self.horizontalTargetContentView?.transform = contentTransform
-            self.horizontalTargetBarView?.transform = barTransform
-        } completion: { _ in
-            guard transitionGeneration == self.horizontalTransitionGeneration else {
-                return
-            }
-            completion()
-            self.resetHorizontalTransition()
-        }
+        UIView.performWithoutAnimation(completion)
     }
     
     // MARK: - Previews
