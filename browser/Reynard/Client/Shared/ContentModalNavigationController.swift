@@ -9,6 +9,7 @@ import UIKit
 
 final class ContentModalNavigationController: UINavigationController, UINavigationControllerDelegate {
     private let onDismissed: () -> Void
+    private var didNotifyDismissal = false
     var librarySection: LibrarySection?
     
     init(rootViewController: UIViewController, onDismissed: @escaping () -> Void) {
@@ -49,7 +50,15 @@ final class ContentModalNavigationController: UINavigationController, UINavigati
         if viewController === viewControllers.first { installRootExit(on: viewController) }
     }
 
-    @objc private func closePage() { dismiss(animated: false) }
+    private func notifyDismissal() {
+        guard !didNotifyDismissal else { return }
+        didNotifyDismissal = true
+        onDismissed()
+    }
+
+    @objc private func closePage() {
+        dismiss(animated: false) { [weak self] in self?.notifyDismissal() }
+    }
 
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         super.pushViewController(viewController, animated: false)
@@ -72,6 +81,6 @@ final class ContentModalNavigationController: UINavigationController, UINavigati
         guard isBeingDismissed else {
             return
         }
-        onDismissed()
+        notifyDismissal()
     }
 }

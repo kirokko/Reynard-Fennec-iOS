@@ -196,7 +196,7 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
             screenshot(window!, name: "groups-saved-with-exit")
             activate(page.navigationItem.leftBarButtonItem!)
             DispatchQueue.main.async { [self] in
-                precondition(root.presentedViewController == nil && dismissCount == 1, "Root back action must dismiss and restore the tray host")
+                precondition(root.presentedViewController == nil && dismissCount == 1, "Root back action must dismiss and restore the tray host: presented=\(String(describing: root.presentedViewController)), callbacks=\(dismissCount)")
                 let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("layout-pass.txt")
                 try! "PASS: viewport widths 320/393/430/844/1024, tall thumbnails, first frame, More/privacy; real group editor save/pop/root dismissal; instant tray even with UIKit animations enabled and late captures. Engine/store homepage sections remain test doubles.\n".write(to: url, atomically: true, encoding: .utf8)
             }

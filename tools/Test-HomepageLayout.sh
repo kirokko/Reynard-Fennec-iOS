@@ -74,6 +74,8 @@ for ((i=0; i<45; i++)); do
   fi
   sleep 1
 done
+mkdir -p "$work/screenshots"
+cp "$container/Documents/"*.png "$work/screenshots/" 2>/dev/null || true
 echo '::error::UIKit layout host did not reach its first-frame/regression completion marker.'
 tail -100 "$work/stderr.log" || true
 xcrun simctl terminate "$device" local.ieynec.LayoutSmoke || true
