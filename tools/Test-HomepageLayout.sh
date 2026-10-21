@@ -62,9 +62,16 @@ xcrun simctl boot "$device" 2>/dev/null || true
 xcrun simctl bootstatus "$device" -b
 xcrun simctl install "$device" "$app"
 container=$(xcrun simctl get_app_container "$device" local.ieynec.LayoutSmoke data)
-rm -f "$container/Documents/layout-pass.txt"
+rm -f "$container/Documents/layout-pass.txt" "$container/Documents/"*-ready "$container/Documents/"*-captured
+mkdir -p "$work/screenshots"
 xcrun simctl launch --terminate-running-process --stdout="$work/stdout.log" --stderr="$work/stderr.log" "$device" local.ieynec.LayoutSmoke
-for ((i=0; i<45; i++)); do
+for ((i=0; i<90; i++)); do
+  for stage in home groups; do
+    if [[ -f "$container/Documents/$stage-ready" && ! -f "$container/Documents/$stage-captured" ]]; then
+      xcrun simctl io "$device" screenshot "$work/screenshots/$stage-on-screen.png"
+      touch "$container/Documents/$stage-captured"
+    fi
+  done
   if [[ -f "$container/Documents/layout-pass.txt" ]]; then
     cat "$container/Documents/layout-pass.txt"
     mkdir -p "$work/screenshots"

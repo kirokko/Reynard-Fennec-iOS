@@ -135,8 +135,10 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
         root.view.frame = window!.bounds
         root.view.layoutIfNeeded()
         screenshot(window!, name: "homepage-layout")
-        checkCategories()
-        checkNavigation()
+        waitForScreenCapture("home") { [self] in
+            checkCategories()
+            checkNavigation()
+        }
     }
 
     private func checkCategories() {
@@ -194,9 +196,21 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
             precondition(navigation.topViewController === page)
             navigation.view.layoutIfNeeded()
             screenshot(window!, name: "groups-saved-with-exit")
-            activate(page.navigationItem.leftBarButtonItem!)
-            verifyDismissal(count: { dismissCount })
+            waitForScreenCapture("groups") { [self] in
+                activate(page.navigationItem.leftBarButtonItem!)
+                verifyDismissal(count: { dismissCount })
+            }
         }
+    }
+    private func waitForScreenCapture(_ stage: String, completion: @escaping () -> Void) {
+        let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        try! Data().write(to: directory.appendingPathComponent(stage + "-ready"))
+        func poll(_ remaining: Int) {
+            if FileManager.default.fileExists(atPath: directory.appendingPathComponent(stage + "-captured").path) { completion(); return }
+            precondition(remaining > 0, "Host did not capture actual Simulator screen")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { poll(remaining - 1) }
+        }
+        poll(200)
     }
     private func verifyDismissal(count: @escaping () -> Int, remaining: Int = 40) {
         if root.presentedViewController == nil && count() == 1 {
