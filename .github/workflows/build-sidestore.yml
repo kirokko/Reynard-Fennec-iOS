@@ -1,4 +1,5 @@
 name: Build SideStore IPA (manual)
+run-name: ${{ inputs.ui_checks_only && 'UIKit UI checks (no IPA)' || 'Build SideStore IPA (manual)' }}
 
 # Entry point on this fork's default branch (fennec-ios).
 # Do not spend macOS runner time on every UI edit. This builds the standard

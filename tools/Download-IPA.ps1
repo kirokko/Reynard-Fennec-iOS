@@ -3,7 +3,7 @@
 param(
     [string]$Repository = 'kirokko/Reynard-Fennec-iOS',
     [long]$RunId = 0,
-    [string]$Destination = (Join-Path $env:USERPROFILE 'Downloads\Reynard-Fennec.ipa')
+    [string]$Destination = (Join-Path $env:USERPROFILE 'Downloads\ieynec-latest.ipa')
 )
 $ErrorActionPreference = 'Stop'
 if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
@@ -17,13 +17,25 @@ if ($RunId -gt 0) {
         throw 'The requested run has not completed successfully. No IPA has been downloaded.'
     }
 } else {
-    $json = & gh run list --repo $Repository --workflow build-sidestore.yml --status success --limit 1 --json databaseId,headSha,url
+    $json = & gh run list --repo $Repository --workflow build-sidestore.yml --status success --limit 20 --json databaseId,headSha,url
     if ($LASTEXITCODE -ne 0) { throw 'Could not query GitHub Actions. Check gh auth status and network access.' }
     $runs = $json | ConvertFrom-Json
     if (-not $runs) {
         throw 'No successful build exists yet. Wait for the cloud build or inspect its failure log; no IPA has been downloaded.'
     }
-    $run = $runs[0]
+    $run = $null
+    foreach ($candidate in $runs) {
+        # A successful UIKit-only check has no IPA. Select by the actual
+        # unexpired package artifact, not merely the workflow conclusion.
+        $artifactJson = & gh api "repos/$Repository/actions/runs/$($candidate.databaseId)/artifacts"
+        if ($LASTEXITCODE -ne 0) { throw 'Could not inspect build artifacts. No IPA has been downloaded.' }
+        $artifacts = ($artifactJson | ConvertFrom-Json).artifacts
+        if ($artifacts | Where-Object { $_.name -eq 'Reynard-Fennec-SideStore' -and -not $_.expired }) {
+            $run = $candidate
+            break
+        }
+    }
+    if (-not $run) { throw 'No unexpired SideStore IPA artifact exists in the recent successful runs. UIKit-only checks do not produce an IPA.' }
 }
 $temp = Join-Path ([IO.Path]::GetTempPath()) ('reynard-fennec-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $temp | Out-Null

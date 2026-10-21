@@ -8,7 +8,26 @@
 公开仓库：https://github.com/kirokko/Reynard-Fennec-iOS
 本地分支：`fennec-ios`。`origin` 是上游，`github` 是用户的公开仓库。
 
-## 第二轮真机启动故障与修复候选
+## 最新：界面、导航与无动画修正（构建 #7，待真机确认）
+
+用户的新截图表明 #4 已能显示首页、网页及标签总览，但存在内容横向裁切、Continue 大块空白、总览分类图标不当，以及群组页缺少退出入口。用户再次强调不需要 App 自有过渡动画。用户照片只在本地查看，未提交。
+
+本轮 App 源码 `39a3adf`，成功完整构建 #7：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39603345135 ，构建任务 28m19s。新包 `Downloads\ieynec-ui-fix.ipa`，SHA-256 `B322495A79600C75BAC0BDD381C4FE36C8A75D9837D89F75C7F021D1A26FF40A`。两项原有应用扩展仍在包内，技术标识、引擎及 JIT 流程不变，旧文件未覆盖。
+
+- 首页宽度增加不可突破的 viewport 上限，防长 URL / 图片固有尺寸把内容撑出屏幕；Continue 图片压缩优先级降低、卡片有可随辅助字体增长的 88pt 优先高度，不再受整页缩略图原始高度支配。
+- 隐私图标先按纵横比缩入 26pt 画布，不再用任意 imageEdgeInsets；普通标签计数改为方框内数字，移除 `▢ 2` 文本拼接。
+- 独立页面的根返回入口在 init 后及 willShow 时确保存在；快速 push/pop 期间请求关闭会等 UIKit 生命周期完成，不添加自有动画；关闭恢复回调只触发一次。群组空态文字有边距和换行，删除后刷新空态。
+- 删除旧总览的 phone/pad 缩放、弹簧、快照过渡实现，直接提交显示/关闭状态；进入总览不等待缩略图回调，过期回调不能重新打开已关闭总览。标签自动切换不再模拟滑动快照，类别切换直接执行。使用固定 false 的浏览器动画策略约束布局、工具栏 display link 和 collection 更新，原全局 UIKit 策略保留。网页与系统拥有的行为未改。
+
+验证：11 项源码检查、分组 Foundation 测试、Swift 语法与完整 App 编译打包通过；Windows 6 项下载器隔离测试通过（新增跳过成功但无 IPA 的 UI-only run）。模拟器测试真实首页框架/卡片、群组列表和编辑器、导航控制器与总览 presentation 逻辑；首页数据库/引擎 sections、总览引擎和 collection/context 为替身，不是完整浏览器/Gecko/SideStore/JIT 端到端测试。
+
+扩大测试覆盖 320/393/430/844/1024pt 宽度、长标题/URL、1800pt 高缩略图、More/隐私切换、群组编辑保存/子页返回/根页关闭与恢复回调、私密页不可进组，以及开启 UIKit 动画后反复 16 次总览打开/选中关闭/迟到缩略图，确保该路径无 layer animation 且内容 transform 为 identity。构建 #5、#6 被扩大测试拦截，未交付；调整关闭协调与测试对 UIKit 生命周期的等待后 #7 通过。
+
+另完成 UI-only 实际屏幕复查：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39608419357 。初次实际截屏复查失败是冷 Simulator 的截图 IPC 超过 fixture 等待期限；延长测试端超时后重跑通过，没有为此修改 App。已下载并查看 simctl 实际屏幕图，确认群组返回箭头/加号为深色可见，分组空态/保存/关闭通过；普通 CALayer.render 导出将系统导航图标画成白色，不能当作实际屏幕颜色。该 UI-only run 不产 IPA，不能替代 #7 下载链接；后续 App 源码与 `39a3adf` 无差异。手动工作流新增可选 ui_checks_only，不增自动触发。
+
+仍待用户覆盖安装后的完整浏览器回归；不以 fixture 截图（含灰色占位测试 sections）冒充完整首页验收。请安装新 `ieynec-ui-fix.ipa`，不卸载、不清数据、不改变 JIT，保留所有应用扩展。
+
+## 历史：第二轮真机启动故障与 #4 修复候选
 
 用户已安装 #3（构建号 `685b36a`），报告全白界面后退出；JIT 在前后两版均未开启，启动时连接 Wi-Fi 和 LocalDevVPN。设备日志确认 FRONTBOARD `0x8BADF00D`、`scene-create watchdog`，约 19.79 秒首界面创建超时，采样主线程处于 UIKit 自动布局/首帧提交，应用消耗约 19.6 秒 CPU。不是已确认的普通异常、内存终止或 JIT 失败。日志没有直接给出具体 Swift 源码行，不能宣称已经证明唯一根因。原始日志含设备/签名标识，仅本地使用，不上传仓库。
 

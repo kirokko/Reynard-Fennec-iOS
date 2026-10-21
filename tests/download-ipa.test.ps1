@@ -9,13 +9,23 @@ $script:passed = 0
 function gh {
     param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Arguments)
     $global:LASTEXITCODE = 0
+    if ($Arguments[0] -eq 'api') {
+        if ($Arguments[1] -match '/42/artifacts$') { return '{"artifacts":[{"name":"Reynard-Fennec-SideStore","expired":false}]}' }
+        return '{"artifacts":[]}'
+    }
     if ($Arguments[0] -ne 'run') { throw 'Unexpected mock command' }
     switch ($Arguments[1]) {
         'view' {
             $conclusion = if ($global:ReynardDownloadTestScenario -eq 'failed-run') { 'failure' } else { 'success' }
             return (@{ databaseId = 42; headSha = 'fixture'; url = 'https://example.invalid/run/42'; status = 'completed'; conclusion = $conclusion } | ConvertTo-Json -Compress)
         }
-        'list' { return '[]' }
+        'list' {
+            if ($global:ReynardDownloadTestScenario -eq 'skip-ui-only-run') {
+                return '[{"databaseId":43,"headSha":"ui-only","url":"https://example.invalid/run/43"},{"databaseId":42,"headSha":"fixture","url":"https://example.invalid/run/42"}]'
+            }
+            if ($global:ReynardDownloadTestScenario -eq 'only-ui-runs') { return '[{"databaseId":43,"headSha":"ui-only","url":"https://example.invalid/run/43"}]' }
+            return '[]'
+        }
         'download' {
             $dirIndex = [Array]::IndexOf($Arguments, '--dir')
             $file = Join-Path $Arguments[$dirIndex + 1] 'Reynard.ipa'
@@ -30,18 +40,19 @@ function gh {
 }
 try {
     $downloader = Join-Path $PSScriptRoot '..\tools\Download-IPA.ps1'
-    foreach ($scenario in @('success', 'failed-run', 'missing-extensions', 'no-successful-run')) {
+    foreach ($scenario in @('success', 'failed-run', 'missing-extensions', 'no-successful-run', 'skip-ui-only-run', 'only-ui-runs')) {
         $global:ReynardDownloadTestScenario = $scenario
         $destination = Join-Path $script:root ($scenario + '.ipa')
         $caught = $false
         try {
-            $id = if ($scenario -eq 'no-successful-run') { 0 } else { 42 }
+            $id = if ($scenario -in @('no-successful-run', 'skip-ui-only-run', 'only-ui-runs')) { 0 } else { 42 }
             & $downloader -RunId $id -Destination $destination
         } catch {
             $caught = $true
-            if ($scenario -eq 'success') { throw }
+            if ($scenario -in @('success', 'skip-ui-only-run')) { throw }
         }
-        if ($scenario -eq 'success') {
+        if ($scenario -in @('success', 'skip-ui-only-run')) {
+            if ($scenario -eq 'skip-ui-only-run' -and -not ((Get-Content ($destination + '.build.txt') -Raw) -match '/run/42')) { throw 'Selected a UI-only run instead of the actual IPA build.' }
             if ($caught -or -not (Test-Path $destination) -or -not (Test-Path ($destination + '.build.txt'))) { throw 'Successful mock artifact was not saved.' }
         } else {
             if (-not $caught -or (Test-Path $destination)) { throw "Unsafe download behavior in scenario: $scenario" }

@@ -6,7 +6,7 @@
 
 ## Status / 当前状态
 
-Development build, not a verified release. First-build run [#2](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39544125387) completed successfully and was installed on the owner's iPhone. Their screenshots showed substantial layout differences. The second-pass source now uses the name **ieynec**, the supplied icon, a reworked homepage/menu/tab tray and motion-free presentation. This revision passed its own complete [build #3](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39589249099) at source commit `685b36afe334a7dc7c9b8a35931979e38786a4e8`, including the local tab-group persistence test. The owner installed that IPA and reported an all-white startup. Their local device log confirms a scene-create watchdog termination while UIKit was laying out the first frame, not a verified JIT failure. **Build #3 is not recommended for use.** The layout-hardening candidate [build #4](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39594572656), source `185fef2`, passed complete compilation/packaging and a real UIKit Simulator first-frame smoke test. Use `Downloads\ieynec-startup-fix.ipa`; device confirmation is still pending. The smoke host uses real homepage root/summary code with mocked store/engine sections, not a full browser integration test. No pixel-perfect parity or complete functional acceptance is claimed.
+Development build, not a verified release. First-build run [#2](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39544125387) completed successfully and was installed on the owner's iPhone. Their screenshots showed substantial layout differences. The second-pass source now uses the name **ieynec**, the supplied icon, a reworked homepage/menu/tab tray and motion-free presentation. This revision passed its own complete [build #3](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39589249099) at source commit `685b36afe334a7dc7c9b8a35931979e38786a4e8`, including the local tab-group persistence test. The owner installed that IPA and reported an all-white startup. Their local device log confirms a scene-create watchdog termination while UIKit was laying out the first frame, not a verified JIT failure. **Build #3 is not recommended for use.** Build #4 restored visible UI in the owner's subsequent screenshots, but exposed viewport/card sizing, tab-category icon and missing-exit issues. **The current UI-fix candidate is [build #7](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39603345135), App source `39a3adf`: `Downloads\ieynec-ui-fix.ipa`.** It removes the old animated tab-tray presentation implementation and hardens sizing, icons and navigation exits. Expanded UIKit regression tests and [a separate actual Simulator screen review](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39608419357) passed. Test hosts use real native UI/presentation code with mocked store/engine sections and context, not a full Gecko/SideStore/JIT integration test. Complete device confirmation remains pending. No pixel-perfect parity or complete functional acceptance is claimed.
 
 - Functional baseline: Reynard **0.18.0 alpha**, commit `860bb6f4d0ff2b5d45f7dbe48eca8f39ee88a4fa`.
 - UI reference: F-Droid Fennec **158.0.0 / 1580020**, Mozilla source tag `FIREFOX-ANDROID_158_0_RELEASE` and F-Droid screenshots.
@@ -51,12 +51,12 @@ With GitHub CLI installed and authenticated, run this from the project folder:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Download-IPA.ps1
 ```
 
-It downloads the most recent successful manual build to `Downloads\Reynard-Fennec.ipa`, checks that app extensions are present, and writes the commit/build URL/SHA-256 beside it. If no successful build exists, it fails explicitly. It does not start a build or update an installed app.
+It selects the most recent successful manual run with an unexpired SideStore IPA artifact (skipping UI-only checks), downloads it to `Downloads\ieynec-latest.ipa` without overwriting the first-pass rollback file, checks that app extensions are present, and writes the commit/build URL/SHA-256 beside it. If no successful build exists, it fails explicitly. It does not start a build or update an installed app.
 
-For the latest startup-fix candidate specifically (do not reinstall the known-white-screen build #3):
+For the latest UI-fix candidate specifically (UI-only workflow runs have no IPA):
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Download-IPA.ps1 -RunId 39594572656 -Destination "$env:USERPROFILE\Downloads\ieynec-startup-fix.ipa"
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Download-IPA.ps1 -RunId 39603345135 -Destination "$env:USERPROFILE\Downloads\ieynec-ui-fix.ipa"
 ```
 
 The default legacy filename remains compatible with existing shortcuts; the explicit destination above preserves the first-build IPA for rollback.
