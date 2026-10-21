@@ -19,7 +19,11 @@
 - Show all 的最小触控高度降为非必需优先级，以便隐藏时无约束冲突；移除工具栏隐藏的 arranged 加号。
 - 新增 UIKit Simulator 首帧 smoke host，编译真实 homepage root / summary / theme / menu，数据库/引擎子页面为固定高度测试替身。测试覆盖空/有 Continue、反复展开收起 More、隐私切换。它不是完整 Gecko/SideStore/JIT 测试；runner 无已安装 iOS runtime 时明确报告未运行。
 
-修复是否解决用户设备问题必须用新构建覆盖安装验证，不能以源码检查或 smoke host 代替真机结果。保持 JIT、引擎、bundle identifiers 与用户数据不变。
+修复候选已在构建 #4 成功：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39594572656 ，源码提交 `185fef2`，构建任务用时 24m7s。11 项源码检查、分组持久化测试、Swift 语法检查通过；UIKit Simulator smoke host 实际运行并产生 PASS 标记（没有因 runtime 不可用而跳过）；完整 App 编译、标准 IPA 打包与上传成功，Gecko 缓存命中、引擎重编译跳过。
+
+新包：`C:\Users\Orie\Downloads\ieynec-startup-fix.ipa`；对应来源记录：`.ipa.build.txt`；SHA-256：`9DFDDC157F9C483846AEF9AC5ED33B4065196A69C57CF38EDB377C25153E427B`。旧 `ieynec.ipa` 是已报告白屏的 #3，不应再作为推荐安装包；这次没有覆盖旧文件。
+
+修复是否解决用户设备问题仍必须用新包覆盖安装验证，不能以源码检查或 smoke host 代替真机结果。保持 JIT、引擎、bundle identifiers 与用户数据不变。
 
 ## 固定基线
 
