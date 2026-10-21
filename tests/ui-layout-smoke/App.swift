@@ -210,7 +210,9 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
             precondition(remaining > 0, "Host did not capture actual Simulator screen")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { poll(remaining - 1) }
         }
-        poll(200)
+        // Cold CoreSimulator screenshot/launch IPC can take tens of seconds
+        // on shared runners; the app stays responsive while the host catches up.
+        poll(1200)
     }
     private func verifyDismissal(count: @escaping () -> Int, remaining: Int = 40) {
         if root.presentedViewController == nil && count() == 1 {

@@ -65,7 +65,7 @@ container=$(xcrun simctl get_app_container "$device" local.ieynec.LayoutSmoke da
 rm -f "$container/Documents/layout-pass.txt" "$container/Documents/"*-ready "$container/Documents/"*-captured
 mkdir -p "$work/screenshots"
 xcrun simctl launch --terminate-running-process --stdout="$work/stdout.log" --stderr="$work/stderr.log" "$device" local.ieynec.LayoutSmoke
-for ((i=0; i<90; i++)); do
+for ((i=0; i<180; i++)); do
   for stage in home groups; do
     if [[ -f "$container/Documents/$stage-ready" && ! -f "$container/Documents/$stage-captured" ]]; then
       xcrun simctl io "$device" screenshot "$work/screenshots/$stage-on-screen.png"
@@ -85,5 +85,6 @@ mkdir -p "$work/screenshots"
 cp "$container/Documents/"*.png "$work/screenshots/" 2>/dev/null || true
 echo '::error::UIKit layout host did not reach its first-frame/regression completion marker.'
 tail -100 "$work/stderr.log" || true
+tail -100 "$work/stdout.log" || true
 xcrun simctl terminate "$device" local.ieynec.LayoutSmoke || true
 exit 1
