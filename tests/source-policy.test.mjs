@@ -82,16 +82,29 @@ test('settings keep the agreed groups and engine controls', () => {
 test('second-pass homepage resumes real regular tabs and preserves extra sections', () => {
   const root = read(ui + 'Homepage/HomepageRootViewController.swift');
   assert.match(root, /UIStackView\(arrangedSubviews: \[logo, brand\]\)/);
-  assert.match(root, /section == \.frequentlyVisited/);
+  assert.match(root, /\$0 == \.frequentlyVisited/);
   assert.match(root, /FennecHomepageSummaryView/);
   const summary = read(ui + 'Homepage/FennecHomepageSummaryView.swift');
   assert.match(summary, /!\$0\.isPrivate/);
-  assert.match(summary, /continueStack\.isHidden = tab == nil/);
+  assert.match(summary, /removeArrangedSubview\(continueStack\)/);
+  assert.doesNotMatch(summary, /continueStack\.isHidden/);
   assert.match(summary, /onResume\?\(id\)/);
   assert.doesNotMatch(summary, /HistoryStore|RecentlyClosed/);
   const host = read(ui + 'BrowserViewController+ContentOverlay.swift');
   assert.match(host, /regularTabs\.firstIndex\(where: \{ \$0\.id == id \}\)/);
   assert.match(host, /blockedTrackers\(for: \$1\.session\)/);
+});
+
+test('homepage first-frame layout avoids collapsed required-height stacks and width feedback', () => {
+  const root = read(ui + 'Homepage/HomepageRootViewController.swift');
+  assert.doesNotMatch(root, /override func viewDidLayoutSubviews|widthAnchor\.constraint\(equalToConstant: 1\)|extras\.isHidden/);
+  assert.match(root, /equalTo: scrollView\.frameLayoutGuide\.widthAnchor/);
+  assert.match(root, /sectionStackView\.removeArrangedSubview\(extras\)/);
+  assert.match(root, /if extras\.arrangedSubviews\.isEmpty/);
+  const summary = read(ui + 'Homepage/FennecHomepageSummaryView.swift');
+  assert.doesNotMatch(summary, /continueStack\.isHidden/);
+  assert.match(summary, /if titleLabel\.text != title/);
+  assert.match(read('.github/workflows/build.yml'), /bash tools\/Test-HomepageLayout\.sh/);
 });
 
 test('native tab groups reference live UUIDs, exclude private tabs, and have persistence tests', () => {

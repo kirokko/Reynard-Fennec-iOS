@@ -8,6 +8,19 @@
 公开仓库：https://github.com/kirokko/Reynard-Fennec-iOS
 本地分支：`fennec-ios`。`origin` 是上游，`github` 是用户的公开仓库。
 
+## 第二轮真机启动故障与修复候选
+
+用户已安装 #3（构建号 `685b36a`），报告全白界面后退出；JIT 在前后两版均未开启，启动时连接 Wi-Fi 和 LocalDevVPN。设备日志确认 FRONTBOARD `0x8BADF00D`、`scene-create watchdog`，约 19.79 秒首界面创建超时，采样主线程处于 UIKit 自动布局/首帧提交，应用消耗约 19.6 秒 CPU。不是已确认的普通异常、内存终止或 JIT 失败。日志没有直接给出具体 Swift 源码行，不能宣称已经证明唯一根因。原始日志含设备/签名标识，仅本地使用，不上传仓库。
+
+针对本轮布局风险的修复候选：
+- 首页不再从 `viewDidLayoutSubviews` 回写必需宽度，移除初始 1pt 宽度，改成相对 scroll frame 的约束与最大宽度。
+- More 下的固定高度子页面按需创建，收起时脱离 arranged hierarchy，不再把带必需高度的嵌套 UIStackView 隐藏成 0 高度。
+- 没有可继续标签时，Continue 子树脱离布局，不再给 88pt 最小高度卡片施加隐藏 0 高度；相同内容刷新不重复改 UILabel / UIImage。
+- Show all 的最小触控高度降为非必需优先级，以便隐藏时无约束冲突；移除工具栏隐藏的 arranged 加号。
+- 新增 UIKit Simulator 首帧 smoke host，编译真实 homepage root / summary / theme / menu，数据库/引擎子页面为固定高度测试替身。测试覆盖空/有 Continue、反复展开收起 More、隐私切换。它不是完整 Gecko/SideStore/JIT 测试；runner 无已安装 iOS runtime 时明确报告未运行。
+
+修复是否解决用户设备问题必须用新构建覆盖安装验证，不能以源码检查或 smoke host 代替真机结果。保持 JIT、引擎、bundle identifiers 与用户数据不变。
+
 ## 固定基线
 
 - Reynard 最新发布版：**0.18.0 alpha**。

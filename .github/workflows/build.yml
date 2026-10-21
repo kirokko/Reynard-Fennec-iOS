@@ -111,6 +111,10 @@ jobs:
       - name: Parse Swift sources before compiling Gecko
         run: find browser -name '*.swift' -print0 | xargs -0 xcrun swiftc -frontend -parse
 
+      - name: UIKit homepage first-frame smoke test (no Gecko)
+        timeout-minutes: 8
+        run: bash tools/Test-HomepageLayout.sh
+
       - name: Install build dependencies
         run: |
           brew install python@3.12 lld cbindgen llvm

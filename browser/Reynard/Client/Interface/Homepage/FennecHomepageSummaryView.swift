@@ -26,6 +26,7 @@ final class FennecHomepageSummaryView: UIStackView {
         protection.titleLabel?.font = .preferredFont(forTextStyle: .subheadline)
         protection.titleLabel?.adjustsFontForContentSizeCategory = true
         protection.contentEdgeInsets = UIEdgeInsets(top: 10, left: 18, bottom: 10, right: 18)
+        protection.setTitle("  " + FennecTheme.text("Tracking protection"), for: .normal)
         protection.setImage(UIImage(systemName: "checkmark.shield"), for: .normal)
         protection.tintColor = FennecTheme.selectedOutline
         protection.onTap = { [weak self] in self?.onProtection?() }
@@ -40,7 +41,8 @@ final class FennecHomepageSummaryView: UIStackView {
         heading.textColor = FennecTheme.ink
         continueStack.addArrangedSubview(heading)
         continueStack.addArrangedSubview(resume)
-        addArrangedSubview(continueStack)
+        // Attach this subtree only when there is a tab. Hiding an arranged
+        // stack would impose 0pt height against the card's required minimum.
         resume.backgroundColor = FennecTheme.card
         resume.layer.cornerRadius = 8
         resume.clipsToBounds = true
@@ -81,17 +83,27 @@ final class FennecHomepageSummaryView: UIStackView {
     required init(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     func refresh(tabs: [Tab], blockedCount: Int) {
-        protection.setTitle("  " + FennecTheme.text("Tracking protection"), for: .normal)
         // This number is deliberately scoped to currently open regular tabs.
-        protection.accessibilityValue = String(format: FennecTheme.text("%d blocked trackers in open tabs"), blockedCount)
+        let countDescription = String(format: FennecTheme.text("%d blocked trackers in open tabs"), blockedCount)
+        if protection.accessibilityValue != countDescription { protection.accessibilityValue = countDescription }
         let tab = tabs.filter {
             !$0.isPrivate && !($0.url ?? "").isEmpty && !($0.url ?? "").hasPrefix("about:")
         }.max { $0.state.selectionOrder < $1.state.selectionOrder }
         resumedTabID = tab?.id
-        continueStack.isHidden = tab == nil
-        titleLabel.text = tab.map { $0.title.isEmpty ? ($0.url ?? "") : $0.title }
-        urlLabel.text = tab?.url
-        preview.image = tab?.thumbnail ?? tab?.favicon ?? UIImage(systemName: "globe")
-        resume.accessibilityLabel = [FennecTheme.text("Continue"), titleLabel.text, urlLabel.text].compactMap { $0 }.joined(separator: ", ")
+        guard let tab else {
+            if continueStack.superview != nil {
+                removeArrangedSubview(continueStack)
+                continueStack.removeFromSuperview()
+            }
+            return
+        }
+        if continueStack.superview == nil { addArrangedSubview(continueStack) }
+        let title = tab.title.isEmpty ? (tab.url ?? "") : tab.title
+        if titleLabel.text != title { titleLabel.text = title }
+        if urlLabel.text != tab.url { urlLabel.text = tab.url }
+        let image = tab.thumbnail ?? tab.favicon
+        if preview.image !== image { preview.image = image }
+        let description = [FennecTheme.text("Continue"), titleLabel.text, urlLabel.text].compactMap { $0 }.joined(separator: ", ")
+        if resume.accessibilityLabel != description { resume.accessibilityLabel = description }
     }
 }

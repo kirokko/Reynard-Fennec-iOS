@@ -124,11 +124,6 @@ final class HomepageRootViewController: UIViewController {
         configureSections()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        updateSectionStackWidth()
-    }
-    
     // MARK: - Public API
     
     func setContentMode(_ contentMode: HomepageContentMode) {
@@ -216,7 +211,13 @@ final class HomepageRootViewController: UIViewController {
     }
     
     private func configureConstraints() {
-        let widthConstraint = sectionStackView.widthAnchor.constraint(equalToConstant: 1)
+        // Resolve width in Auto Layout, not by rewriting a required width from
+        // viewDidLayoutSubviews. The old 1pt initial width was incompatible with
+        // the new card's contents and risked repeated first-frame invalidation.
+        let widthConstraint = sectionStackView.widthAnchor.constraint(lessThanOrEqualToConstant: UX.embeddedMaximumWidth)
+        let preferredWidth = sectionStackView.widthAnchor.constraint(
+            equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -(UX.horizontalInset * 2))
+        preferredWidth.priority = .defaultHigh
         sectionStackWidthConstraint = widthConstraint
         
         NSLayoutConstraint.activate([
@@ -234,10 +235,19 @@ final class HomepageRootViewController: UIViewController {
             sectionStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
             sectionStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
             sectionStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            widthConstraint,
+            widthConstraint, preferredWidth,
         ])
     }
     
+    private func appendSection(_ section: HomepageSection, to stack: UIStackView) {
+        let controller = makeSectionViewController(for: section)
+        addChild(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        stack.addArrangedSubview(controller.view)
+        controller.didMove(toParent: self)
+        sectionViewControllers[section] = controller
+    }
+
     private func configureSections() {
         sectionStackView.arrangedSubviews.forEach { sectionStackView.removeArrangedSubview($0); $0.removeFromSuperview() }
         summaryView = nil
@@ -246,7 +256,11 @@ final class HomepageRootViewController: UIViewController {
         let extras = UIStackView()
         extras.axis = .vertical
         extras.spacing = 16
-        extras.isHidden = !showsMoreHomepageContent
+        // A collapsed stack must be detached, not hidden with a required 0pt
+        // UISV-hiding constraint against fixed-height child sections.
+        let extraSections = displayedSections.filter {
+            folder == nil && ($0 == .frequentlyVisited || $0 == .recentlyClosedTabs || $0 == .recommendation(.donation))
+        }
         if folder == nil {
             let header = UIView()
             let brand = UILabel()
@@ -287,14 +301,8 @@ final class HomepageRootViewController: UIViewController {
             ])
             sectionStackView.addArrangedSubview(header)
         }
-        displayedSections.forEach { section in
-            let controller = makeSectionViewController(for: section)
-            addChild(controller)
-            controller.view.translatesAutoresizingMaskIntoConstraints = false
-            let isExtra = folder == nil && (section == .frequentlyVisited || section == .recentlyClosedTabs || section == .recommendation(.donation))
-            (isExtra ? extras : sectionStackView).addArrangedSubview(controller.view)
-            controller.didMove(toParent: self)
-            sectionViewControllers[section] = controller
+        for section in displayedSections where !extraSections.contains(section) {
+            appendSection(section, to: sectionStackView)
         }
         if folder == nil && !isPrivateBrowsing {
             let summary = FennecHomepageSummaryView(frame: .zero)
@@ -304,7 +312,7 @@ final class HomepageRootViewController: UIViewController {
             sectionStackView.addArrangedSubview(summary)
             refreshBrowserSummary()
         }
-        if !extras.arrangedSubviews.isEmpty {
+        if !extraSections.isEmpty {
             let more = FennecClosureButton(frame: .zero)
             more.contentHorizontalAlignment = .leading
             more.setTitle(FennecTheme.text("More"), for: .normal)
@@ -312,14 +320,25 @@ final class HomepageRootViewController: UIViewController {
             more.titleLabel?.font = .preferredFont(forTextStyle: .headline)
             more.heightAnchor.constraint(greaterThanOrEqualToConstant: 48).isActive = true
             more.accessibilityValue = FennecTheme.text(showsMoreHomepageContent ? "Expanded" : "Collapsed")
-            more.onTap = { [weak self, weak extras, weak more] in
-                guard let self, let extras else { return }
+            more.onTap = { [weak self, weak more] in
+                guard let self else { return }
                 self.showsMoreHomepageContent.toggle()
-                extras.isHidden = !self.showsMoreHomepageContent
-                more?.accessibilityValue = FennecTheme.text(extras.isHidden ? "Collapsed" : "Expanded")
+                if self.showsMoreHomepageContent {
+                    if extras.arrangedSubviews.isEmpty {
+                        for section in extraSections { self.appendSection(section, to: extras) }
+                    }
+                    self.sectionStackView.addArrangedSubview(extras)
+                } else {
+                    self.sectionStackView.removeArrangedSubview(extras)
+                    extras.removeFromSuperview()
+                }
+                more?.accessibilityValue = FennecTheme.text(self.showsMoreHomepageContent ? "Expanded" : "Collapsed")
             }
             sectionStackView.addArrangedSubview(more)
-            sectionStackView.addArrangedSubview(extras)
+            if showsMoreHomepageContent {
+                for section in extraSections { appendSection(section, to: extras) }
+                sectionStackView.addArrangedSubview(extras)
+            }
         }
     }
     
@@ -391,13 +410,9 @@ final class HomepageRootViewController: UIViewController {
     // MARK: - Layout
     
     private func updateSectionStackWidth() {
-        let width = scrollView.bounds.width - (UX.horizontalInset * 2)
-        guard width > 0 else {
-            return
-        }
-        
         let maximumWidth = contentMode.isDetached ? UX.detachedMaximumWidth : UX.embeddedMaximumWidth
-        sectionStackWidthConstraint?.constant = min(width, maximumWidth)
+        guard sectionStackWidthConstraint?.constant != maximumWidth else { return }
+        sectionStackWidthConstraint?.constant = maximumWidth
     }
     
     private func updateWallpaper() {

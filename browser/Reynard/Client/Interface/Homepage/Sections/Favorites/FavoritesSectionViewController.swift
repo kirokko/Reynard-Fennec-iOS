@@ -172,12 +172,15 @@ final class FavoritesSectionViewController: UIViewController {
     private func configureConstraints() {
         let heightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 1)
         collectionHeightConstraint = heightConstraint
+        let buttonHeight = showAllButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
+        // UIStackView's collapsed height must not conflict with this target.
+        buttonHeight.priority = .defaultHigh
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: headerView.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: UX.horizontalInset),
             titleLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -UX.horizontalInset),
             titleLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-            showAllButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
+            buttonHeight,
             heightConstraint,
         ])
     }

@@ -53,10 +53,11 @@ final class FennecToolbarControls: UIStackView {
         translatesAutoresizingMaskIntoConstraints = false
         axis = .horizontal
         distribution = .fillEqually
-        for button in [newTabButton, tabButton, menuButton] { addArrangedSubview(button) }
+        for button in [tabButton, menuButton] { addArrangedSubview(button) }
         // New-tab creation remains available in the tab tray. Match Fennec's
         // compact address bar without a redundant standalone plus button.
-        newTabButton.isHidden = true
+        // Keep the legacy button API for menu setup, but not as a hidden
+        // arranged subview participating in the first layout pass.
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalToConstant: 88),
             heightAnchor.constraint(equalToConstant: 44),
