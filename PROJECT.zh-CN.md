@@ -73,7 +73,9 @@ Actions → **Build SideStore IPA (manual)** → Run workflow。
 
 成功后下载 **Reynard-Fennec-SideStore** artifact，其中是 `Reynard.ipa`。Downloads 中的手动下载工具可将最近一次成功的产物保存为 `Reynard-Fennec.ipa`；没有成功产物时应明确报错，不以原版 IPA 冒充成品。
 
-本次构建链接：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39437471654 。该次运行已通过源代码策略检查和 macOS 上的 Swift 语法解析；完整引擎/App 编译仍以运行页面为准。
+首次构建：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39437471654 。该次运行通过源代码检查和 Swift 语法解析，Gecko 用时约 5 小时 40 分钟并已成功缓存，但在支持库编译阶段触及原先配置的 350 分钟任务上限，因此没有 IPA。
+
+第二次构建：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39544125387 。本次尝试复用完整引擎缓存，将任务上限调整到托管 runner 的 360 分钟，并移除任务名称中误导性的 TrollStore 字样。缓存是否命中、App 是否编译成功仍以该运行页面为准，不能仅凭有缓存就承诺成功或完成时间。
 
 `tools/Watch-Build.ps1` 是有时限的一次性收件脚本：只等指定的这一次运行，成功后下载对应 IPA，失败则写状态并退出。它不重试编译、不跟踪未来版本、不安装/更新应用，也不创建开机启动项或计划任务。状态文件为 Downloads 中的 `Reynard-Fennec-build-status.txt`。
 
