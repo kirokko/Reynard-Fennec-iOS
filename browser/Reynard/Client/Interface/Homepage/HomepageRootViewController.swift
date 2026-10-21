@@ -47,6 +47,22 @@ final class HomepageRootViewController: UIViewController {
     private var sectionViewControllers: [HomepageSection: UIViewController] = [:]
     private var sectionStackWidthConstraint: NSLayoutConstraint?
     private var showsMoreHomepageContent = false
+    var browserTabs: () -> [Tab] = { [] }
+    var blockedTrackerCount: () -> Int = { 0 }
+    var onResumeTab: ((UUID) -> Void)?
+    var onPrivateTab: (() -> Void)?
+    var onProtection: (() -> Void)?
+    private var summaryView: FennecHomepageSummaryView?
+
+    func refreshBrowserSummary() {
+        guard isViewLoaded, !isPrivateBrowsing else { return }
+        summaryView?.refresh(tabs: browserTabs(), blockedCount: blockedTrackerCount())
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        refreshBrowserSummary()
+    }
     
     private let wallpaperImageView: UIImageView = {
         let imageView = UIImageView()
@@ -224,29 +240,69 @@ final class HomepageRootViewController: UIViewController {
     
     private func configureSections() {
         sectionStackView.arrangedSubviews.forEach { sectionStackView.removeArrangedSubview($0); $0.removeFromSuperview() }
-        sectionStackView.spacing = 16
+        summaryView = nil
+        sectionStackView.spacing = 28
         view.backgroundColor = FennecTheme.surface
         let extras = UIStackView()
         extras.axis = .vertical
         extras.spacing = 16
         extras.isHidden = !showsMoreHomepageContent
         if folder == nil {
+            let header = UIView()
             let brand = UILabel()
-            brand.text = "Reynard Fennec"
-            brand.font = UIFontMetrics(forTextStyle: .title1).scaledFont(for: .systemFont(ofSize: 30, weight: .bold))
+            brand.text = "ieynec"
+            brand.font = UIFontMetrics(forTextStyle: .title1).scaledFont(for: .systemFont(ofSize: 30, weight: .semibold))
             brand.adjustsFontForContentSizeCategory = true
-            brand.textColor = FennecTheme.accent
-            brand.numberOfLines = 0
-            sectionStackView.addArrangedSubview(brand)
+            brand.textColor = FennecTheme.ink
+            let logo = UIImageView(image: UIImage(named: "ieynec-logo"))
+            logo.contentMode = .scaleAspectFit
+            logo.widthAnchor.constraint(equalToConstant: 40).isActive = true
+            logo.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            let wordmark = UIStackView(arrangedSubviews: [logo, brand])
+            wordmark.axis = .horizontal
+            wordmark.alignment = .center
+            wordmark.spacing = 12
+            wordmark.translatesAutoresizingMaskIntoConstraints = false
+            header.addSubview(wordmark)
+            let privacy = FennecClosureButton(frame: .zero)
+            privacy.translatesAutoresizingMaskIntoConstraints = false
+            privacy.setImage(UIImage(named: "private.mode.icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
+            privacy.tintColor = FennecTheme.ink
+            privacy.accessibilityLabel = FennecTheme.text("New private tab")
+            privacy.onTap = { [weak self] in self?.onPrivateTab?() }
+            privacy.isHidden = isPrivateBrowsing
+            header.addSubview(privacy)
+            NSLayoutConstraint.activate([
+                header.heightAnchor.constraint(greaterThanOrEqualToConstant: 116),
+                wordmark.centerXAnchor.constraint(equalTo: header.centerXAnchor),
+                wordmark.centerYAnchor.constraint(equalTo: header.centerYAnchor, constant: 12),
+                wordmark.leadingAnchor.constraint(greaterThanOrEqualTo: header.leadingAnchor),
+                wordmark.trailingAnchor.constraint(lessThanOrEqualTo: header.trailingAnchor),
+                wordmark.topAnchor.constraint(greaterThanOrEqualTo: header.topAnchor, constant: 44),
+                wordmark.bottomAnchor.constraint(lessThanOrEqualTo: header.bottomAnchor, constant: -12),
+                privacy.topAnchor.constraint(equalTo: header.topAnchor),
+                privacy.trailingAnchor.constraint(equalTo: header.trailingAnchor),
+                privacy.widthAnchor.constraint(equalToConstant: 44),
+                privacy.heightAnchor.constraint(equalToConstant: 44),
+            ])
+            sectionStackView.addArrangedSubview(header)
         }
         displayedSections.forEach { section in
             let controller = makeSectionViewController(for: section)
             addChild(controller)
             controller.view.translatesAutoresizingMaskIntoConstraints = false
-            let isExtra = folder == nil && (section == .recentlyClosedTabs || section == .recommendation(.donation))
+            let isExtra = folder == nil && (section == .frequentlyVisited || section == .recentlyClosedTabs || section == .recommendation(.donation))
             (isExtra ? extras : sectionStackView).addArrangedSubview(controller.view)
             controller.didMove(toParent: self)
             sectionViewControllers[section] = controller
+        }
+        if folder == nil && !isPrivateBrowsing {
+            let summary = FennecHomepageSummaryView(frame: .zero)
+            summary.onResume = { [weak self] id in self?.onResumeTab?(id) }
+            summary.onProtection = { [weak self] in self?.onProtection?() }
+            summaryView = summary
+            sectionStackView.addArrangedSubview(summary)
+            refreshBrowserSummary()
         }
         if !extras.arrangedSubviews.isEmpty {
             let more = FennecClosureButton(frame: .zero)

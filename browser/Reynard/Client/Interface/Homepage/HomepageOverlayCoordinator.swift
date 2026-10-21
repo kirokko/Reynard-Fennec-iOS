@@ -11,6 +11,11 @@ protocol HomepageOverlayCoordinatorDelegate: AnyObject {
     var homepageLayout: BrowserLayout { get }
     var homepageGridWidth: HomepageGridWidth { get }
     var homepageSelectedTab: Tab? { get }
+    var homepageRegularTabs: [Tab] { get }
+    var homepageBlockedTrackerCount: Int { get }
+    func resumeHomepageTab(id: UUID)
+    func createPrivateHomepageTab()
+    func openHomepageProtection()
     var isHomepageTabOverviewPresented: Bool { get }
     var isHomepageShowingFullscreenMedia: Bool { get }
     var homepageChrome: BrowserChrome { get }
@@ -58,6 +63,13 @@ final class HomepageOverlayCoordinator {
         homepageViewController = HomepageViewController()
         homepageThumbnailRenderer = HomepageThumbnailRenderer(homepageViewController: homepageViewController)
         homepageViewController.homepageDelegate = self
+        homepageViewController.configureBrowserActions(
+            tabs: { [weak delegate] in delegate?.homepageRegularTabs ?? [] },
+            blockedCount: { [weak delegate] in delegate?.homepageBlockedTrackerCount ?? 0 },
+            resume: { [weak delegate] id in delegate?.resumeHomepageTab(id: id) },
+            privateTab: { [weak delegate] in delegate?.createPrivateHomepageTab() },
+            protection: { [weak delegate] in delegate?.openHomepageProtection() }
+        )
         homepageViewController.setPrivateBrowsing(isPrivateBrowsing)
     }
     

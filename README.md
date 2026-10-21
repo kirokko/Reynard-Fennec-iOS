@@ -1,4 +1,4 @@
-# Reynard Fennec — experimental iOS fork
+# ieynec — experimental Fennec-style iOS browser
 
 **Unofficial** Fennec-inspired UI on [Reynard Browser](https://github.com/minh-ton/reynard-browser), retaining its Gecko engine and iOS integration. This is not a Mozilla product or an official Fennec iOS release.
 
@@ -6,7 +6,7 @@
 
 ## Status / 当前状态
 
-Development build, not a verified release. Interface changes are implemented in source, but full iOS compilation and device acceptance must succeed before an IPA can be considered usable. No claim of pixel-perfect parity with Android is made without device screenshots and comparison.
+Development build, not a verified release. First-build run [#2](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39544125387) completed successfully and was installed on the owner's iPhone. Their screenshots showed substantial layout differences. The second-pass source now uses the name **ieynec**, the supplied icon, a reworked homepage/menu/tab tray and motion-free presentation. This revision still needs its own full build and device regression. No pixel-perfect parity or complete functional acceptance is claimed.
 
 - Functional baseline: Reynard **0.18.0 alpha**, commit `860bb6f4d0ff2b5d45f7dbe48eca8f39ee88a4fa`.
 - UI reference: F-Droid Fennec **158.0.0 / 1580020**, Mozilla source tag `FIREFOX-ANDROID_158_0_RELEASE` and F-Droid screenshots.
@@ -16,12 +16,14 @@ Development build, not a verified release. Interface changes are implemented in 
 
 ## Interface changes
 
-- Single-row, opaque top/bottom browser toolbar: address pill → new tab → tab count → vertical overflow.
+- Single-row, opaque top/bottom browser toolbar: address pill → tab count → vertical overflow. New-tab creation and recent-tab recovery remain in the tab tray and long-press menus.
 - Top bar by default; bottom position remains configurable.
 - Main menu: page bookmark, find, desktop mode, extension actions, expandable More, library shortcuts, settings. Back/forward/share/reload live in its navigation row. Long-press history navigation and hard reload remain available.
-- Privacy/regular tabs use top categories, a two-column card grid on phones, title/close controls above previews, and floating overflow/new-tab actions. There is no fake Sync tab.
+- Privacy/regular tabs use top icon categories, white preview cards with selected outlines, and a floating search/overflow pill and compact plus. Native local groups reference existing regular-tab UUIDs; grouping, renaming, membership editing and ungrouping do not duplicate sessions or turn bookmarks into tabs. No inactive-tab archiving/auto-close or fake Sync tab is added.
 - Settings are ordered around Fennec's General, Privacy and security, Advanced, and About categories. Existing engine controls remain under Advanced → Reynard-specific, with iOS / JIT separately available.
-- Existing shortcuts and browsing sections remain on the homepage; extra Reynard content is under More. JIT advice is in settings; upstream application update prompts are suppressed.
+- Centered icon/wordmark, compact circular shortcuts with Show all below, and a vertical Continue card linked to a real open regular tab. Existing frequent sites/recently closed/donation sections remain under More. The protection chip opens real tracking settings, without fabricating a persistent global count. JIT advice is in settings; upstream application update prompts are suppressed.
+- Phone settings/bookmarks/history/downloads open as independent full-screen pages, not a bottom library tab bar inside a sheet. Data and actions remain connected to their original stores.
+- App-owned UIKit animations are disabled; tab overview transitions and toolbar display-link interpolation bypass animated paths. Direct scrolling/dragging, web CSS/JS animations and OS-owned UI are not disabled.
 - Material-inspired light/dark colors and Simplified Chinese strings for new UI.
 
 System file pickers, sharing, printing, permissions and similar OS-owned dialogs remain native iOS UI. Original deeper preference/extension management pages are restyled, not a port of Android Compose or GeckoView-Android. Further screen-by-screen parity work and device QA remain necessary.
@@ -60,8 +62,8 @@ Source ZIP snapshots omit the engine/support submodule contents; the pinned refe
 - Follow Reynard's [installation requirements](docs/UPSTREAM_README.md#installation).
 - Keep **App Extensions** when SideStore asks. The browser cannot function correctly without them.
 - This fork retains the upstream bundle identifiers to avoid untested changes to the engine/helper integration. Under the same SideStore signing identity it may replace the original Reynard rather than install alongside it. Back up important browser data first. Do not uninstall an existing browser just to test this build unless you accept losing its data.
-- Application display name: **Reynard Fennec**.
-- JIT is not enabled merely by installing the IPA. Use the retained iOS / JIT settings and the upstream [manual JIT guide](https://github.com/minh-ton/reynard-browser/wiki/Manually-Enabling-JIT).
+- Application display name: **ieynec**. Repository, build artifact and internal executable names remain compatible with the original download workflow; an artifact containing `Reynard.ipa` is expected.
+- Pairing-based JIT is already integrated into the browser: it does **not** require a separately sideloaded StikDebug for this browser. JIT still needs the pairing record, supported device/OS, required DDI and a loopback VPN. The upstream guide currently requires Wi-Fi and LocalDevVPN (installed from the App Store, not a SideStore slot). Use the retained iOS / JIT settings and the upstream [manual JIT guide](https://github.com/minh-ton/reynard-browser/wiki/Manually-Enabling-JIT). This does not provide JIT to other LiveContainer apps.
 - Do **not** commit pairing records or account credentials to this public repository.
 
 ## Local checks
@@ -76,6 +78,8 @@ On macOS with Xcode:
 
 ```sh
 find browser -name '*.swift' -print0 | xargs -0 xcrun swiftc -frontend -parse
+xcrun swiftc browser/Reynard/Client/TabManagement/TabGroupStore.swift tests/tab-groups.test.swift -o /tmp/ieynec-tab-group-tests
+/tmp/ieynec-tab-group-tests
 ```
 
 On Windows, the downloader also has four isolated mock-artifact tests (success, failed run, missing extensions, and no successful run):

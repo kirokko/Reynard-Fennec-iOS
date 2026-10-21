@@ -122,7 +122,7 @@ final class TabOverviewCollection: NSObject {
         let animations = {
             self.applyPresentationTransforms(width: width)
         }
-        if animated && modeChanged {
+        if animated && UIView.areAnimationsEnabled && modeChanged {
             UIView.animate(withDuration: 0.28, delay: 0, options: [.curveEaseInOut, .beginFromCurrentState], animations: animations)
         } else {
             animations()
@@ -216,7 +216,8 @@ final class TabOverviewCollection: NSObject {
     }
     
     func prepareInsertionPlaceholder(for mode: TabOverview.Mode, completion: @escaping () -> Void) {
-        guard tabOverview?.isPresented == true,
+        guard UIView.areAnimationsEnabled,
+              tabOverview?.isPresented == true,
               tabOverview?.isTransitionRunning == false,
               tabChangeAnimationState.insertionPlaceholderMode == nil else {
             completion()
@@ -261,6 +262,10 @@ final class TabOverviewCollection: NSObject {
     }
     
     func applyTabCollectionChanges() {
+        guard UIView.areAnimationsEnabled else {
+            reloadTabCards()
+            return
+        }
         let regularIDs = tabs(for: .regularTabs).map(\.id)
         let privateIDs = tabs(for: .privateTabs).map(\.id)
         guard tabChangeAnimationState.hasTabIdentitySnapshot,

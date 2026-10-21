@@ -1,8 +1,8 @@
-# Reynard / Fennec iOS 改版记录
+# ieynec（原 Reynard / Fennec iOS）改版记录
 
 ## 当前状态
 
-这是开发中的源码，不是已完成并通过真机验收的浏览器。已实现第一轮界面修改，等待云端完整编译及设备测试。静态策略检查不能代替 Xcode 编译、模拟器或真机测试。
+第一轮完整云端构建 #2 已成功，IPA 已交付，用户已在 iPhone 上安装并提供实际 UI 截图。用户确认第一轮仍太像 Reynard，要求整体按 Fennec 界面重做。当前第二轮源码已改名 **ieynec**，应用新图标并重排首页、菜单、标签与库页面；本轮完整编译和真机回归仍需完成。安装成功不等于 JIT 或全部浏览功能已验收。
 
 本地位置：`C:\Users\Orie\Downloads\Reynard-Fennec-iOS`。
 公开仓库：https://github.com/kirokko/Reynard-Fennec-iOS
@@ -46,9 +46,23 @@
 - 设置按 Fennec 类别重新排序，新增 Tabs、Accessibility 入口承接 Reynard 已有的相关设置；未支持的 Fennec 项不显示。
 - 首页保留快捷方式/浏览记录；最近关闭等额外内容折叠到“更多”。
 - 浅色/深色 Material 风格配色，新 UI 的简体中文翻译。
-- 应用显示名为 **Reynard Fennec**，源码链接指向改版仓库，上游作者与许可证保留。
+- 第一轮应用显示名为 **Reynard Fennec**（第二轮改为 **ieynec**），源码链接指向改版仓库，上游作者与许可证保留。
 - `BrowserUpdates` 保持原 API，但不联网、不提示安装原版、不删除手动下载的 IPA。
 - 移除上游 nightly/release/source 自动工作流，仅保留手动 SideStore 构建及其复用工作流。
+
+## 第二轮：截图驱动的界面重做（2026-10-21）
+
+- 经用户授权重新核实 F-Droid 推荐版本，仍为 **158.0.0 / 1580020**，没有更新 Reynard / Gecko 基线。
+- 用户提供 13 张对比图。照片仅本地参考，不上传公开仓库；第 8 张为黑屏，不能据此推断隐私主页布局。
+- 用户明确暂不做不活跃标签归档／自动关闭；其他继续。新增本机标签组：引用真实普通标签 UUID，选择标签建组、重命名、增减成员、解散、从组切换到原标签。分组不复制页面、不冒充书签，不存隐私标签；无账号/同步。分组关闭页面后可重新打开，普通标签 ID 沿用原持久化。已关闭标签不作为有效成员展示。
+- 应用显示名 **ieynec**，底层包标识不改。图标采用用户 PNG，1024px RGB、不透明，旧深色和着色图标移除；SVG 源稿保留。
+- 首页改为居中 logo/标题、小圆形快捷方式、底部 Show all，以及连接真实已打开普通标签的纵向 Continue 卡片（没有可继续标签则隐藏）。常访、最近关闭、捐赠仍在 More 中。
+- 首页跟踪保护按钮打开真实设置。计数仅在无障碍描述中标明当前普通标签的已知拦截数，不伪造 Fennec 的持久全局统计。
+- 主菜单增加关闭手柄、白色卡片分组，History → Bookmarks → Downloads 顺序。原有导航、扩展、打印、缩放等路由保留。
+- 工具栏移除冗余独立加号，保留标签长按菜单；标签托盘紧凑加号长按仍可恢复最近关闭标签。标签托盘为图标分类、白色卡片与紫色选中描边、搜索/菜单胶囊和紧凑加号。
+- 手机的设置、书签、历史、下载不再共用底部 Library 标签栏/半屏 sheet，改为独立全屏页面；存储和操作仍接原实现。深层设置统一 plain 列表、字体/间距，系统文件/分享/权限弹窗不重写。
+- App 启动关闭 UIKit 动画；菜单和自有全屏导航显式无动画；标签托盘走无动画状态分支，跳过插入占位，工具栏显示链补间直接到最终值。拖动/滚动的直接手势响应保留，不修改网页 CSS/JS 动画或系统进程动画。
+- 新增 Foundation 分组存储测试，由 macOS Actions 在编译前执行。静态检查不等于触控/布局回归。
 
 ## 明确尚未完成的验收
 
@@ -56,7 +70,7 @@
 
 尚需验证：
 
-- 完整 Xcode 编译与 IPA 打包。
+- 第二轮完整 Xcode 编译与 IPA 打包（第一轮 #2 已通过）。
 - iPhone 17 / iOS 26.6 真机上地址栏聚焦、键盘避让、横屏、深浅色、动态字体和 VoiceOver。
 - 主菜单展开、关闭后触发分享/打印/扩展弹窗的时序。
 - 普通/隐私标签切换、卡片缩略图动画、重排、关闭/恢复、历史跳转。
@@ -75,13 +89,13 @@ Actions → **Build SideStore IPA (manual)** → Run workflow。
 
 首次构建：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39437471654 。该次运行通过源代码检查和 Swift 语法解析，Gecko 用时约 5 小时 40 分钟并已成功缓存，但在支持库编译阶段触及原先配置的 350 分钟任务上限，因此没有 IPA。
 
-第二次构建：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39544125387 。本次尝试复用完整引擎缓存，将任务上限调整到托管 runner 的 360 分钟，并移除任务名称中误导性的 TrollStore 字样。缓存是否命中、App 是否编译成功仍以该运行页面为准，不能仅凭有缓存就承诺成功或完成时间。
+第二次构建：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39544125387 。已成功复用完整引擎缓存，跳过 Gecko 重编译，总用时约 16 分 23 秒，完成 App 编译、标准 IPA 打包和上传。该版本已安装；此处成功不代表后续第二轮 UI 改动也已通过编译。
 
 `tools/Watch-Build.ps1` 是有时限的一次性收件脚本：只等指定的这一次运行，成功后下载对应 IPA，失败则写状态并退出。它不重试编译、不跟踪未来版本、不安装/更新应用，也不创建开机启动项或计划任务。状态文件为 Downloads 中的 `Reynard-Fennec-build-status.txt`。
 
 本版沿用原始 bundle identifiers，避免引擎/helper 集成发生未经测试的变动。因此同一签名身份下可能覆盖原版 Reynard，不能保证与原版并存。测试前备份重要数据，不要为了测试随意卸载原应用。
 
-SideStore 安装必须保留 App Extensions。安装不等于 JIT 已启用；配对文件属于敏感资料，不上传公开仓库或 Actions。上游指南：
+SideStore 安装必须保留 App Extensions。浏览器已保留配对式内置 JIT，不需要为浏览器额外侧载 StikDebug。按上游指南连接 Wi-Fi、启用 App Store 安装的 LocalDevVPN、导入配对文件并在 iOS / JIT 中开启。LocalDevVPN 不占 SideStore 侧载名额。该能力不为 LiveContainer 内的其他 App 提供通用 JIT。安装不等于 JIT 已启用；配对文件属于敏感资料，不上传公开仓库或 Actions。上游指南：
 
 - https://github.com/minh-ton/reynard-browser/issues/130
 - https://github.com/minh-ton/reynard-browser/wiki/Manually-Enabling-JIT

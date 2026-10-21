@@ -52,7 +52,7 @@ final class FennecMenuViewController: UIViewController {
         let outside = FennecClosureButton(frame: .zero)
         outside.translatesAutoresizingMaskIntoConstraints = false
         outside.accessibilityLabel = FennecTheme.text("Close menu")
-        outside.onTap = { [weak self] in self?.dismiss(animated: true) }
+        outside.onTap = { [weak self] in self?.dismiss(animated: false) }
         view.addSubview(outside)
         panel.translatesAutoresizingMaskIntoConstraints = false
         panel.backgroundColor = FennecTheme.surface
@@ -65,9 +65,28 @@ final class FennecMenuViewController: UIViewController {
         scrollView.alwaysBounceVertical = false
         scrollView.contentInsetAdjustmentBehavior = .never
         panel.addSubview(scrollView)
+        let handle = FennecClosureButton(frame: .zero)
+        handle.translatesAutoresizingMaskIntoConstraints = false
+        handle.accessibilityLabel = FennecTheme.text("Close menu")
+        handle.onTap = { [weak self] in self?.dismiss(animated: false) }
+        let line = UIView()
+        line.translatesAutoresizingMaskIntoConstraints = false
+        line.backgroundColor = .systemGray
+        line.layer.cornerRadius = 2
+        handle.addSubview(line)
+        panel.addSubview(handle)
+        NSLayoutConstraint.activate([
+            handle.topAnchor.constraint(equalTo: panel.topAnchor),
+            handle.centerXAnchor.constraint(equalTo: panel.centerXAnchor),
+            handle.widthAnchor.constraint(equalToConstant: 80),
+            handle.heightAnchor.constraint(equalToConstant: 36),
+            line.centerXAnchor.constraint(equalTo: handle.centerXAnchor),
+            line.centerYAnchor.constraint(equalTo: handle.centerYAnchor),
+            line.widthAnchor.constraint(equalToConstant: 32), line.heightAnchor.constraint(equalToConstant: 4),
+        ])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
-        stack.spacing = 8
+        stack.spacing = 12
         scrollView.addSubview(stack)
         panelHeight = panel.heightAnchor.constraint(equalToConstant: 400)
         NSLayoutConstraint.activate([
@@ -78,7 +97,7 @@ final class FennecMenuViewController: UIViewController {
             panel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             panel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             panel.bottomAnchor.constraint(equalTo: view.bottomAnchor), panelHeight,
-            scrollView.topAnchor.constraint(equalTo: panel.topAnchor, constant: 12),
+            scrollView.topAnchor.constraint(equalTo: panel.topAnchor, constant: 44),
             scrollView.bottomAnchor.constraint(equalTo: panel.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             scrollView.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 8),
             scrollView.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -8),
@@ -93,15 +112,20 @@ final class FennecMenuViewController: UIViewController {
             case .rows(let items):
                 let groupStack = UIStackView()
                 groupStack.axis = .vertical
-                groupStack.backgroundColor = FennecTheme.container.withAlphaComponent(0.45)
-                groupStack.layer.cornerRadius = 20
+                groupStack.backgroundColor = FennecTheme.card
+                groupStack.layer.cornerRadius = 28
+                groupStack.clipsToBounds = true
+                groupStack.spacing = 2
                 for item in items { groupStack.addArrangedSubview(row(item)) }
                 stack.addArrangedSubview(groupStack)
             case .tiles(let items), .navigation(let items):
                 let tileStack = UIStackView()
                 tileStack.axis = .horizontal
                 tileStack.distribution = .fillEqually
-                tileStack.spacing = 4
+                tileStack.spacing = 2
+                tileStack.backgroundColor = FennecTheme.surface
+                tileStack.layer.cornerRadius = 28
+                tileStack.clipsToBounds = true
                 for item in items { tileStack.addArrangedSubview(tile(item)) }
                 stack.addArrangedSubview(tileStack)
             }
@@ -113,16 +137,16 @@ final class FennecMenuViewController: UIViewController {
         let target = stack.systemLayoutSizeFitting(
             CGSize(width: scrollView.bounds.width, height: UIView.layoutFittingCompressedSize.height),
             withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel
-        ).height + view.safeAreaInsets.bottom + 24
+        ).height + view.safeAreaInsets.bottom + 52
         let limit = max(100, view.bounds.height - view.safeAreaInsets.top - 12)
         let height = min(target, limit)
         if abs(panelHeight.constant - height) > 0.5 { panelHeight.constant = height }
     }
 
-    override func accessibilityPerformEscape() -> Bool { dismiss(animated: true); return true }
+    override func accessibilityPerformEscape() -> Bool { dismiss(animated: false); return true }
 
     private func invoke(_ action: (() -> Void)?) {
-        dismiss(animated: true, completion: action)
+        dismiss(animated: false, completion: action)
     }
 
     private func row(_ item: FennecMenuItem) -> UIView {
@@ -133,6 +157,7 @@ final class FennecMenuViewController: UIViewController {
         button.isEnabled = item.enabled
         button.accessibilityLabel = item.title
         button.accessibilityValue = item.badge
+        button.backgroundColor = FennecTheme.card
         button.heightAnchor.constraint(greaterThanOrEqualToConstant: 52).isActive = true
         let icon = UIImageView(image: UIImage(systemName: item.symbol))
         icon.translatesAutoresizingMaskIntoConstraints = false
@@ -193,8 +218,8 @@ final class FennecMenuViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isEnabled = item.enabled
         button.accessibilityLabel = item.title
-        button.backgroundColor = FennecTheme.container.withAlphaComponent(0.55)
-        button.layer.cornerRadius = 16
+        button.backgroundColor = FennecTheme.card
+        button.layer.cornerRadius = 2
         let icon = UIImageView(image: UIImage(systemName: item.symbol))
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.contentMode = .scaleAspectFit

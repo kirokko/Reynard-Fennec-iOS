@@ -71,8 +71,8 @@ extension BrowserViewController {
             groups.append(.rows([extensionItem]))
         }
         groups.append(.tiles([
-            item("Bookmarks", "bookmark") { [weak self] in self?.presentLibrary(initialSection: .bookmarks) },
             item("History", "clock") { [weak self] in self?.presentLibrary(initialSection: .history) },
+            item("Bookmarks", "star.fill") { [weak self] in self?.presentLibrary(initialSection: .bookmarks) },
             item("Downloads", "arrow.down.circle") { [weak self] in self?.presentLibrary(initialSection: .downloads) },
         ]))
         var settings: [FennecMenuItem] = []
@@ -84,7 +84,7 @@ extension BrowserViewController {
         if !isHome && Prefs.AppearanceSettings.addressBarPosition == .bottom {
             groups.append(.navigation(fennecNavigationItems()))
         }
-        present(FennecMenuViewController(groups: groups), animated: true)
+        present(FennecMenuViewController(groups: groups), animated: false)
     }
 
     private func fennecNavigationItems() -> [FennecMenuItem] {
@@ -123,6 +123,6 @@ extension BrowserViewController {
             })
         }
         guard !items.isEmpty else { return }
-        present(FennecMenuViewController(groups: [.rows(items)]), animated: true)
+        present(FennecMenuViewController(groups: [.rows(items)]), animated: false)
     }
 }

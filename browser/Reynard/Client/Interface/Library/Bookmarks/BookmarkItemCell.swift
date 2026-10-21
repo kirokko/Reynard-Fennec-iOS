@@ -56,6 +56,8 @@ final class BookmarkItemCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        backgroundColor = FennecTheme.surface
+        itemTitleLabel.textColor = FennecTheme.ink
         clipsToBounds = true
         contentView.clipsToBounds = true
         

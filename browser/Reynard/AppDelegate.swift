@@ -10,6 +10,9 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // ieynec has no app-owned UIKit animations. Completion handlers still run;
+        // Gecko web content and out-of-process system pickers are not altered.
+        UIView.setAnimationsEnabled(false)
         JITController.shared.startBackgroundAudioIfNeeded()
         return true
     }

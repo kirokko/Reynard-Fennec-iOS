@@ -64,10 +64,10 @@ final class BookmarksViewController: UIViewController, UITableViewDataSource, UI
         return view
     }()
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.alwaysBounceVertical = true
-        tableView.backgroundColor = .systemGroupedBackground
+        tableView.backgroundColor = FennecTheme.surface
         tableView.dataSource = self
         tableView.delegate = self
         tableView.keyboardDismissMode = .interactive
@@ -115,7 +115,7 @@ final class BookmarksViewController: UIViewController, UITableViewDataSource, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemGroupedBackground
+        view.backgroundColor = FennecTheme.surface
         installLayout()
         
         tableView.register(BookmarkItemCell.self, forCellReuseIdentifier: BookmarkItemCell.reuseIdentifier)

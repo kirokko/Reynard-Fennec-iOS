@@ -9,8 +9,8 @@ import UIKit
 
 struct FavoritesLayoutMetrics: Equatable {
     private enum UX {
-        static let maximumIconSize: CGFloat = 74
-        static let minimumInteritemSpacing: CGFloat = 15
+        static let maximumIconSize: CGFloat = 88
+        static let minimumInteritemSpacing: CGFloat = 8
         static let shadowPadding: CGFloat = 10
         static let titleHeight: CGFloat = 34
     }
@@ -35,7 +35,8 @@ struct FavoritesLayoutMetrics: Equatable {
         interitemSpacing = self.columnCount > 1
         ? max(remainingWidth / CGFloat(self.columnCount - 1), 0)
         : 0
-        itemSize = CGSize(width: itemWidth, height: itemWidth + UX.titleHeight)
+        // Label width uses the whole column; the circular favicon is only 56pt.
+        itemSize = CGSize(width: itemWidth, height: 104)
     }
     
     func contentHeight(rowCount: Int) -> CGFloat {

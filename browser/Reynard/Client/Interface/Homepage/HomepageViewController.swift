@@ -64,6 +64,16 @@ final class HomepageViewController: UINavigationController {
     }
     
     // MARK: - Public API
+
+    func configureBrowserActions(tabs: @escaping () -> [Tab], blockedCount: @escaping () -> Int,
+                                 resume: @escaping (UUID) -> Void, privateTab: @escaping () -> Void,
+                                 protection: @escaping () -> Void) {
+        rootViewController.browserTabs = tabs
+        rootViewController.blockedTrackerCount = blockedCount
+        rootViewController.onResumeTab = resume
+        rootViewController.onPrivateTab = privateTab
+        rootViewController.onProtection = protection
+    }
     
     func setContentMode(_ contentMode: HomepageContentMode) {
         self.contentMode = contentMode
@@ -101,6 +111,7 @@ final class HomepageViewController: UINavigationController {
     
     func prepareForPresentation(resetNavigation: Bool) {
         loadViewIfNeeded()
+        rootViewController.refreshBrowserSummary()
         if resetNavigation {
             popToRootViewController(animated: false)
         }

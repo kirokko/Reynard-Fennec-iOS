@@ -20,7 +20,7 @@ final class SettingsTableViewCell: UITableViewCell {
     
     override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
         let size = super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority)
-        return CGSize(width: size.width, height: max(56, size.height))
+        return CGSize(width: size.width, height: max(64, size.height))
     }
 
     override var canBecomeFirstResponder: Bool {

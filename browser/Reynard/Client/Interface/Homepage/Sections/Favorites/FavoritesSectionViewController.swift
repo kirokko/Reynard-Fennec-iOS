@@ -14,8 +14,8 @@ protocol FavoritesSectionViewControllerDelegate: HomepageSectionDelegate {
 final class FavoritesSectionViewController: UIViewController {
     private enum UX {
         static let horizontalInset: CGFloat = 2
-        static let titleBottomSpacing: CGFloat = 3
-        static let titleFontSize: CGFloat = 20
+        static let titleBottomSpacing: CGFloat = 20
+        static let titleFontSize: CGFloat = 16
         static let reorderMinimumPressDuration: TimeInterval = 0.25
         static let contextMenuPresentationDelay: TimeInterval = 0.55
         static let reorderMovementThreshold: CGFloat = 8
@@ -31,7 +31,7 @@ final class FavoritesSectionViewController: UIViewController {
     weak var delegate: FavoritesSectionViewControllerDelegate?
     
     private static let titleFont = UIFontMetrics(forTextStyle: .title2).scaledFont(
-        for: .systemFont(ofSize: UX.titleFontSize, weight: .bold)
+        for: .systemFont(ofSize: UX.titleFontSize, weight: .regular)
     )
     
     private let bookmarkStore: BookmarkStore
@@ -155,36 +155,29 @@ final class FavoritesSectionViewController: UIViewController {
     }
     
     private func configureHierarchy() {
-        view.addSubview(headerView)
         headerView.addSubview(titleLabel)
-        headerView.addSubview(showAllButton)
-        view.addSubview(collectionView)
+        let layout = UIStackView(arrangedSubviews: [headerView, collectionView, showAllButton])
+        layout.translatesAutoresizingMaskIntoConstraints = false
+        layout.axis = .vertical
+        layout.spacing = UX.titleBottomSpacing
+        view.addSubview(layout)
+        NSLayoutConstraint.activate([
+            layout.topAnchor.constraint(equalTo: view.topAnchor),
+            layout.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            layout.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            layout.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
     }
     
     private func configureConstraints() {
         let heightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 1)
-        let collectionTopAnchor = showsSectionTitle ? headerView.bottomAnchor : view.topAnchor
-        let collectionTopSpacing = showsSectionTitle ? UX.titleBottomSpacing : 0
         collectionHeightConstraint = heightConstraint
-        
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: UX.horizontalInset),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -UX.horizontalInset),
-            
             titleLabel.topAnchor.constraint(equalTo: headerView.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: showAllButton.leadingAnchor, constant: -UX.horizontalInset),
+            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: UX.horizontalInset),
+            titleLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -UX.horizontalInset),
             titleLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-            
-            showAllButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            showAllButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            showAllButton.bottomAnchor.constraint(lessThanOrEqualTo: headerView.bottomAnchor),
-            
-            collectionView.topAnchor.constraint(equalTo: collectionTopAnchor, constant: collectionTopSpacing),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            showAllButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
             heightConstraint,
         ])
     }
@@ -275,19 +268,8 @@ final class FavoritesSectionViewController: UIViewController {
             return
         }
         
-        let previousCount = displayedFavoriteItems.count
         showsExpandedFavorites.toggle()
-        let updatedItems = currentFavoriteItems()
-        let updatedCount = updatedItems.count
-        updateShowAllButton()
-        
-        let indexPaths = indexPathsForItemCountChange(from: previousCount, to: updatedCount)
-        
-        if updatedCount > previousCount {
-            showAdditionalFavorites(updatedItems, at: indexPaths)
-        } else {
-            hideAdditionalFavorites(updatedItems, at: indexPaths)
-        }
+        applyFavoriteItemLimit()
     }
     
     private func showAdditionalFavorites(_ updatedItems: [BookmarkContentSnapshot], at indexPaths: [IndexPath]) {

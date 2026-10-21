@@ -88,6 +88,23 @@ extension BrowserViewController: ContentOverlayCoordinatorHost, SearchOverlayCoo
     var homepageSelectedTab: Tab? {
         return tabManager.selectedTab
     }
+
+    var homepageRegularTabs: [Tab] { tabManager.regularTabs }
+    var homepageBlockedTrackerCount: Int {
+        tabManager.regularTabs.reduce(0) { $0 + sessionManager.trackingProtection.blockedTrackers(for: $1.session).count }
+    }
+    func resumeHomepageTab(id: UUID) {
+        guard let index = tabManager.regularTabs.firstIndex(where: { $0.id == id }) else { return }
+        dismissAddressBarEditingAndOverlays()
+        tabManager.selectTab(at: index, mode: .regular)
+    }
+    func createPrivateHomepageTab() {
+        dismissAddressBarEditingAndOverlays()
+        _ = tabManager.createTab(selecting: true, target: .end, mode: .private)
+    }
+    func openHomepageProtection() {
+        presentContentModal(TrackingProtectionPreferencesViewController())
+    }
     
     var isHomepageTabOverviewPresented: Bool {
         return tabOverview.isPresented

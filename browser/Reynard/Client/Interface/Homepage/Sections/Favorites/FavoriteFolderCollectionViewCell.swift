@@ -9,14 +9,14 @@ import UIKit
 
 final class FavoriteFolderCollectionViewCell: UICollectionViewCell {
     private enum UX {
-        static let maximumIconSize: CGFloat = 74
-        static let iconCornerRadius: CGFloat = 17
-        static let titleHeight: CGFloat = 34
+        static let maximumIconSize: CGFloat = 56
+        static let iconCornerRadius: CGFloat = 28
+        static let titleHeight: CGFloat = 40
         static let titleFontSize: CGFloat = 12
         static let previewInset: CGFloat = 7
         static let previewSpacing: CGFloat = 5
         static let previewIconCornerRadius: CGFloat = 6
-        static let emptyIconSize: CGFloat = 64
+        static let emptyIconSize: CGFloat = 44
         static let reorderLiftedOutset: CGFloat = 4
         static let reorderLiftAnimationDuration: TimeInterval = 0.18
     }

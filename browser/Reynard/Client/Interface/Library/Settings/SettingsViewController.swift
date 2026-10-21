@@ -60,12 +60,14 @@ final class SettingsViewController: SettingsTableViewController {
             if indexPath.row == 1 { result.accessoryView = externalLinksSwitch; result.selectionStyle = .none }
             return result
         case .jit: return jitSection.cell(at: indexPath.row, tintColor: FennecTheme.accent)
-        case .about: return cell("About Reynard Fennec")
+        case .about: return cell("About ieynec")
         }
     }
     private func cell(_ key: String) -> UITableViewCell {
-        let result = SettingsTableViewCell(style: .default, reuseIdentifier: nil)
+        let result = SettingsTableViewCell(style: .subtitle, reuseIdentifier: nil)
         result.textLabel?.text = FennecTheme.text(key)
+        if key == "Search" { result.detailTextLabel?.text = Prefs.SearchSettings.searchEngine.displayName }
+        if key == "Tabs" { result.detailTextLabel?.text = FennecTheme.text("Close manually") }
         return result
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -135,7 +137,7 @@ final class FennecAboutViewController: SettingsTableViewController {
     private let section = AboutSettingsSection()
     init() {
         super.init(style: .plain)
-        title = FennecTheme.text("About Reynard Fennec")
+        title = FennecTheme.text("About ieynec")
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { self.section.rowCount }

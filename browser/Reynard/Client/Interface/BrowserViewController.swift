@@ -297,6 +297,9 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
         configureBrowserChromeActions()
         tabBar.dataSource = self
         tabOverview.configure(dataSource: self, delegate: self, presentationContext: self)
+        tabOverview.topToolbar.onGroups = { [weak self] in self?.presentTabGroups() }
+        tabOverview.topToolbar.onSearch = { [weak self] in self?.presentTabSearch() }
+        tabOverview.topToolbar.onRecentlyClosed = { [weak self] in self?.presentRecentlyClosedTrayMenu() }
         
         view.addSubview(contentView)
         view.addSubview(browserChrome)

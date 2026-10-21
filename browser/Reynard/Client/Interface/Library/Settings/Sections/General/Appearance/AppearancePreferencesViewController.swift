@@ -55,7 +55,7 @@ final class AppearancePreferencesViewController: SettingsTableViewController {
     
     init() {
         super.init(style: .insetGrouped)
-        title = NSLocalizedString("Appearance", comment: "")
+        title = FennecTheme.text("Customize")
     }
     
     required init?(coder: NSCoder) {

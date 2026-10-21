@@ -68,7 +68,7 @@ final class TopToolbar: UIView {
         }
         if addressConstraints.isEmpty {
             let leading = addressBar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8)
-            let trailing = addressBar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -140)
+            let trailing = addressBar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -96)
             addressLeading = leading
             addressTrailing = trailing
             addressConstraints = [leading, trailing,
@@ -102,7 +102,7 @@ final class TopToolbar: UIView {
     }
     private func updateInsets() {
         addressLeading?.constant = showsSidebar ? 56 : 8
-        addressTrailing?.constant = editing ? -8 : -140
+        addressTrailing?.constant = editing ? -8 : -96
     }
     func setContentAlpha(_ alpha: CGFloat) { contentView.alpha = alpha }
     func setTabCount(_ count: Int) { controls.setTabCount(count) }

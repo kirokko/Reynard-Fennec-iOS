@@ -103,6 +103,11 @@ jobs:
       - name: Source policy and localization checks
         run: node --test tests/*.test.mjs
 
+      - name: Test local tab group persistence
+        run: |
+          xcrun swiftc browser/Reynard/Client/TabManagement/TabGroupStore.swift tests/tab-groups.test.swift -o "$RUNNER_TEMP/test-tab-groups"
+          "$RUNNER_TEMP/test-tab-groups"
+
       - name: Parse Swift sources before compiling Gecko
         run: find browser -name '*.swift' -print0 | xargs -0 xcrun swiftc -frontend -parse
 

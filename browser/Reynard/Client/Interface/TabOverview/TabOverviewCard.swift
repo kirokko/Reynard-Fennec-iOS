@@ -9,7 +9,7 @@ import UIKit
 
 final class TabOverviewCard: UICollectionViewCell {
     private enum UX {
-        static let webpagePreviewCornerRadius: CGFloat = 6
+        static let webpagePreviewCornerRadius: CGFloat = 12
         static let webpagePreviewRestingInset: CGFloat = 1
         static let webpagePreviewLiftedInset: CGFloat = -4
         static let webpagePreviewRestingShadowOpacity: Float = 0
@@ -61,9 +61,11 @@ final class TabOverviewCard: UICollectionViewCell {
 
     func setCurrentTab(_ current: Bool) {
         isCurrentTab = current
-        contentView.backgroundColor = current ? FennecTheme.accent : FennecTheme.container
-        tabTitleLabel.textColor = current ? .systemBackground : .label
-        closeTabButton.tintColor = current ? .systemBackground : .label
+        contentView.backgroundColor = FennecTheme.card
+        contentView.layer.borderWidth = current ? 3 : 0
+        contentView.layer.borderColor = FennecTheme.selectedOutline.resolvedColor(with: traitCollection).cgColor
+        tabTitleLabel.textColor = FennecTheme.ink
+        closeTabButton.tintColor = FennecTheme.ink
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

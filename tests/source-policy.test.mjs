@@ -34,6 +34,22 @@ test('new static UI strings have Simplified Chinese translations', () => {
   for (const key of keys) assert.ok(catalog.strings[key]?.localizations?.['zh-Hans']?.stringUnit?.value, key);
 });
 
+test('ieynec identity and supplied opaque app icon replace the first-build branding', () => {
+  assert.match(read('browser/Configuration/Reynard.xcconfig'), /^APP_DISPLAY_NAME = ieynec$/m);
+  assert.match(read(ui + 'Homepage/HomepageRootViewController.swift'), /brand.text = "ieynec"/);
+  assert.doesNotMatch(read(ui + 'Library/Settings/SettingsViewController.swift'), /About Reynard Fennec/);
+  const dir = 'browser/Reynard/Resources/Assets.xcassets/AppIcon.appiconset/';
+  const catalog = JSON.parse(read(dir + 'Contents.json'));
+  assert.equal(catalog.images.length, 1);
+  assert.equal(catalog.images[0].filename, 'icon.png');
+  const png = fs.readFileSync(path.join(root, dir, 'icon.png'));
+  assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
+  assert.equal(png.readUInt32BE(16), 1024);
+  assert.equal(png.readUInt32BE(20), 1024);
+  assert.equal(png[25], 2, 'app icon should be RGB without alpha');
+  assert.ok(fs.existsSync(path.join(root, 'docs/artwork/ieynec.svg')));
+});
+
 test('manual application updates do not fetch any upstream feed', () => {
   const source = read('browser/Reynard/Client/Startup/BrowserUpdates.swift');
   assert.match(source, /let hasUpdate = false/);
@@ -61,6 +77,46 @@ test('settings keep the agreed groups and engine controls', () => {
   assert.doesNotMatch(settings, /DefaultBrowser|MakeDefault|Set as default/);
   const advanced = read(ui + 'Library/Settings/Sections/Advanced/AdvancedSettingsSection.swift');
   for (const name of ['DeveloperPreferencesViewController', 'CompatibilityPreferencesViewController', 'BrowsingPreferencesViewController']) assert.ok(advanced.includes(name));
+});
+
+test('second-pass homepage resumes real regular tabs and preserves extra sections', () => {
+  const root = read(ui + 'Homepage/HomepageRootViewController.swift');
+  assert.match(root, /UIStackView\(arrangedSubviews: \[logo, brand\]\)/);
+  assert.match(root, /section == \.frequentlyVisited/);
+  assert.match(root, /FennecHomepageSummaryView/);
+  const summary = read(ui + 'Homepage/FennecHomepageSummaryView.swift');
+  assert.match(summary, /!\$0\.isPrivate/);
+  assert.match(summary, /continueStack\.isHidden = tab == nil/);
+  assert.match(summary, /onResume\?\(id\)/);
+  assert.doesNotMatch(summary, /HistoryStore|RecentlyClosed/);
+  const host = read(ui + 'BrowserViewController+ContentOverlay.swift');
+  assert.match(host, /regularTabs\.firstIndex\(where: \{ \$0\.id == id \}\)/);
+  assert.match(host, /blockedTrackers\(for: \$1\.session\)/);
+});
+
+test('native tab groups reference live UUIDs, exclude private tabs, and have persistence tests', () => {
+  const store = read('browser/Reynard/Client/TabManagement/TabGroupStore.swift');
+  assert.match(store, /tabIDs: \[UUID\]/);
+  assert.match(store, /JSONEncoder\(\)\.encode\(groups\)/);
+  assert.doesNotMatch(store, /BookmarkStore|\.url|\.title|GeckoSession/);
+  const page = read(ui + 'TabOverview/FennecTabGroupsViewController.swift');
+  assert.match(page, /tabs\(\)\.filter \{ !\$0\.isPrivate && selected\.contains\(\$0\.id\) \}/);
+  assert.match(page, /onSelect\(id\)/);
+  assert.match(page, /store\.removeTab/);
+  assert.doesNotMatch(page, /inactive|auto.close|Sync/i);
+  assert.match(read('.github/workflows/build.yml'), /tests\/tab-groups\.test\.swift/);
+});
+
+test('motion-free policy covers UIKit, toolbar display link and tab overview state machine', () => {
+  assert.match(read('browser/Reynard/AppDelegate.swift'), /UIView\.setAnimationsEnabled\(false\)/);
+  assert.match(read(ui + 'Chrome/Toolbar/ToolbarController.swift'), /guard UIView\.areAnimationsEnabled else/);
+  assert.match(read(ui + 'TabOverview/TabOverviewPresentation.swift'), /let animated = animated && UIView\.areAnimationsEnabled/);
+  assert.match(read(ui + 'TabOverview/TabOverviewCollection.swift'), /guard UIView\.areAnimationsEnabled else/);
+  const menu = read(ui + 'Chrome/FennecMenuViewController.swift');
+  assert.doesNotMatch(menu, /animated: true/);
+  const actions = read(ui + 'BrowserViewController+BrowserActions.swift');
+  assert.match(actions, /modalPresentationStyle = \.fullScreen/);
+  assert.doesNotMatch(actions, /let libraryController = LibraryViewController/);
 });
 
 test('menu routes connect to original engine actions instead of placeholder handlers', () => {

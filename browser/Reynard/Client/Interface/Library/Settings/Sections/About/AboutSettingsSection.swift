@@ -55,7 +55,7 @@ final class AboutSettingsSection {
             let info = Bundle.main.infoDictionary
             let version = info?["CFBundleShortVersionString"] as? String ?? "Unknown"
             let build = info?["CFBundleVersion"] as? String ?? "Unknown"
-            return valueCell(title: "Reynard Fennec", value: "\(version) (\(build))")
+            return valueCell(title: "ieynec", value: "\(version) (\(build))")
         case .engineVersion:
             return valueCell(title: NSLocalizedString("Engine Version", comment: ""), value: GeckoRuntime.version)
         case .sourceCode:

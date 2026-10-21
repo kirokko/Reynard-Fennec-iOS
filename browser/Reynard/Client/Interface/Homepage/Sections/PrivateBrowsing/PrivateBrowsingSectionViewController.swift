@@ -12,8 +12,8 @@ final class PrivateBrowsingSectionViewController: UIViewController {
         static let horizontalInset: CGFloat = 2
         static let sectionBottomSpacing: CGFloat = 24
         static let cornerRadius: CGFloat = 17
-        static let titleFontSize: CGFloat = 28
-        static let messageFontSize: CGFloat = 17
+        static let titleFontSize: CGFloat = 22
+        static let messageFontSize: CGFloat = 15
         static let labelSpacing: CGFloat = 10
         static let maximumContentWidth: CGFloat = 580
         static let narrowContentTopInset: CGFloat = 24
@@ -86,7 +86,7 @@ final class PrivateBrowsingSectionViewController: UIViewController {
         label.font = UIFontMetrics(forTextStyle: .body).scaledFont(
             for: .systemFont(ofSize: UX.messageFontSize, weight: .regular)
         )
-        label.text = NSLocalizedString("After you close a tab, Reynard won’t remember any of your browsing history or cookies. However, downloads and new bookmarks will be saved.", comment: "")
+        label.text = FennecTheme.text("ieynec clears private browsing history and cookies when you close private tabs. Downloads and bookmarks are kept.")
         label.textAlignment = .center
         label.textColor = .secondaryLabel
         label.numberOfLines = 0
@@ -135,6 +135,8 @@ final class PrivateBrowsingSectionViewController: UIViewController {
     
     private func configureAppearance() {
         view.backgroundColor = .clear
+        backgroundView.effect = nil
+        titleLabel.textColor = FennecTheme.ink
     }
     
     private func configureHierarchy() {

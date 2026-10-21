@@ -36,6 +36,10 @@ class SettingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = FennecTheme.surface
         cell.textLabel?.font = .preferredFont(forTextStyle: .body)
+        cell.textLabel?.textColor = FennecTheme.ink
+        cell.layoutMargins = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
+        cell.detailTextLabel?.font = .preferredFont(forTextStyle: .subheadline)
+        cell.detailTextLabel?.textColor = .secondaryLabel
         cell.textLabel?.adjustsFontForContentSizeCategory = true
         cell.textLabel?.numberOfLines = 0
         cell.detailTextLabel?.adjustsFontForContentSizeCategory = true
@@ -44,7 +48,7 @@ class SettingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
         header.textLabel?.textColor = FennecTheme.accent
-        header.textLabel?.font = .preferredFont(forTextStyle: .subheadline)
+        header.textLabel?.font = .preferredFont(forTextStyle: .headline)
         header.contentView.backgroundColor = FennecTheme.surface
     }
 
@@ -57,7 +61,7 @@ class SettingsTableViewController: UITableViewController {
         tableView.backgroundColor = FennecTheme.surface
         tableView.separatorStyle = .none
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 56
+        tableView.estimatedRowHeight = 64
         tableView.alwaysBounceVertical = true
         tableView.keyboardDismissMode = .interactive
         if #available(iOS 14.0, *) {

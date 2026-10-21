@@ -9,9 +9,9 @@ import UIKit
 
 final class FavoriteSiteCollectionViewCell: UICollectionViewCell {
     private enum UX {
-        static let maximumIconSize: CGFloat = 74
-        static let iconCornerRadius: CGFloat = 17
-        static let titleHeight: CGFloat = 34
+        static let maximumIconSize: CGFloat = 56
+        static let iconCornerRadius: CGFloat = 28
+        static let titleHeight: CGFloat = 40
         static let titleFontSize: CGFloat = 12
         static let shadowOpacity: Float = 0.18
         static let shadowRadius: CGFloat = 5
@@ -161,7 +161,7 @@ final class FavoriteSiteCollectionViewCell: UICollectionViewCell {
             
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            titleLabel.topAnchor.constraint(equalTo: shadowView.bottomAnchor),
+            titleLabel.topAnchor.constraint(equalTo: shadowView.bottomAnchor, constant: 8),
             titleLabel.heightAnchor.constraint(equalToConstant: UX.titleHeight),
         ])
     }

@@ -154,6 +154,46 @@ extension BrowserViewController: TabBarDataSource, TabOverviewDataSource, TabOve
     }
     
     // MARK: - Tab Overview Actions
+
+    func presentRecentlyClosedTrayMenu() {
+        guard tabOverview.mode == .regularTabs else { return }
+        let entries = TabManagementStore.shared.recentlyClosedTabs(limit: Prefs.HomepageSettings.recentlyClosedTabLimit)
+        let items = entries.map { entry in
+            FennecMenuItem(title: entry.title.isEmpty ? NSLocalizedString("Untitled", comment: "") : entry.title, symbol: "clock", action: { [weak self] in
+                guard let self, self.tabManager.restoreRecentlyClosedTab(id: entry.id) else { return }
+                self.tabOverview.prepareDismissSelectionForCurrentTab()
+                self.setTabOverviewVisible(false, animated: false)
+            })
+        }
+        guard !items.isEmpty else { return }
+        present(FennecMenuViewController(groups: [.rows(items)]), animated: false)
+    }
+
+    func presentTabGroups() {
+        let page = FennecTabGroupsViewController(tabs: { [weak self] in self?.tabManager.regularTabs ?? [] }) { [weak self] id in
+            self?.selectTabFromTrayPage(id: id, mode: .regular)
+        }
+        presentContentModal(page)
+    }
+
+    func presentTabSearch() {
+        let mode = tabOverview.mode.tabMode
+        let page = FennecOpenTabsController(tabs: { [weak self] in
+            guard let self else { return [] }
+            return mode == .private ? self.tabManager.privateTabs : self.tabManager.regularTabs
+        }) { [weak self] id in self?.selectTabFromTrayPage(id: id, mode: mode) }
+        presentContentModal(page)
+    }
+
+    private func selectTabFromTrayPage(id: UUID, mode: TabMode) {
+        dismiss(animated: false) { [weak self] in
+            guard let self else { return }
+            let tabs = mode == .private ? self.tabManager.privateTabs : self.tabManager.regularTabs
+            guard let index = tabs.firstIndex(where: { $0.id == id }) else { return }
+            self.tabOverview.prepareDismissSelection(to: index, mode: mode, previewImage: tabs[index].thumbnail)
+            self.setTabOverviewVisible(false, animated: false)
+        }
+    }
     
     private func dismissTabOverviewSelectingMostRecentTabIfNeeded() {
         if tabOverview.isPresented {

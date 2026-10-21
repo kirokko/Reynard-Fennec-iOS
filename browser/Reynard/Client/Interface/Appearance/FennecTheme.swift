@@ -4,7 +4,15 @@ import UIKit
 enum FennecTheme {
     static let surface = UIColor { $0.userInterfaceStyle == .dark
         ? UIColor(red: 0.08, green: 0.075, blue: 0.11, alpha: 1)
-        : UIColor(red: 0.975, green: 0.975, blue: 0.99, alpha: 1) }
+        : UIColor(red: 0.969, green: 0.965, blue: 0.988, alpha: 1) }
+    static let card = UIColor { $0.userInterfaceStyle == .dark
+        ? UIColor(red: 0.15, green: 0.14, blue: 0.18, alpha: 1) : .white }
+    static let ink = UIColor { $0.userInterfaceStyle == .dark
+        ? UIColor(red: 0.93, green: 0.91, blue: 0.97, alpha: 1)
+        : UIColor(red: 0.11, green: 0.08, blue: 0.19, alpha: 1) }
+    static let selectedOutline = UIColor { $0.userInterfaceStyle == .dark
+        ? UIColor(red: 0.72, green: 0.58, blue: 1, alpha: 1)
+        : UIColor(red: 0.48, green: 0.31, blue: 0.85, alpha: 1) }
     static let container = UIColor { $0.userInterfaceStyle == .dark
         ? UIColor(red: 0.18, green: 0.17, blue: 0.22, alpha: 1)
         : UIColor(red: 0.885, green: 0.88, blue: 0.915, alpha: 1) }
@@ -46,8 +54,11 @@ final class FennecToolbarControls: UIStackView {
         axis = .horizontal
         distribution = .fillEqually
         for button in [newTabButton, tabButton, menuButton] { addArrangedSubview(button) }
+        // New-tab creation remains available in the tab tray. Match Fennec's
+        // compact address bar without a redundant standalone plus button.
+        newTabButton.isHidden = true
         NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: 132),
+            widthAnchor.constraint(equalToConstant: 88),
             heightAnchor.constraint(equalToConstant: 44),
         ])
         newTabButton.accessibilityLabel = FennecTheme.text("New tab")

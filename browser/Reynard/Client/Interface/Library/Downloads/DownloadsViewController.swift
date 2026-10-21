@@ -57,9 +57,9 @@ final class DownloadsViewController: UIViewController, UITableViewDataSource, UI
     }
     
     private lazy var tableView: UITableView = {
-        let view = UITableView(frame: .zero, style: .insetGrouped)
+        let view = UITableView(frame: .zero, style: .plain)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemGroupedBackground
+        view.backgroundColor = FennecTheme.surface
         view.dataSource = self
         view.delegate = self
         view.rowHeight = UITableView.automaticDimension
@@ -94,7 +94,8 @@ final class DownloadsViewController: UIViewController, UITableViewDataSource, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGroupedBackground
+        title = FennecTheme.text("Downloads")
+        view.backgroundColor = FennecTheme.surface
         installLayout()
         installHeader()
         observeStore()

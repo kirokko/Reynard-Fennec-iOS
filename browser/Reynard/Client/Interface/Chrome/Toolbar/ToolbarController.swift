@@ -254,6 +254,13 @@ final class ToolbarController {
     }
     
     private func startAnimation() {
+        guard UIView.areAnimationsEnabled else {
+            animationDisplayLink?.invalidate()
+            animationDisplayLink = nil
+            snapStartTime = nil
+            setTransitionOffset(targetOffset, refresh: true, animatesContent: false)
+            return
+        }
         guard animationDisplayLink == nil, transitionOffset != targetOffset else { return }
         lastAnimationTime = CACurrentMediaTime()
         let displayLink = CADisplayLink(target: self, selector: #selector(updateAnimation))

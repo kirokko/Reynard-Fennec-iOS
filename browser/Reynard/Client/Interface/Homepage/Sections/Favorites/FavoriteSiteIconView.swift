@@ -60,7 +60,7 @@ final class FavoriteSiteIconView: UIView {
     private func applyIcon(_ image: UIImage?, tintColor: UIColor?, shouldInset: Bool) {
         imageView.image = image
         imageView.tintColor = tintColor
-        let inset = shouldInset ? UX.transparentIconInset : 0
+        let inset: CGFloat = shouldInset ? 12 : 10
         imageConstraints[0].constant = inset
         imageConstraints[1].constant = -inset
         imageConstraints[2].constant = inset

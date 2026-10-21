@@ -118,6 +118,7 @@ final class TabOverviewPresentation {
     // MARK: - Presentation
     
     func setPresented(_ visible: Bool, animated: Bool) {
+        let animated = animated && UIView.areAnimationsEnabled
         if isTransitionRunning {
             guard state == .presenting, !visible else {
                 return
@@ -146,7 +147,9 @@ final class TabOverviewPresentation {
             pendingSelectionTabIndex = nil
             pendingSelectionTabMode = nil
             pendingSelectionPreviewImage = nil
+            presentationToken += 1
             let token = presentationToken
+            context.prepareTabOverviewPresentation()
             dataSource.captureThumbnail(forTabAt: dataSource.selectedIndex, mode: dataSource.selectedMode) { [weak self] _ in
                 guard let self, self.presentationToken == token else { return }
                 
@@ -154,7 +157,7 @@ final class TabOverviewPresentation {
                 self.tabOverview.isHidden = false
                 self.context.containerView.bringSubviewToFront(self.tabOverview)
                 self.context.endEditing()
-                self.context.setSearchFocused(false, animated: true)
+                self.context.setSearchFocused(false, animated: false)
                 self.applyPresentationProgress(1)
                 self.state = .presented
                 self.context.updateLayout(animated: false, duration: 0)
@@ -163,6 +166,7 @@ final class TabOverviewPresentation {
             return
         }
         
+        presentationToken += 1
         applyPresentationProgress(0)
         commitPendingTabSelection()
         tabOverview.isHidden = true

@@ -45,8 +45,8 @@ extension BrowserViewController {
         ) { [weak self] in
             self?.requestContentKeyboardFocus()
         }
-        navigationController.modalPresentationStyle = .pageSheet
-        present(navigationController, animated: true)
+        navigationController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: false)
     }
     
     func presentLibrary(
@@ -62,15 +62,18 @@ extension BrowserViewController {
             return
         }
         
-        let libraryController = LibraryViewController(
-            initialSection: initialSection,
-            isPrivateMode: tabManager.selectedTab?.isPrivate == true,
-            startsEditingBookmarks: startsEditingBookmarks,
-            onClose: { [weak self] in
-                self?.dismiss(animated: true)
-            }
-        )
-        presentContentModal(libraryController)
+        // Phone library entries are independent Fennec-style pages, not an
+        // iOS tab bar embedded in a sheet. Their stores/actions are unchanged.
+        let section: LibrarySection = initialSection == .history && tabManager.selectedTab?.isPrivate == true ? .bookmarks : initialSection
+        let page: UIViewController
+        switch section {
+        case .bookmarks: page = BookmarksViewController(startsEditing: startsEditingBookmarks)
+        case .history: page = HistoryViewController()
+        case .downloads: page = DownloadsViewController()
+        case .settings: page = SettingsViewController()
+        }
+        presentContentModal(page)
+        (presentedViewController as? ContentModalNavigationController)?.librarySection = section
     }
     
     func toggleLibrary(section: LibrarySection) {
@@ -81,11 +84,13 @@ extension BrowserViewController {
         }
         
         guard let navigationController = presentedViewController as? ContentModalNavigationController,
-              let libraryController = navigationController.viewControllers.first as? LibraryViewController else {
+              let current = navigationController.librarySection else {
             presentLibrary(initialSection: section)
             return
         }
-        libraryController.toggleSection(section)
+        navigationController.dismiss(animated: false) { [weak self] in
+            if current != section { self?.presentLibrary(initialSection: section) }
+        }
     }
     
     func createNewTab(mode: TabMode? = nil) {

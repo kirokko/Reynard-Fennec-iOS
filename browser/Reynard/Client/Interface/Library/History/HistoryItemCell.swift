@@ -59,6 +59,8 @@ final class HistoryItemCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        backgroundColor = FennecTheme.surface
+        pageTitleLabel.textColor = FennecTheme.ink
         clipsToBounds = true
         contentView.clipsToBounds = true
         

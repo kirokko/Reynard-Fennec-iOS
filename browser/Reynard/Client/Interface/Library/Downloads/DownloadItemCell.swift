@@ -73,6 +73,10 @@ final class DownloadItemCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
+        backgroundColor = FennecTheme.surface
+        fileNameLabel.adjustsFontForContentSizeCategory = true
+        statusLabel.adjustsFontForContentSizeCategory = true
+        progressView.progressTintColor = FennecTheme.selectedOutline
         
         let labelsStack = UIStackView(arrangedSubviews: [fileNameLabel, statusLabel, progressView])
         labelsStack.translatesAutoresizingMaskIntoConstraints = false
