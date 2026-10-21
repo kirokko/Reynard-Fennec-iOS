@@ -40,6 +40,7 @@ final class ContentModalNavigationController: UINavigationController, UINavigati
 
     private func installRootExit(on controller: UIViewController) {
         let exit = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(closePage))
+        exit.tintColor = FennecTheme.ink
         exit.accessibilityLabel = FennecTheme.text("Back to browsing")
         exit.accessibilityIdentifier = "contentPage.close"
         controller.navigationItem.leftBarButtonItem = exit
@@ -48,6 +49,9 @@ final class ContentModalNavigationController: UINavigationController, UINavigati
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         setNavigationBarHidden(false, animated: false)
         if viewController === viewControllers.first { installRootExit(on: viewController) }
+        for item in (viewController.navigationItem.leftBarButtonItems ?? []) + (viewController.navigationItem.rightBarButtonItems ?? []) {
+            item.tintColor = FennecTheme.ink
+        }
     }
 
     private func notifyDismissal() {
@@ -57,6 +61,12 @@ final class ContentModalNavigationController: UINavigationController, UINavigati
     }
 
     @objc private func closePage() {
+        // UIKit still has transition lifecycle bookkeeping with animated:false.
+        // Honor rapid back taps during a push/pop instead of dropping dismissal.
+        if let coordinator = transitionCoordinator,
+           coordinator.animate(alongsideTransition: nil, completion: { [weak self] _ in
+               DispatchQueue.main.async { self?.closePage() }
+           }) { return }
         dismiss(animated: false) { [weak self] in self?.notifyDismissal() }
     }
 
