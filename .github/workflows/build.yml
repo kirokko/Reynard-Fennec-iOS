@@ -77,9 +77,9 @@ jobs:
   build:
     needs: prepare
     if: ${{ needs.prepare.outputs.should_build == 'true' }}
-    name: "${{ matrix.variant == 'standard' && 'Build Standard / TrollStore' || 'Build Jailbroken' }}"
+    name: "${{ matrix.variant == 'standard' && 'Build standard engine and SideStore IPA' || 'Build Jailbroken' }}"
     runs-on: macos-26
-    timeout-minutes: 350
+    timeout-minutes: 360
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
