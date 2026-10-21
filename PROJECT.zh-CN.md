@@ -2,7 +2,7 @@
 
 ## 当前状态
 
-第一轮完整云端构建 #2 已成功，IPA 已交付，用户已在 iPhone 上安装并提供实际 UI 截图。用户确认第一轮仍太像 Reynard，要求整体按 Fennec 界面重做。当前第二轮源码已改名 **ieynec**，应用新图标并重排首页、菜单、标签与库页面；本轮完整编译和真机回归仍需完成。安装成功不等于 JIT 或全部浏览功能已验收。
+第一轮完整云端构建 #2 已成功，IPA 已交付，用户已在 iPhone 上安装并提供实际 UI 截图。用户确认第一轮仍太像 Reynard，要求整体按 Fennec 界面重做。当前第二轮源码已改名 **ieynec**，应用新图标并重排首页、菜单、标签与库页面；本轮完整编译和标准 IPA 打包已于构建 #3 成功，`Downloads\ieynec.ipa` 已下载核验；第二轮真机回归仍待用户安装后检查。安装成功不等于 JIT 或全部浏览功能已验收。
 
 本地位置：`C:\Users\Orie\Downloads\Reynard-Fennec-iOS`。
 公开仓库：https://github.com/kirokko/Reynard-Fennec-iOS
@@ -70,7 +70,7 @@
 
 尚需验证：
 
-- 第二轮完整 Xcode 编译与 IPA 打包（第一轮 #2 已通过）。
+- 第二轮在 iPhone 上的安装与回归（完整 Xcode 编译与 IPA 打包在 #3 已通过）。
 - iPhone 17 / iOS 26.6 真机上地址栏聚焦、键盘避让、横屏、深浅色、动态字体和 VoiceOver。
 - 主菜单展开、关闭后触发分享/打印/扩展弹窗的时序。
 - 普通/隐私标签切换、卡片缩略图动画、重排、关闭/恢复、历史跳转。
@@ -90,6 +90,10 @@ Actions → **Build SideStore IPA (manual)** → Run workflow。
 首次构建：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39437471654 。该次运行通过源代码检查和 Swift 语法解析，Gecko 用时约 5 小时 40 分钟并已成功缓存，但在支持库编译阶段触及原先配置的 350 分钟任务上限，因此没有 IPA。
 
 第二次构建：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39544125387 。已成功复用完整引擎缓存，跳过 Gecko 重编译，总用时约 16 分 23 秒，完成 App 编译、标准 IPA 打包和上传。该版本已安装；此处成功不代表后续第二轮 UI 改动也已通过编译。
+
+第三次构建（第二轮 UI）：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39589249099 ，源码提交 `685b36afe334a7dc7c9b8a35931979e38786a4e8`。状态 **success**，构建任务用时 **16 分 29 秒**；Gecko SDK 缓存命中、引擎编译跳过，App 编译、标准 IPA 打包和上传成功。10 项源码检查、Swift 分组持久化测试及全部 Swift 语法解析均通过；本地 4 项下载器隔离测试通过。IPA 包内显示名为 `ieynec`，内部 bundle ID 不变，构建号 `685b36a`。
+
+交付文件：`C:\Users\Orie\Downloads\ieynec.ipa`；来源和哈希：同路径 `.ipa.build.txt`。SHA-256：`B5060DC4103145CB260A0941B4B08B9EA461E2E6E1F12E96D935CCEFA9EE58E4`。两个应用扩展的 Info.plist 均在包中。旧 `Reynard-Fennec.ipa` 本次未覆盖。构建记录更新是文档改动，不需要再次编译。
 
 `tools/Watch-Build.ps1` 是有时限的一次性收件脚本：只等指定的这一次运行，成功后下载对应 IPA，失败则写状态并退出。它不重试编译、不跟踪未来版本、不安装/更新应用，也不创建开机启动项或计划任务。状态文件为 Downloads 中的 `Reynard-Fennec-build-status.txt`。
 

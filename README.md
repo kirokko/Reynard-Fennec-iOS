@@ -6,7 +6,7 @@
 
 ## Status / 当前状态
 
-Development build, not a verified release. First-build run [#2](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39544125387) completed successfully and was installed on the owner's iPhone. Their screenshots showed substantial layout differences. The second-pass source now uses the name **ieynec**, the supplied icon, a reworked homepage/menu/tab tray and motion-free presentation. This revision still needs its own full build and device regression. No pixel-perfect parity or complete functional acceptance is claimed.
+Development build, not a verified release. First-build run [#2](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39544125387) completed successfully and was installed on the owner's iPhone. Their screenshots showed substantial layout differences. The second-pass source now uses the name **ieynec**, the supplied icon, a reworked homepage/menu/tab tray and motion-free presentation. This revision passed its own complete [build #3](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39589249099) at source commit `685b36afe334a7dc7c9b8a35931979e38786a4e8`, including the local tab-group persistence test. The IPA is delivered as `Downloads\ieynec.ipa`; on-device installation/regression of this second pass remains pending. No pixel-perfect parity or complete functional acceptance is claimed.
 
 - Functional baseline: Reynard **0.18.0 alpha**, commit `860bb6f4d0ff2b5d45f7dbe48eca8f39ee88a4fa`.
 - UI reference: F-Droid Fennec **158.0.0 / 1580020**, Mozilla source tag `FIREFOX-ANDROID_158_0_RELEASE` and F-Droid screenshots.
@@ -52,6 +52,14 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Download-IPA.ps1
 ```
 
 It downloads the most recent successful manual build to `Downloads\Reynard-Fennec.ipa`, checks that app extensions are present, and writes the commit/build URL/SHA-256 beside it. If no successful build exists, it fails explicitly. It does not start a build or update an installed app.
+
+For the second-pass ieynec build specifically:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Download-IPA.ps1 -RunId 39589249099 -Destination "$env:USERPROFILE\Downloads\ieynec.ipa"
+```
+
+The default legacy filename remains compatible with existing shortcuts; the explicit destination above preserves the first-build IPA for rollback.
 
 For one already-started run, `tools/Watch-Build.ps1 -RunId <id>` can wait for at most seven hours and download **only that run** if it succeeds. It writes a status file in Downloads and then exits. It is not an updater, scheduled task, or build retry service; it does not monitor later releases.
 
