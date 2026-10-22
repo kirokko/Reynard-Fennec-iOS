@@ -6,7 +6,25 @@ Reviewed three owner-provided videos locally: Android screen recording (~105s), 
 
 The Android screen recording is mostly black before ~44s because private-mode capture is blocked. Do not infer an empty/black UI from it. Use the filmed private-mode demonstration instead. The iOS recording does not visibly exercise every search/keyboard path; the owner's additional report about address-bar motion is a separate input, investigated in source.
 
-## Latest follow-up: stable category outline, one private intro and one-piece bottom plate
+## Latest follow-up: search picker, private return, marked input and capture shield (#22)
+
+Three additional screenshots and six short clips were inspected locally. They
+show the Android provider-icon/chevron picker, an Android top-right return switch
+that remains present on private home, the missing iOS return switch, stale
+keyboard-docked search chrome, and invisible `cn` input after `c` completion with
+a Chinese candidate keyboard. Android black recording segments are capture
+protection, not empty UI. No owner media or browsing records are committed.
+
+Implemented and verified full package details, test boundaries, supported provider
+list and public-API privacy limitations are in [SEARCH-AND-PRIVACY.md](SEARCH-AND-PRIVACY.md).
+Full [#22](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39767844014)
+succeeded, downloaded/hashed and promoted to current after archiving #21.
+**Screenshot blocking is not implemented.** Recording protection hides private
+content locally too, with asynchronous notification limits. The private homepage
+compositor image was reviewed; real keyboard/Gecko and capture-window behavior
+remain physical-device acceptance items.
+
+## Historical follow-up: stable category outline, one private intro and one-piece bottom plate
 
 Four new owner screenshots plus a ~9.5s iOS recording were inspected locally. No private source frames/URLs are committed. The selected regular-tab count has a pale outline on first entry, dark after a second tap. Its UILabel text is dynamic, but its CALayer border was a CGColor resolved before inherited appearance settled. A shared real `FennecTabCountLabel` now refreshes its border on first window attachment, layout and trait changes, not only category selection. A new UIKit test attaches the real toolbar to a dark host, switches light/dark, and requires the initial border to equal its selected text and remain unchanged by a second same-mode tap.
 

@@ -1,5 +1,14 @@
 # Search input and privacy follow-up (after build #21)
 
+## Verified package
+
+Full [build #22](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39767844014)
+succeeded (22m58s, cached SDK) at `e8d99b226190e4746974e07170e7afb6511df9f0`.
+Package build `e8d99b2`, 106,765,654 bytes; SHA-256
+`623A7FBBDB6B8EF1C1B27A9B8C8563BD194106AE6D588B30A83FF5314ABE67DE`.
+Downloaded/independently hashed, all three actual plists inspected. Current local
+IPA is #22; #21 and its origin record are retained under rollback.
+
 ## Search picker
 
 The search field now has the selected provider icon and chevron, with a real
@@ -57,5 +66,8 @@ isolates browsing state; it does not make the user anonymous to websites/network
 Tests: source integration checks, real marked-text lifecycle, the private
 homepage's real button action, and capture-policy truth table. Actual capture
 notification/window behavior and the full browser remain device acceptance
-items until separately verified. The current delivered IPA remains #21 until a
-new full build, package verification and explicit delivery are complete.
+items until separately verified. Thirty source/localization checks, real
+SearchEngine/URLUtils Foundation cases, original tab-group tests, Swift parsing,
+expanded UIKit and full App packaging passed. Six downloader tests passed again.
+The actual private-homepage fixture image was inspected. Existing fixture and
+deprecated-API warnings remain; this is not a warning-free or device-accepted build.

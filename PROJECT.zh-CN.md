@@ -1,6 +1,20 @@
 # ieynec（原 Reynard / Fennec iOS）改版记录
 
-## 最新交付：首次计数图标／隐私遗留／整块底栏（构建 #21）
+## 最新交付：搜索引擎入口／私密返回／组合输入／捕获遮挡（构建 #22）
+
+新增三张图和六段短视频仅本地分析，未上传私人素材。搜索框左侧改为当前引擎彩色图标＋下拉，连接真实单次搜索引擎选择，不改默认偏好；仅列已实现的引擎与有效自定义模板，不冒称Android截图全部引擎均已实现。书签／标签／历史／搜索设置连接原控制器，选择菜单沿用无动画ieynec菜单。
+
+私密首页右上补44pt普通模式按钮，回到进入前普通标签（仍存在时），否则现有普通标签／新普通页，不关闭私密标签、不清数据。对带候选栏键盘的`c → cn`消失，改为UIKit创建marked text前清补全覆盖，组合期间禁异步补全／focus-preview替换。键盘停靠取消旧layer动画、禁隐式事务并在失焦重置，避免旧位置残留；不宣称关闭系统键盘本体动画。
+
+新增公开API黑色window遮挡：私密浏览／私密托盘遇录屏／投屏、scene失活时遮挡。**普通系统截图不阻止**；录屏期间手机本地私密界面也会黑屏，停录恢复。通知异步，不保证绝对零帧泄漏，也不阻止音频或外部相机。见[实现及边界](docs/SEARCH-AND-PRIVACY.md)。
+
+完整[#22](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39767844014)成功22m58s，SDK缓存命中；源码`e8d99b226190e4746974e07170e7afb6511df9f0`，包内`e8d99b2`。下载独立校验106,765,654 bytes，SHA-256 `623A7FBBDB6B8EF1C1B27A9B8C8563BD194106AE6D588B30A83FF5314ABE67DE`。主App／OpenIn／Helper实际plist原标识、0.18.0／最低系统13.0保留。
+
+30项源码／简繁、真实SearchEngine/URLUtils编码与单次覆盖Foundation用例、原标签组、全部Swift解析、扩大UIKit及完整打包通过；6项Windows下载器测试重跑通过。UIKit新增真实AddressBarTextField的setMarkedText(c/cn)/unmarkText、私密首页按钮实际action、capture策略真值表，真实私密页面截图已查看。地址栏整体／输入法真实事件、黑色window与录屏通知不是完整E2E验证，网页Gecko、键盘残影是否彻底消失及新入口外观待真机反馈；原警告仍在。
+
+当前`IPA\current\ieynec-no-jit.ipa`已为#22，#21及来源原哈希归档`IPA\rollback\ieynec-no-jit-build21.ipa`；旧回滚保留。SideStore覆盖、保留全部扩展，不卸载／清数据，无JIT。Codeberg旧包未更新上传。仅交付文档更新无需重新构建。
+
+## 历史交付：首次计数图标／隐私遗留／整块底栏（构建 #21）
 
 用户新增四图和9.5s录屏仅本地分析。计数边框由动态文字色转为CGColor后可能在首次继承主题前取色；新增共享`FennecTabCountLabel`在挂到window／layout／trait变化刷新，避免第二次点击才正确。删除TabOverviewCollection旧Reynard狐狸说明的factory／背景绑定／空数据切换，保留TabOverview单套面具说明，不删除隐私数据。
 
