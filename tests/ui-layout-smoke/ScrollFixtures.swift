@@ -50,6 +50,18 @@ func checkToolbarScrollController() {
     pump(0.25)
     expect(0) // no stale snap after focus/search/keyboard/tray locks
     controller.unlock(for: .addressBarEditing)
+    content.onScrollInteractionBegan?()
+    content.onVerticalScroll?(20, 100)
+    content.onScrollInteractionEnded?()
+    pump(0.03)
+    content.onScrollInteractionBegan?() // tap interrupts the settle, with NO scroll delta
+    let tappedOffset = chrome.bottomOffset
+    precondition(tappedOffset > 0 && tappedOffset < 28)
+    pump(0.18)
+    expect(tappedOffset)
+    content.onScrollInteractionEnded?()
+    pump(0.22)
+    expect(0) // never leave a half-row stuck after a tap
     for _ in 0..<16 {
         content.onScrollInteractionBegan?()
         content.onVerticalScroll?(40, 100)

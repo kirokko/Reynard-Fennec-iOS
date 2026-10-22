@@ -92,7 +92,16 @@ final class ToolbarController {
         contentView.onScrollInteractionEnded = { [weak self] in
             guard let self else { return }
             isScrollTouchActive = false
-            if permitsScrollMotion { beginSnap() }
+            // A tap can interrupt a live settle without producing a scroll
+            // sample. Resume from that partial row when the finger lifts.
+            if chromeMode == .phone,
+               Prefs.AppearanceSettings.scrollToHideToolbarEnabled,
+               !isCollapsedUntilReset,
+               lockReasons.subtracting([.pageNavigation]).isEmpty,
+               transitionOffset > 0 && transitionOffset < maxTransitionOffset {
+                permitsScrollMotion = true
+                beginSnap()
+            }
         }
         contentView.onVerticalScroll = { [weak self] scrollDelta, position in
             self?.handleScroll(delta: scrollDelta, position: position)
