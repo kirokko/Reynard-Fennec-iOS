@@ -1,6 +1,11 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Rotate video": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "旋转视频" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "旋轉影片" } } } },
+    "Return to portrait": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "恢复竖屏" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "恢復直向" } } } },
+    "Landscape follows device": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "横屏方向跟随设备" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "橫向跟隨裝置" } } } },
+    "Portrait": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "竖屏" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "直向" } } } },
+    "Unable to rotate video": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "系统未允许旋转视频" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "系統未允許旋轉影片" } } } },
     "Sort by custom order": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "按自定义顺序排列" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "依自訂順序排列" } } } },
     "Sort by newest": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "按最新排列" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "依最新排列" } } } },
     "Sort by oldest": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "按最早排列" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "依最舊排列" } } } },

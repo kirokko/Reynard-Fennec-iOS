@@ -60,7 +60,7 @@ final class BottomToolbar: UIView {
             contentView.addSubview(addressBar)
         }
         if addressConstraints.isEmpty {
-            let trailing = addressBar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -96)
+            let trailing = addressBar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -140)
             addressTrailing = trailing
             addressConstraints = [trailing,
                 addressBar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
@@ -86,7 +86,7 @@ final class BottomToolbar: UIView {
     }
     func setEditing(_ editing: Bool) {
         controls.isHidden = editing
-        addressTrailing?.constant = editing ? -8 : -96
+        addressTrailing?.constant = editing ? -8 : -140
     }
     func setAddressBarDockOffset(_ offset: CGFloat) {
         contentView.transform = CGAffineTransform(translationX: 0, y: offset)

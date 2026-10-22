@@ -121,9 +121,12 @@ test('native tab groups reference live UUIDs, exclude private tabs, and have per
   assert.match(read('.github/workflows/build.yml'), /tests\/tab-groups\.test\.swift/);
 });
 
-test('motion-free policy covers UIKit, toolbar display link and tab overview state machine', () => {
+test('motion-free policy keeps only the requested user-scroll chrome exception', () => {
   assert.match(read('browser/Reynard/AppDelegate.swift'), /UIView\.setAnimationsEnabled\(false\)/);
-  assert.match(read(ui + 'Chrome/Toolbar/ToolbarController.swift'), /guard FennecTheme\.animatesBrowserUI else/);
+  const toolbar = read(ui + 'Chrome/Toolbar/ToolbarController.swift');
+  assert.match(toolbar, /guard FennecTheme\.animatesBrowserUI \|\| permitsScrollMotion else/);
+  assert.match(toolbar, /permitsScrollMotion = chromeMode == \.phone/);
+  assert.match(toolbar, /private func cancelAnimation\(\) \{\s*permitsScrollMotion = false/);
   const presentation = read(ui + 'TabOverview/TabOverviewPresentation.swift');
   assert.doesNotMatch(presentation, /UIView\.animate|usingSpring|scaleX:|presentOnPhone|presentOnPad/);
   assert.match(presentation, /UIView\.performWithoutAnimation/);
@@ -150,7 +153,7 @@ test('JIT removal keeps only the required Gecko no-JIT status handshake', () => 
 
 test('address focus and keyboard docking commit app-owned chrome without animation', () => {
   const browser = read(ui + 'BrowserViewController.swift');
-  assert.doesNotMatch(browser, /animateLayout\(animation\)|private func animateLayout/);
+  assert.doesNotMatch(browser, /animateLayout\(animation\)|private func animateLayout|animationDuration: animation\.duration/);
   assert.match(browser, /UIView\.performWithoutAnimation \{\s*browserChrome\.dockActionBar/);
   const search = read(ui + 'Search/SearchOverlayCoordinator.swift');
   assert.match(search, /dismiss\(\.search, animated: animated && FennecTheme\.animatesBrowserUI\)/);
@@ -196,6 +199,55 @@ test('filmed download categories and bookmark sort choices use original stores',
   assert.match(bookmarks, /folder\.isProtected \{\s*return item/);
   const catalog = JSON.parse(read(ui + 'Appearance/FennecLocalizable.xcstrings'));
   for (const key of ['All', 'Images', 'Other']) for (const language of ['zh-Hans', 'zh-Hant']) assert.ok(catalog.strings[key].localizations[language]);
+});
+
+test('new reference chrome has real plus buttons, a single privacy mask and no fake sync entry', () => {
+  const theme = read(ui + 'Appearance/FennecTheme.swift');
+  assert.match(theme, /for button in \[newTabButton, tabButton, menuButton\]/);
+  assert.match(theme, /widthAnchor\.constraint\(equalToConstant: 132\)/);
+  assert.doesNotMatch(theme, /UIImage\(named: "private.mode.icon"\)|systemName: "theatermasks"/);
+  for (const name of ['TopToolbar', 'BottomToolbar']) {
+    const toolbar = read(ui + `Chrome/Toolbar/${name}.swift`);
+    assert.match(toolbar, /editing \? -8 : -140/);
+    assert.match(toolbar, /controls.onNewTab = \{ \[weak self\] in self\?\.onNewTab\?\(\) \}/);
+  }
+  const tray = read(ui + 'TabOverview/TabOverviewToolbar/TabOverviewTopToolbar.swift');
+  assert.doesNotMatch(tray, /syncButton|onSync|Sync tabs/);
+});
+
+test('fullscreen starts portrait and uses a scoped gravity sensor instead of changing system lock', () => {
+  const source = read(ui + 'FennecFullscreenRotation.swift');
+  assert.match(source, /mutating func enter\(\) \{\s*mode = \.portrait\s*orientation = \.portrait/);
+  assert.match(source, /guard mode == \.landscape, orientation != side/);
+  assert.match(source, /candidateSamples >= 2/);
+  assert.match(source, /startAccelerometerUpdates\(to: \.main\)/);
+  assert.match(source, /willResignActiveNotification/);
+  assert.match(source, /motion.stopAccelerometerUpdates\(\)/);
+  assert.doesNotMatch(source, /setValue\(|orientationLock|UIAppRotation/);
+  const browser = read(ui + 'BrowserViewController.swift');
+  assert.match(browser, /return fullscreenRotation.state.mask/);
+  assert.match(browser, /fullscreenRotation\.enter\(\)/);
+  assert.match(browser, /fullscreenRotation\.exit\(\)/);
+  assert.match(browser, /currentMask.map \{ requestedOrientations.contains\(\$0\) \}/);
+  assert.match(browser, /requestGeometryUpdate\(geometryPreferences\) \{/);
+  const catalog = JSON.parse(read(ui + 'Appearance/FennecLocalizable.xcstrings'));
+  for (const key of ['Rotate video', 'Return to portrait', 'Landscape follows device', 'Portrait', 'Unable to rotate video']) {
+    for (const lang of ['zh-Hans', 'zh-Hant']) assert.ok(catalog.strings[key]?.localizations[lang]?.stringUnit.value);
+  }
+});
+
+test('pull to refresh overlays a disc without displacing the page or issuing a fake reload', () => {
+  const web = read(ui + 'ContentView/WebContentView.swift');
+  assert.doesNotMatch(web, /webView.transform|usingSpringWithDamping|UIActivityIndicatorView/);
+  assert.match(web, /session.reload\(\)/);
+  assert.match(web, /static let refreshThreshold: CGFloat = 96/);
+  assert.match(web, /refreshIndicatorContainer.transform/);
+  const indicator = read(ui + 'ContentView/FennecRefreshIndicator.swift');
+  assert.match(indicator, /CGSize\(width: 40, height: 40\)/);
+  assert.match(indicator, /removeAnimation\(forKey: "refresh.spin"\)/);
+  const fixture = read('tests/ui-layout-smoke/ChromeFixtures.swift');
+  assert.match(fixture, /checkFullscreenRotationAndRefresh/);
+  assert.match(fixture, /Stale full-screen controls/);
 });
 
 test('menu routes connect to original engine actions instead of placeholder handlers', () => {

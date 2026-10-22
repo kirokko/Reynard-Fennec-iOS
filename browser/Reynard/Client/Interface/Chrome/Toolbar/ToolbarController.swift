@@ -48,6 +48,7 @@ final class ToolbarController {
     private var lastAnimationTime: CFTimeInterval = 0
     private var pendingSnap: DispatchWorkItem?
     private var animationDisplayLink: CADisplayLink?
+    private var permitsScrollMotion = false
     private var isBottomToolbarCollapsed = false
     private var isCollapsedUntilReset = false
     private var resizesPage = false
@@ -224,6 +225,10 @@ final class ToolbarController {
             maximumOffset *= scrollPosition / maxTopToolbarOffset
         }
         targetOffset = min(max(targetOffset + delta * UX.toolbarScrollFactor, 0), maximumOffset)
+        // Explicit Android-reference exception: bottom address bar follows page
+        // scroll and settles smoothly. Focus, keyboard and programmatic changes
+        // still use the normal no-animation policy.
+        permitsScrollMotion = chromeMode == .phone
         startAnimation()
         scheduleSnap()
     }
@@ -254,7 +259,7 @@ final class ToolbarController {
     }
     
     private func startAnimation() {
-        guard FennecTheme.animatesBrowserUI else {
+        guard FennecTheme.animatesBrowserUI || permitsScrollMotion else {
             animationDisplayLink?.invalidate()
             animationDisplayLink = nil
             snapStartTime = nil
@@ -303,6 +308,7 @@ final class ToolbarController {
     }
     
     private func cancelAnimation() {
+        permitsScrollMotion = false
         pendingSnap?.cancel()
         pendingSnap = nil
         animationDisplayLink?.invalidate()

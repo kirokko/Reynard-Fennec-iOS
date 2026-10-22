@@ -27,14 +27,25 @@ enum FennecTheme {
 
     // Render these tiny immutable assets once, not on every chrome refresh.
     static let privateBrowsingImage: UIImage? = {
-        guard let source = UIImage(named: "private.mode.icon") else {
-            return UIImage(systemName: "theatermasks")
-        }
-        let size = CGSize(width: 26, height: 26)
-        let scale = min(size.width / max(1, source.size.width), size.height / max(1, source.size.height))
-        let fitted = CGSize(width: source.size.width * scale, height: source.size.height * scale)
-        return UIGraphicsImageRenderer(size: size).image { _ in
-            source.draw(in: CGRect(x: (size.width - fitted.width) / 2, y: (size.height - fitted.height) / 2, width: fitted.width, height: fitted.height))
+        // A single eye mask, not Reynard's fox or SF Symbols' theatre masks.
+        UIGraphicsImageRenderer(size: CGSize(width: 26, height: 26)).image { context in
+            context.cgContext.translateBy(x: 0, y: -2)
+            UIColor.black.setStroke()
+            UIColor.black.setFill()
+            let mask = UIBezierPath()
+            mask.move(to: CGPoint(x: 2, y: 9))
+            mask.addCurve(to: CGPoint(x: 13, y: 12), controlPoint1: CGPoint(x: 6, y: 7), controlPoint2: CGPoint(x: 9, y: 12))
+            mask.addCurve(to: CGPoint(x: 24, y: 9), controlPoint1: CGPoint(x: 17, y: 12), controlPoint2: CGPoint(x: 20, y: 7))
+            mask.addCurve(to: CGPoint(x: 20, y: 21), controlPoint1: CGPoint(x: 25, y: 17), controlPoint2: CGPoint(x: 25, y: 21))
+            mask.addCurve(to: CGPoint(x: 13, y: 18), controlPoint1: CGPoint(x: 16, y: 21), controlPoint2: CGPoint(x: 15, y: 18))
+            mask.addCurve(to: CGPoint(x: 6, y: 21), controlPoint1: CGPoint(x: 11, y: 18), controlPoint2: CGPoint(x: 10, y: 21))
+            mask.addCurve(to: CGPoint(x: 2, y: 9), controlPoint1: CGPoint(x: 1, y: 21), controlPoint2: CGPoint(x: 1, y: 17))
+            mask.close()
+            mask.lineWidth = 1.7
+            mask.lineJoinStyle = .round
+            mask.stroke()
+            UIBezierPath(ovalIn: CGRect(x: 5, y: 13, width: 5, height: 3)).fill()
+            UIBezierPath(ovalIn: CGRect(x: 16, y: 13, width: 5, height: 3)).fill()
         }.withRenderingMode(.alwaysTemplate)
     }()
 
@@ -68,13 +79,10 @@ final class FennecToolbarControls: UIStackView {
         translatesAutoresizingMaskIntoConstraints = false
         axis = .horizontal
         distribution = .fillEqually
-        for button in [tabButton, menuButton] { addArrangedSubview(button) }
-        // New-tab creation remains available in the tab tray. Match Fennec's
-        // compact address bar without a redundant standalone plus button.
-        // Keep the legacy button API for menu setup, but not as a hidden
-        // arranged subview participating in the first layout pass.
+        for button in [newTabButton, tabButton, menuButton] { addArrangedSubview(button) }
+        // The latest Android reference has a real standalone plus target.
         NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: 88),
+            widthAnchor.constraint(equalToConstant: 132),
             heightAnchor.constraint(equalToConstant: 44),
         ])
         newTabButton.accessibilityLabel = FennecTheme.text("New tab")
@@ -93,7 +101,7 @@ final class FennecToolbarControls: UIStackView {
             countLabel.centerXAnchor.constraint(equalTo: tabButton.centerXAnchor),
             countLabel.centerYAnchor.constraint(equalTo: tabButton.centerYAnchor),
             countLabel.widthAnchor.constraint(equalToConstant: 22),
-            countLabel.heightAnchor.constraint(equalToConstant: 22),
+            countLabel.heightAnchor.constraint(equalToConstant: 18),
         ])
         downloadProgress.translatesAutoresizingMaskIntoConstraints = false
         downloadProgress.progressTintColor = FennecTheme.accent

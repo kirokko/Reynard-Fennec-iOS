@@ -51,8 +51,8 @@ final class TabOverviewTopToolbar: UIView {
         NSLayoutConstraint.activate([
             countLabel.centerXAnchor.constraint(equalTo: regularButton.centerXAnchor),
             countLabel.centerYAnchor.constraint(equalTo: regularButton.centerYAnchor),
-            countLabel.widthAnchor.constraint(equalToConstant: 24),
-            countLabel.heightAnchor.constraint(equalToConstant: 24),
+            countLabel.widthAnchor.constraint(equalToConstant: 26),
+            countLabel.heightAnchor.constraint(equalToConstant: 20),
         ])
         regularButton.accessibilityLabel = FennecTheme.text("Tabs")
         groupsButton.setImage(UIImage(systemName: "square.grid.2x2", withConfiguration: UIImage.SymbolConfiguration(pointSize: 23, weight: .regular)), for: .normal)
@@ -93,10 +93,16 @@ final class TabOverviewTopToolbar: UIView {
         search.accessibilityLabel = FennecTheme.text("Search tabs")
         search.onTap = { [weak self] in self?.onSearch?() }
         add.translatesAutoresizingMaskIntoConstraints = false
-        add.setImage(UIImage(systemName: "plus"), for: .normal)
-        add.tintColor = FennecTheme.ink
-        add.backgroundColor = FennecTheme.accentContainer
+        add.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24, weight: .regular)), for: .normal)
+        add.tintColor = FennecTheme.accent
+        add.backgroundColor = UIColor { $0.userInterfaceStyle == .dark
+            ? UIColor(red: 0.36, green: 0.24, blue: 0.53, alpha: 1)
+            : UIColor(red: 0.82, green: 0.71, blue: 1, alpha: 1) }
         add.layer.cornerRadius = 16
+        add.layer.shadowColor = UIColor.black.cgColor
+        add.layer.shadowOpacity = 0.2
+        add.layer.shadowOffset = CGSize(width: 0, height: 3)
+        add.layer.shadowRadius = 5
         add.onTap = { [weak self] in self?.onAddTab?() }
         add.onLongPress = { [weak self] in self?.onRecentlyClosed?() }
         floatingControls.addSubview(pill)

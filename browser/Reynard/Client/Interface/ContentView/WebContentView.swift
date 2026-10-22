@@ -11,14 +11,11 @@ import UIKit
 final class WebContentView: UIView, UIScrollViewDelegate {
     fileprivate enum UX {
         static let minimumPullDistance: CGFloat = 8
-        static let refreshThreshold: CGFloat = 350
-        static let landscapePhoneRefreshThreshold: CGFloat = 100
+        static let refreshThreshold: CGFloat = 96
+        static let landscapePhoneRefreshThreshold: CGFloat = 96
         static let quickScaleMaximumInterval: TimeInterval = 0.3
         static let quickScaleSpatialTolerance: CGFloat = 44
         static let refreshingContentOffset: CGFloat = 64
-        static let rubberBandCoefficient: CGFloat = 0.55
-        static let returnAnimationDuration: TimeInterval = 0.45
-        static let returnSpringDamping: CGFloat = 0.9
         static let scrollToTopTriggerOffset: CGFloat = 1
         static let errorTopInset: CGFloat = 96
         static let errorHorizontalInset: CGFloat = 32
@@ -32,7 +29,6 @@ final class WebContentView: UIView, UIScrollViewDelegate {
     
     private(set) var visibility: VisibilityState = .visible
     private var refreshingSession: GeckoSession?
-    private var isTrackingPullProgress = false
     private var pullToRefreshRecognizer: PullToRefreshGestureRecognizer?
     private var lastScrollState: (position: CGFloat, zoomScale: CGFloat)?
     private var currentScrollY: CGFloat = 0
@@ -45,7 +41,7 @@ final class WebContentView: UIView, UIScrollViewDelegate {
     private let errorLabel = UILabel()
     private let scrollToTopTriggerView = UIScrollView() // For scrolling up when tap the iOS status bar
     private let refreshIndicatorContainer = UIView()
-    private let refreshIndicator = UIActivityIndicatorView(style: .large)
+    private let refreshIndicator = FennecRefreshIndicator(frame: .zero)
     
     var historySwipeDirectionsProvider: (() -> GeckoEdgeSwipeDirections)?
     var onHistorySwipeDidStart: ((GeckoEdgeSwipeDirections) -> Void)?
@@ -111,7 +107,6 @@ final class WebContentView: UIView, UIScrollViewDelegate {
         errorLabel.textAlignment = .center
         errorLabel.textColor = .secondaryLabel
         errorLabel.isHidden = true
-        refreshIndicator.hidesWhenStopped = false
         refreshIndicatorContainer.addSubview(refreshIndicator)
         addSubview(scrollToTopTriggerView)
         addSubview(pageBackgroundView)
@@ -350,88 +345,38 @@ final class WebContentView: UIView, UIScrollViewDelegate {
     }
     
     private func updatePullPresentation(progress: CGFloat, pullDistance: CGFloat) {
-        let viewportHeight = max(bounds.height, 1)
-        let rubberBandDistance = UX.rubberBandCoefficient * pullDistance
-        let contentOffset = rubberBandDistance * viewportHeight / (viewportHeight + rubberBandDistance)
-        setRefreshIndicatorProgress(contentOffset / UX.refreshingContentOffset)
-        refreshIndicatorContainer.alpha = progress
-        webView.transform = CGAffineTransform(translationX: 0, y: contentOffset)
+        // Follow the finger with the refresh disc, never rubber-band the page.
+        refreshIndicator.setPullProgress(progress)
+        refreshIndicatorContainer.alpha = min(1, max(0, progress * 2))
+        refreshIndicatorContainer.transform = CGAffineTransform(translationX: 0, y: min(44, max(0, pullDistance * 0.45)))
     }
     
     private func beginRefreshingPresentation() {
-        startRefreshIndicatorAnimation()
-        UIView.animate(
-            withDuration: UX.returnAnimationDuration,
-            delay: 0,
-            usingSpringWithDamping: UX.returnSpringDamping,
-            initialSpringVelocity: 0,
-            options: [.beginFromCurrentState, .allowUserInteraction]
-        ) {
-            self.refreshIndicatorContainer.alpha = 1
-            self.webView.transform = CGAffineTransform(
-                translationX: 0,
-                y: UX.refreshingContentOffset
-            )
+        refreshIndicator.startAnimating()
+        UIView.performWithoutAnimation {
+            refreshIndicatorContainer.alpha = 1
+            refreshIndicatorContainer.transform = .identity
         }
     }
     
     private func cancelRefreshPresentation() {
-        UIView.animate(
-            withDuration: UX.returnAnimationDuration,
-            delay: 0,
-            usingSpringWithDamping: UX.returnSpringDamping,
-            initialSpringVelocity: 0,
-            options: [.beginFromCurrentState, .allowUserInteraction]
-        ) {
-            self.refreshIndicatorContainer.alpha = 0
-            self.webView.transform = .identity
-        } completion: { _ in
-            if self.refreshingSession == nil {
-                self.resetRefreshIndicator()
-            }
+        UIView.performWithoutAnimation {
+            refreshIndicatorContainer.alpha = 0
+            refreshIndicatorContainer.transform = .identity
         }
-    }
-    
-    private func setRefreshIndicatorProgress(_ progress: CFTimeInterval) {
-        if !isTrackingPullProgress {
-            refreshIndicator.layer.speed = 0
-            refreshIndicator.layer.timeOffset = 0
-            refreshIndicator.layer.beginTime = 0
-            refreshIndicator.startAnimating()
-            isTrackingPullProgress = true
-        }
-        refreshIndicator.layer.timeOffset = progress * 0.3 // much better to look at
-    }
-    
-    private func startRefreshIndicatorAnimation() {
-        guard isTrackingPullProgress else {
-            refreshIndicator.startAnimating()
-            return
-        }
-        let pausedTime = refreshIndicator.layer.timeOffset
-        refreshIndicator.layer.speed = 1
-        refreshIndicator.layer.timeOffset = 0
-        refreshIndicator.layer.beginTime = 0
-        refreshIndicator.layer.beginTime = refreshIndicator.layer.convertTime(
-            CACurrentMediaTime(),
-            from: nil
-        ) - pausedTime
-        isTrackingPullProgress = false
+        if refreshingSession == nil { resetRefreshIndicator() }
     }
     
     private func resetRefreshIndicator() {
         refreshIndicator.stopAnimating()
-        refreshIndicator.layer.speed = 1
-        refreshIndicator.layer.timeOffset = 0
-        refreshIndicator.layer.beginTime = 0
-        isTrackingPullProgress = false
     }
     
     private func updateRefreshIndicatorTint() {
         guard let pageBackgroundColor = pageBackgroundView.backgroundColor else {
             return
         }
-        refreshIndicator.color = pageBackgroundColor.isLightColor(in: traitCollection) ? .black : .white
+        // The disc has its own surface; page-derived white can vanish on it.
+        refreshIndicator.color = FennecTheme.selectedOutline
     }
 }
 

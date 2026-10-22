@@ -58,10 +58,11 @@ class FavoritesSectionViewController: MockSection {
 
 struct DownloadStoreSummary { let aggregateProgress = 0.0; let activeCount = 0 }
 final class ToolbarButton: UIButton {
-    enum ButtonType { case newTab, tabOverview, library }
+    enum ButtonType { case newTab, tabOverview, library, sidebar }
     init(buttonType: ButtonType, target: AnyObject, action: Selector) {
         super.init(frame: .zero)
         addTarget(target, action: action, for: .touchUpInside)
+        if buttonType == .newTab { setImage(UIImage(systemName: "plus"), for: .normal) }
     }
     required init?(coder: NSCoder) { fatalError() }
 }
@@ -105,6 +106,8 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
     }
     private func exercise() {
         checkNoJITController()
+        checkFullscreenRotationAndRefresh()
+        screenshot(checkFennecChrome(), name: "chrome-controls")
         checkDownloadFilters()
         checkInstantTray()
         let thumbnail = UIGraphicsImageRenderer(size: CGSize(width: 393, height: 1800)).image { context in
@@ -217,18 +220,23 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func checkCategories() {
-        let container = UIView(frame: CGRect(x: 0, y: 0, width: 393, height: 64))
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: 393, height: 180))
         container.backgroundColor = FennecTheme.surface
         let toolbar = TabOverviewTopToolbar(frame: .zero)
         container.addSubview(toolbar)
+        container.addSubview(toolbar.floatingControls)
         NSLayoutConstraint.activate([
             toolbar.leadingAnchor.constraint(equalTo: container.leadingAnchor), toolbar.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            toolbar.topAnchor.constraint(equalTo: container.topAnchor), toolbar.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+            toolbar.topAnchor.constraint(equalTo: container.topAnchor), toolbar.heightAnchor.constraint(equalToConstant: 64),
+            toolbar.floatingControls.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
+            toolbar.floatingControls.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
+            toolbar.floatingControls.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -16),
+            toolbar.floatingControls.heightAnchor.constraint(equalToConstant: 56),
         ])
         toolbar.apply(tabCount: 2, visibleTabCount: 2, hasVisibleTab: true)
         container.layoutIfNeeded()
         let labels = descendants(toolbar).compactMap { $0 as? UILabel }
-        precondition(labels.contains { $0.text == "2" && $0.bounds.width == 24 && $0.bounds.height == 24 })
+        precondition(labels.contains { $0.text == "2" && $0.bounds.width == 26 && $0.bounds.height == 20 })
         let privateButton = descendants(toolbar).compactMap { $0 as? UIButton }.first { $0.accessibilityLabel == "Private" }!
         precondition(privateButton.image(for: .normal)?.size == CGSize(width: 26, height: 26))
         screenshot(container, name: "tab-categories")

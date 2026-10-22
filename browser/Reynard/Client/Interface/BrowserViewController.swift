@@ -36,6 +36,8 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
         completion: (GeckoOrientationLockResult) -> Void
     )?
     private var preFullscreenOrientation: UIInterfaceOrientation?
+    private let fullscreenRotation = FennecFullscreenRotationController()
+    private var orientationGeometryRequestID = UUID()
     weak var fullscreenSession: GeckoSession?
     private let allowsSidebarHosting: Bool
     private var shouldRestoreContentFocus = false
@@ -121,6 +123,9 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if isShowingFullscreenMedia && browserLayout.interfaceIdiom == .phone {
+            return fullscreenRotation.state.mask
+        }
         if let lockedOrientations {
             return lockedOrientations
         }
@@ -129,7 +134,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
     }
     
     override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
-        let allowedOrientations = lockedOrientations ?? supportedInterfaceOrientations
+        let allowedOrientations = supportedInterfaceOrientations
         return preferredInterfaceOrientation(allowedBy: allowedOrientations) ?? .portrait
     }
     
@@ -1044,7 +1049,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
         contentView.updateFocusedInputRelocation(
             above: shouldRelocateInput ? keyboardFrame : nil,
             bottomInset: browserChrome.isShowingKeyboardDismissal ? ActionBarStyle.compact.height : 0,
-            animationDuration: animation.duration,
+            animationDuration: 0,
             animationOptions: animation.curve
         )
     }
@@ -1056,7 +1061,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
             browserChrome.dismissActionBar(animated: false)
         }
         contentView.resetFocusedInputRelocation(
-            animationDuration: animation.duration,
+            animationDuration: 0,
             animationOptions: animation.curve
         )
         UIView.performWithoutAnimation {
@@ -1164,6 +1169,12 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
             return
         }
         
+        // The phone fullscreen rotate button, not a website, owns orientation.
+        if isShowingFullscreenMedia && browserLayout.interfaceIdiom == .phone {
+            let currentMask = (view.window?.windowScene).flatMap { orientationMask(for: $0.interfaceOrientation) }
+            completion(currentMask.map { requestedOrientations.contains($0) } == true ? .success : .rejected)
+            return
+        }
         rejectPendingOrientationRequest()
         
         if #available(iOS 16.0, *) {
@@ -1216,7 +1227,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
         if #available(iOS 16.0, *) {
             setNeedsUpdateOfSupportedInterfaceOrientations()
         }
-        updateFullscreenOrientation(false)
+        if !isShowingFullscreenMedia { updateFullscreenOrientation(false) }
     }
     
     private func updateFullscreenOrientation(_ fullScreen: Bool) {
@@ -1231,8 +1242,16 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
             } else {
                 preFullscreenOrientation = .portrait
             }
+            rejectPendingOrientationRequest()
+            lockedOrientations = nil
+            fullscreenRotation.install(in: view)
+            fullscreenRotation.onRequestOrientation = { [weak self] orientation in
+                self?.forceInterfaceOrientation(orientation)
+            }
+            fullscreenRotation.enter()
             return
         }
+        fullscreenRotation.exit()
         
         guard !isShowingFullscreenMedia,
               lockedOrientations == nil,
@@ -1356,6 +1375,8 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
     }
     
     private func forceInterfaceOrientation(_ orientation: UIInterfaceOrientation) {
+        let requestID = UUID()
+        orientationGeometryRequestID = requestID
         let orientationMask: UIInterfaceOrientationMask
         switch orientation {
         case .portrait:
@@ -1375,8 +1396,15 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
                 return
             }
             
+            setNeedsUpdateOfSupportedInterfaceOrientations()
+            navigationController?.setNeedsUpdateOfSupportedInterfaceOrientations()
             let geometryPreferences = UIWindowScene.GeometryPreferences.iOS(interfaceOrientations: orientationMask)
-            windowScene.requestGeometryUpdate(geometryPreferences)
+            windowScene.requestGeometryUpdate(geometryPreferences) { [weak self] _ in
+                guard let self, self.isShowingFullscreenMedia,
+                      self.orientationGeometryRequestID == requestID,
+                      self.fullscreenRotation.state.orientation == orientation else { return }
+                self.fullscreenRotation.showRotationFailure()
+            }
             UIViewController.attemptRotationToDeviceOrientation()
             return
         }
