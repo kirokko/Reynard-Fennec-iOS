@@ -1,9 +1,9 @@
-// GPL-3.0. Public-API capture/background protection, NOT screenshot prevention.
+// GPL-3.0. Background/app-switcher cover ONLY, NOT screenshot/recording protection.
 import UIKit
 
-/// iOS exposes recording/mirroring state, but no Android FLAG_SECURE equivalent
-/// for arbitrary UIKit/Gecko screenshots. A screenshot notification is too late.
-/// While captured we deliberately cover the local private UI too (fail closed).
+/// The owner rejects blocking local use during recording. Cover private UI only
+/// while the scene is inactive. Active recording must not blacken the device.
+/// Unsupported secure-rendering diagnostics are isolated from live Gecko pages.
 final class FennecPrivacyShield {
     private var cover: UIWindow?
     private var observers: [NSObjectProtocol] = []
@@ -12,7 +12,8 @@ final class FennecPrivacyShield {
     private var isInactive = false
 
     static func shouldCover(isSensitive: Bool, isInactive: Bool, isCaptured: Bool) -> Bool {
-        isSensitive && (isInactive || isCaptured)
+        // isCaptured is deliberately NOT a reason to cover active local UI.
+        isSensitive && isInactive
     }
 
     func attach(to scene: UIWindowScene) {

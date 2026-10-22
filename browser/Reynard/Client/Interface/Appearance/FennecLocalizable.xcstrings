@@ -1,6 +1,11 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Capture protection experiment": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "防截录诊断（实验）" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "防截錄診斷（實驗）" } } } },
+    "Tap to test interaction": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "点击测试交互" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "點擊測試互動" } } } },
+    "Not verified on this device": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "此设备尚未验证防截录成功" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "此裝置尚未驗證防截錄成功" } } } },
+    "Synthetic test only. 0: normal; 1: secure canvas; 2: experimental layer flag. Keep using the red area, take a screenshot and record the screen. Protection is demonstrated only if the red area stays visible on the phone but disappears from the captures. This does not protect browser tabs.": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "仅为合成测试。0：普通；1：安全画布；2：实验图层标志。请操作红色区域，同时截图和录屏。只有手机上红色区域仍正常显示、而截图和录像中消失，才说明该测试有效。本测试不保护浏览器标签页。" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "僅為合成測試。0：一般；1：安全畫布；2：實驗圖層旗標。請操作紅色區域，同時截圖及錄影。只有手機上紅色區域仍正常顯示、而截圖和錄影中消失，才表示此測試有效。本測試不保護瀏覽器分頁。" } } } },
+    "Who can see my browsing history?": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "谁可以看到我的上网记录？" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "誰可能看到我的上網紀錄？" } } } },
     "This time search in": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "此次搜索使用" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "此次搜尋使用" } } } },
     "Normal tabs": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "返回普通标签页" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "返回一般分頁" } } } },
     "Search engines": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "搜索引擎" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "搜尋引擎" } } } },

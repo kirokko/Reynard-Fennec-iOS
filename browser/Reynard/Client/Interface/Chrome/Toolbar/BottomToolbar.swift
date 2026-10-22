@@ -114,6 +114,7 @@ final class BottomToolbar: UIView {
     }
     func setContentAlpha(_ alpha: CGFloat) { contentView.alpha = alpha }
     func setTabCount(_ count: Int) { controls.setTabCount(count) }
+    func setPrivateBrowsing(_ value: Bool) { controls.setPrivateBrowsing(value) }
     func updateNavigation(canGoBack: Bool, canGoForward: Bool, canShare: Bool) {}
     func configureNavigationMenus(itemsProvider: @escaping (ToolbarButtonMenus.NavigationDirection) -> [NavigationHistoryStore.HistoryItem], onSelect: @escaping (ToolbarButtonMenus.NavigationDirection, Int) -> Void) {}
     func configureLibraryMenus(onSelect: @escaping (LibrarySection) -> Void) {

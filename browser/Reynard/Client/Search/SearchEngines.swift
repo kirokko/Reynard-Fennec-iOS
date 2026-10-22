@@ -16,6 +16,12 @@ enum SearchEngine: String, CaseIterable {
     case ecosia
     case startpage
     case custom
+    case bingChina
+    case duckDuckGoLite
+    case duckDuckGoHTML
+
+    // Keep old raw values decodable; only these four are offered in the UI.
+    static let pickerEngines: [SearchEngine] = [.duckDuckGo, .bingChina, .duckDuckGoLite, .duckDuckGoHTML]
     
     var displayName: String {
         switch self {
@@ -35,6 +41,12 @@ enum SearchEngine: String, CaseIterable {
             return "Startpage"
         case .custom:
             return NSLocalizedString("Custom", comment: "Search engine option")
+        case .bingChina:
+            return "cn.bing.com"
+        case .duckDuckGoLite:
+            return "DuckDuckGo (Lite)"
+        case .duckDuckGoHTML:
+            return "DuckDuckGo (HTML)"
         }
     }
     
@@ -57,7 +69,12 @@ enum SearchEngine: String, CaseIterable {
     }
 
     var iconAssetName: String {
-        self == .google ? "google.com" : "FennecSearch-\(rawValue)"
+        switch self {
+        case .google: return "google.com"
+        case .duckDuckGoLite, .duckDuckGoHTML: return "FennecSearch-duckDuckGo"
+        case .bingChina: return "FennecSearch-bing"
+        default: return "FennecSearch-\(rawValue)"
+        }
     }
     
     static func canSearch(using customQueryTemplate: String) -> Bool {
@@ -86,6 +103,12 @@ enum SearchEngine: String, CaseIterable {
             return "https://www.ecosia.org/search?q=%s"
         case .startpage:
             return "https://www.startpage.com/sp/search?query=%s"
+        case .bingChina:
+            return "https://cn.bing.com/search?q=%s"
+        case .duckDuckGoLite:
+            return "https://lite.duckduckgo.com/lite/?q=%s"
+        case .duckDuckGoHTML:
+            return "https://html.duckduckgo.com/html/?q=%s"
         case .custom:
             return nil
         }

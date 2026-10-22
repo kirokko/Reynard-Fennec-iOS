@@ -1109,6 +1109,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
     func updateNavigationButtons() {
         updatePrivacyShield()
         browserChrome.overrideUserInterfaceStyle = tabManager.selectedTabMode == .private ? .dark : .unspecified
+        browserChrome.setPrivateBrowsing(tabManager.selectedTabMode == .private)
         browserChrome.setTabCount(tabManager.activeTabs.count)
         guard let tab = tabManager.selectedTab else {
             contentView.setHistoryNavigation(

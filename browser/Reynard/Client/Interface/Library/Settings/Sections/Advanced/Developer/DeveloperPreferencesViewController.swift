@@ -25,6 +25,7 @@ final class DeveloperPreferencesViewController: SettingsTableViewController, UIT
     private enum Row {
         case remoteDebugging
         case remoteDebuggingPort
+        case captureProbe
     }
     
     private var isDebuggingEnabled = Prefs.DeveloperSettings.remoteDebuggingEnabled
@@ -48,8 +49,8 @@ final class DeveloperPreferencesViewController: SettingsTableViewController, UIT
     
     private var displayedRows: [Row] {
         return isDebuggingEnabled
-        ? [.remoteDebugging, .remoteDebuggingPort]
-        : [.remoteDebugging]
+        ? [.remoteDebugging, .remoteDebuggingPort, .captureProbe]
+        : [.remoteDebugging, .captureProbe]
     }
     
     init() {
@@ -159,6 +160,9 @@ final class DeveloperPreferencesViewController: SettingsTableViewController, UIT
             cell.textLabel?.text = NSLocalizedString("Remote Debugging Port", comment: "")
             cell.accessoryView = portTextField
             portTextField.text = String(Prefs.DeveloperSettings.remoteDebuggingPort)
+        case .captureProbe:
+            cell.textLabel?.text = FennecTheme.text("Capture protection experiment")
+            cell.accessoryType = .disclosureIndicator
         }
         cell.selectionStyle = .none
         return cell
@@ -176,6 +180,8 @@ final class DeveloperPreferencesViewController: SettingsTableViewController, UIT
             break
         case .remoteDebuggingPort:
             portTextField.becomeFirstResponder()
+        case .captureProbe:
+            navigationController?.pushViewController(FennecCaptureProbeViewController(), animated: false)
         }
     }
     

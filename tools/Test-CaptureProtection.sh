@@ -16,7 +16,7 @@ cat > "$app/Info.plist" <<'PLIST'
 <key>UILaunchScreen</key><dict/></dict></plist>
 PLIST
 sdk=$(xcrun --sdk iphonesimulator --show-sdk-path)
-xcrun swiftc -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" tests/capture-protection/*.swift -o "$app/CaptureProbe"
+xcrun swiftc -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" tests/capture-protection/*.swift browser/Reynard/Client/Interface/Appearance/FennecSecureCanvasExperiment.swift -o "$app/CaptureProbe"
 codesign --force --sign - "$app"
 xcrun simctl list devices available --json > "$work/devices.json"
 device=$(node - "$work/devices.json" <<'NODE'
@@ -46,7 +46,7 @@ xcrun simctl io "$device" recordVideo --codec=h264 "$work/screenshots/capture.mo
 video_pid=$!
 xcrun simctl launch --terminate-running-process --stdout="$work/stdout.log" --stderr="$work/stderr.log" "$device" local.ieynec.CaptureProbe
 for ((i=0;i<180;i++)); do
-  for stage in normal protected restored; do
+  for stage in normal protected layer-flag restored; do
     if [[ -f "$container/Documents/$stage-ready" && ! -f "$container/Documents/$stage-captured" ]]; then
       sleep 1
       xcrun simctl io "$device" screenshot "$work/screenshots/$stage-screen.png"

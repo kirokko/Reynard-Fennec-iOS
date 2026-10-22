@@ -63,13 +63,10 @@ extension BrowserViewController: AddressBarDelegate, AddressBarGestureDelegate {
     // MARK: - AddressBarDelegate
 
     func addressBarDidRequestSearchEnginePicker(_ addressBar: AddressBar) {
-        let engines = SearchEngine.allCases.filter {
-            $0 != .custom || SearchEngine.canSearch(using: Prefs.SearchSettings.customSearchTemplate)
-        }
+        let engines = SearchEngine.pickerEngines
         let engineRows = engines.map { engine in
-            FennecMenuItem(title: engine.displayName, symbol: "globe",
+            FennecSearchPopupItem(title: engine.displayName,
                           image: UIImage(named: engine.iconAssetName)?.withRenderingMode(.alwaysOriginal),
-                          badge: engine == addressBar.searchEngine ? "✓" : nil,
                           action: { [weak self, weak addressBar] in
                 guard let self, let addressBar else { return }
                 addressBar.selectSearchEngine(engine)
@@ -83,23 +80,23 @@ extension BrowserViewController: AddressBarDelegate, AddressBarGestureDelegate {
                 }
             })
         }
-        let controller = FennecMenuViewController(groups: [
-            .rows(engineRows),
-            .rows([
-                FennecMenuItem(title: FennecTheme.text("Bookmarks"), symbol: "star", action: { [weak self] in
+        let controller = FennecSearchPopup(sourceView: addressBar.addressBarButton, groups: [
+            engineRows,
+            [
+                FennecSearchPopupItem(title: FennecTheme.text("Bookmarks"), image: UIImage(named: "FennecBookmarkTray"), action: { [weak self] in
                     self?.presentLibrary(initialSection: .bookmarks)
                 }),
-                FennecMenuItem(title: FennecTheme.text("Tabs"), symbol: "square.on.square", action: { [weak self] in
+                FennecSearchPopupItem(title: FennecTheme.text("Tabs"), image: UIImage(named: "FennecTabTray"), action: { [weak self] in
                     self?.presentTabSearch()
                 }),
-                FennecMenuItem(title: FennecTheme.text("History"), symbol: "clock", action: { [weak self] in
+                FennecSearchPopupItem(title: FennecTheme.text("History"), image: UIImage(named: "FennecHistory"), action: { [weak self] in
                     self?.presentLibrary(initialSection: .history)
                 }),
-                FennecMenuItem(title: FennecTheme.text("Search settings"), symbol: "gearshape", action: { [weak self] in
-                    self?.presentContentModal(SearchPreferencesViewController())
-                }),
-            ]),
-        ], heading: FennecTheme.text("This time search in"))
+            ],
+            [FennecSearchPopupItem(title: FennecTheme.text("Search settings"), image: UIImage(named: "FennecSearchSettings"), action: { [weak self] in
+                self?.presentContentModal(SearchPreferencesViewController())
+            })],
+        ])
         present(controller, animated: false)
     }
     

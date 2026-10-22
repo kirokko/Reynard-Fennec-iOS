@@ -33,7 +33,9 @@ test('search picker routes real supported engines without changing saved default
   assert.match(bar, /chevron.down/);
   assert.doesNotMatch(bar, /Prefs\.SearchSettings\.searchEngine\s*=/);
   const actions = read(ui + 'BrowserViewController+AddressBar.swift');
-  assert.match(actions, /SearchEngine\.allCases\.filter/);
+  assert.match(actions, /SearchEngine\.pickerEngines/);
+  assert.match(actions, /FennecSearchPopup\(sourceView: addressBar\.addressBarButton/);
+  assert.doesNotMatch(actions, /FennecMenuViewController\(groups: \[\s*\.rows\(engineRows\)/);
   assert.match(actions, /SearchEngine\.destination\(for: query, engine: engine\)/);
   assert.match(actions, /presentContentModal\(SearchPreferencesViewController\(\)\)/);
   for (const engine of ['yahoo', 'bing', 'brave', 'duckDuckGo', 'ecosia', 'startpage']) {
@@ -52,9 +54,11 @@ test('keyboard docking cancels old layer transforms and resets on lost focus', (
   assert.match(read(ui + 'Search/SearchOverlayCoordinator.swift'), /searchChrome\.dockAddressBar\(offset: 0\)/);
 });
 
-test('capture shield uses public capture/lifecycle signals and does not claim screenshot prevention', () => {
+test('background cover does not block active local use while recording', () => {
   const shield = read(ui + 'Appearance/FennecPrivacyShield.swift');
   assert.match(shield, /UIScreen\.capturedDidChangeNotification/);
+  assert.match(shield, /isSensitive && isInactive/);
+  assert.doesNotMatch(shield, /isSensitive && \(isInactive \|\| isCaptured\)/);
   assert.match(shield, /UIScene\.willDeactivateNotification/);
   assert.match(shield, /UIScreen|scene\.screen\.isCaptured/);
   assert.match(shield, /window\.windowLevel = \.alert \+ 1/);

@@ -45,7 +45,7 @@ final class BrowserPreferences {
         
         UserDefaults.standard.register(defaults: [
             // Search
-            key("SearchSettings", "searchEngine"): SearchEngine.google.rawValue,
+            key("SearchSettings", "searchEngine"): SearchEngine.duckDuckGo.rawValue,
             key("SearchSettings", "customSearchTemplate"): "",
             key("SearchSettings", "searchSuggestionProvider"): SearchCompletion.Provider.google.rawValue,
             key("SearchSettings", "showSearchSuggestions"): true,
@@ -213,8 +213,9 @@ final class BrowserPreferences {
     struct SearchSettings {
         static var searchEngine: SearchEngine {
             get {
-                let rawValue = prefs.string(forSetting: "SearchSettings", key: "searchEngine") ?? SearchEngine.google.rawValue
-                return SearchEngine(rawValue: rawValue) ?? .google
+                let rawValue = prefs.string(forSetting: "SearchSettings", key: "searchEngine") ?? SearchEngine.duckDuckGo.rawValue
+                let engine = SearchEngine(rawValue: rawValue) ?? .duckDuckGo
+                return SearchEngine.pickerEngines.contains(engine) ? engine : .duckDuckGo
             }
             set {
                 prefs.set(newValue.rawValue, forSetting: "SearchSettings", key: "searchEngine")

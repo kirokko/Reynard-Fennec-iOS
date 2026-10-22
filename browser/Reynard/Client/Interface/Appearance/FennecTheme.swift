@@ -3,7 +3,7 @@ import UIKit
 
 enum FennecTheme {
     static let animatesBrowserUI = false
-    static let privateSurface = UIColor(red: 0.16, green: 0.15, blue: 0.21, alpha: 1)
+    static let privateSurface = UIColor(red: 0.11, green: 0.04, blue: 0.23, alpha: 1)
     static let surface = UIColor { $0.userInterfaceStyle == .dark
         ? UIColor(red: 0.08, green: 0.075, blue: 0.11, alpha: 1)
         : UIColor(red: 0.969, green: 0.965, blue: 0.988, alpha: 1) }
@@ -52,9 +52,33 @@ enum FennecTheme {
     }
 }
 
+/// Private-homepage-only radial surface; not a global dark-theme replacement.
+final class FennecPrivateBackgroundView: UIView {
+    override class var layerClass: AnyClass { CAGradientLayer.self }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        isUserInteractionEnabled = false
+        let gradient = layer as! CAGradientLayer
+        gradient.type = .radial
+        gradient.colors = [UIColor(red: 0.37, green: 0.12, blue: 0.68, alpha: 1).cgColor,
+                           FennecTheme.privateSurface.cgColor]
+        gradient.locations = [0, 1]
+        gradient.startPoint = CGPoint(x: 0.5, y: 0.65)
+        gradient.endPoint = CGPoint(x: 1, y: 1)
+    }
+    required init?(coder: NSCoder) { fatalError() }
+}
+
 /// CALayer stores a resolved CGColor, unlike UILabel's dynamic text color.
 /// Refresh on attachment/trait/layout, not only after a second category tap.
 final class FennecTabCountLabel: UILabel {
+    var usesAndroidOutline = false
+    override func draw(_ rect: CGRect) {
+        if usesAndroidOutline {
+            UIImage(named: "FennecTabOutline")?.withTintColor(textColor ?? .label, renderingMode: .alwaysOriginal).draw(in: bounds)
+        }
+        super.draw(rect)
+    }
     func refreshBorderColor() {
         let color = (textColor ?? UIColor.label).resolvedColor(with: traitCollection).cgColor
         if layer.borderColor != color { layer.borderColor = color }
@@ -76,6 +100,7 @@ final class FennecToolbarControls: UIStackView {
     lazy var tabButton = ToolbarButton(buttonType: .tabOverview, target: self, action: #selector(tabs))
     lazy var menuButton = ToolbarButton(buttonType: .library, target: self, action: #selector(menu))
     private let countLabel = FennecTabCountLabel()
+    private let privateBadge = UIImageView(image: UIImage(named: "FennecPrivateTabBadge"))
     private let downloadProgress = UIProgressView(progressViewStyle: .bar)
 
     init() {
@@ -99,16 +124,28 @@ final class FennecToolbarControls: UIStackView {
         countLabel.translatesAutoresizingMaskIntoConstraints = false
         countLabel.font = .systemFont(ofSize: 12, weight: .semibold)
         countLabel.textAlignment = .center
-        countLabel.layer.borderWidth = 1.8
-        countLabel.layer.cornerRadius = 3
+        countLabel.usesAndroidOutline = true
+        countLabel.layer.borderWidth = 0
+        countLabel.layer.cornerRadius = 0
         countLabel.isUserInteractionEnabled = false
         countLabel.isAccessibilityElement = false
         tabButton.addSubview(countLabel)
         NSLayoutConstraint.activate([
             countLabel.centerXAnchor.constraint(equalTo: tabButton.centerXAnchor),
             countLabel.centerYAnchor.constraint(equalTo: tabButton.centerYAnchor),
-            countLabel.widthAnchor.constraint(equalToConstant: 22),
-            countLabel.heightAnchor.constraint(equalToConstant: 18),
+            countLabel.widthAnchor.constraint(equalToConstant: 24),
+            countLabel.heightAnchor.constraint(equalToConstant: 24),
+        ])
+        privateBadge.translatesAutoresizingMaskIntoConstraints = false
+        privateBadge.isHidden = true
+        privateBadge.isUserInteractionEnabled = false
+        privateBadge.isAccessibilityElement = false
+        tabButton.addSubview(privateBadge)
+        NSLayoutConstraint.activate([
+            privateBadge.widthAnchor.constraint(equalToConstant: 14),
+            privateBadge.heightAnchor.constraint(equalToConstant: 14),
+            privateBadge.trailingAnchor.constraint(equalTo: countLabel.trailingAnchor, constant: 5),
+            privateBadge.topAnchor.constraint(equalTo: countLabel.topAnchor, constant: -3),
         ])
         downloadProgress.translatesAutoresizingMaskIntoConstraints = false
         downloadProgress.progressTintColor = FennecTheme.accent
@@ -131,7 +168,12 @@ final class FennecToolbarControls: UIStackView {
         countLabel.refreshBorderColor()
     }
 
+    func setPrivateBrowsing(_ value: Bool) {
+        privateBadge.isHidden = !value
+    }
+
     func setTabCount(_ count: Int) {
+        countLabel.font = .systemFont(ofSize: count < 10 ? 12 : 9.6, weight: .semibold)
         countLabel.text = count > 99 ? "∞" : String(max(0, count))
         countLabel.refreshBorderColor()
         tabButton.accessibilityLabel = FennecTheme.text("Tabs")

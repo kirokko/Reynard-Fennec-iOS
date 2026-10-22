@@ -63,7 +63,11 @@ test('manual application updates do not fetch any upstream feed', () => {
 test('only manually dispatched standard SideStore build is exposed', () => {
   const dir = path.join(root, '.github/workflows');
   const names = fs.readdirSync(dir).filter(p => p.endsWith('.yml'));
-  assert.deepEqual(names.sort(), ['build-sidestore.yml', 'build.yml']);
+  assert.deepEqual(names.sort(), ['build-sidestore.yml', 'build.yml', 'capture-protection-experiment.yml']);
+  const experiment = read('.github/workflows/capture-protection-experiment.yml');
+  assert.match(experiment, /workflow_dispatch:/);
+  assert.match(experiment, /Test-CaptureProtection\.sh/);
+  assert.doesNotMatch(experiment, /build_normal_ipa|Download-IPA|Build-Gecko/);
   const workflow = read('.github/workflows/build-sidestore.yml');
   assert.match(workflow, /workflow_dispatch:/);
   assert.match(workflow, /build_normal_ipa: true/);

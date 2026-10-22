@@ -104,6 +104,8 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
         checkpoint("marked-text c -> cn and capture policy")
         checkInputAndPrivacy()
         window?.makeKeyAndVisible()
+        checkpoint("anchored provider popup and original tab/private assets")
+        screenshot(checkSearchPopup(), name: "search-provider-popup")
         checkpoint("real shortcuts before More")
         checkInitialShortcuts()
         checkpoint("no-JIT")

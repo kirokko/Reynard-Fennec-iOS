@@ -3,7 +3,7 @@ import UIKit
 
 @main final class CaptureProbeApp: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    private let host = SecureCanvasPrototype()
+    private let host = FennecSecureCanvasExperiment()
     private let label = UILabel()
     private let target = UIView()
     private let button = UIButton(type: .system)
@@ -12,7 +12,7 @@ import UIKit
     private var reports: [[String: Any]] = []
     private var timer: Timer?
     private var stageIndex = 0
-    private let stages = ["normal", "protected", "restored"]
+    private let stages = ["normal", "protected", "layer-flag", "restored"]
     private var directory: URL { FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0] }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions options: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -50,6 +50,7 @@ import UIKit
         let stage = stages[stageIndex]
         label.text = "EXPERIMENT ONLY — \(stage)\nBlue is outside protection; red is inside."
         let found = host.setProtected(stage == "protected")
+        let flagAvailable = host.setExperimentalLayerFlag(stage == "layer-flag")
         host.layoutIfNeeded()
         let bounds = host.content.bounds
         target.frame = CGRect(x: 20, y: 100, width: max(0, bounds.width - 40), height: 140)
@@ -60,7 +61,7 @@ import UIKit
         let interactive = hit === button || hit?.isDescendant(of: button) == true
         if interactive { button.sendActions(for: .touchUpInside) }
         let report: [String: Any] = [
-            "stage": stage, "canvasFound": found, "canvasClass": host.discoveredCanvasName,
+            "stage": stage, "layerFlagSetterAvailable": flagAvailable, "canvasFound": found, "canvasClass": host.discoveredCanvasName,
             "contentFrame": NSCoder.string(for: host.content.frame),
             "targetWindowFrame": NSCoder.string(for: target.convert(target.bounds, to: window)),
             "hitTestReachedButton": interactive, "tapCount": taps,

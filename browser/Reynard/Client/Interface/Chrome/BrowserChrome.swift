@@ -204,6 +204,11 @@ final class BrowserChrome: UIView, UIGestureRecognizerDelegate {
     var addressBarButton: AddressBarButton {
         return addressBar.addressBarButton
     }
+
+    func setPrivateBrowsing(_ value: Bool) {
+        topToolbar.setPrivateBrowsing(value)
+        bottomToolbar.setPrivateBrowsing(value)
+    }
     
     // MARK: - Layout
     

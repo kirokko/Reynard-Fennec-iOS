@@ -3,6 +3,7 @@
 import UIKit
 
 final class PrivateBrowsingSectionViewController: UIViewController {
+    var onLearnMore: (() -> Void)?
     private let stack = UIStackView()
     private var isPrivateBrowsing = false
     private var contentMode: HomepageContentMode = .embeddedNarrow
@@ -17,21 +18,11 @@ final class PrivateBrowsingSectionViewController: UIViewController {
         stack.spacing = 12
         view.addSubview(stack)
 
-        let badge = UIView()
-        badge.backgroundColor = FennecTheme.accentContainer
-        badge.layer.cornerRadius = 28
-        let icon = UIImageView(image: FennecTheme.privateBrowsingImage)
-        icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.tintColor = FennecTheme.selectedOutline
-        icon.contentMode = .scaleAspectFit
-        badge.addSubview(icon)
+        let badge = UIImageView(image: UIImage(named: "FennecPrivateBadge"))
+        badge.contentMode = .scaleAspectFit
         NSLayoutConstraint.activate([
-            badge.widthAnchor.constraint(equalToConstant: 56),
-            badge.heightAnchor.constraint(equalToConstant: 56),
-            icon.centerXAnchor.constraint(equalTo: badge.centerXAnchor),
-            icon.centerYAnchor.constraint(equalTo: badge.centerYAnchor),
-            icon.widthAnchor.constraint(equalToConstant: 32),
-            icon.heightAnchor.constraint(equalToConstant: 32),
+            badge.widthAnchor.constraint(equalToConstant: 72),
+            badge.heightAnchor.constraint(equalToConstant: 72),
         ])
         stack.addArrangedSubview(badge)
         let heading = UILabel()
@@ -41,7 +32,7 @@ final class PrivateBrowsingSectionViewController: UIViewController {
         let message = UILabel()
         message.text = FennecTheme.text("ieynec clears private browsing history and cookies when you close private tabs. Downloads and bookmarks are kept.")
         message.font = .preferredFont(forTextStyle: .subheadline)
-        message.textColor = .secondaryLabel
+        message.textColor = FennecTheme.ink
         for label in [heading, message] {
             label.numberOfLines = 0
             label.textAlignment = .center
@@ -49,8 +40,19 @@ final class PrivateBrowsingSectionViewController: UIViewController {
             stack.addArrangedSubview(label)
             label.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
         }
+        let learn = FennecClosureButton(frame: .zero)
+        learn.accessibilityIdentifier = "homepage.privateLearnMore"
+        learn.setAttributedTitle(NSAttributedString(string: FennecTheme.text("Who can see my browsing history?"), attributes: [
+            .underlineStyle: NSUnderlineStyle.single.rawValue,
+            .font: UIFont.preferredFont(forTextStyle: .subheadline), .foregroundColor: FennecTheme.ink,
+        ]), for: .normal)
+        learn.titleLabel?.numberOfLines = 0
+        learn.titleLabel?.textAlignment = .center
+        learn.heightAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
+        learn.onTap = { [weak self] in self?.onLearnMore?() }
+        stack.addArrangedSubview(learn)
         NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: view.topAnchor, constant: 44),
+            stack.topAnchor.constraint(equalTo: view.topAnchor, constant: 8),
             stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stack.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 20),
             stack.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20),

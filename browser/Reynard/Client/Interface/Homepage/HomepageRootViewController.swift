@@ -38,6 +38,7 @@ final class HomepageRootViewController: UIViewController {
     
     weak var delegate: HomepageRootViewControllerDelegate?
     
+    private let privateBackground = FennecPrivateBackgroundView(frame: .zero)
     private let bookmarkStore: BookmarkStore
     private let folder: BookmarkFolderSnapshot?
     private let sections: [HomepageSection]
@@ -207,6 +208,14 @@ final class HomepageRootViewController: UIViewController {
     }
     
     private func configureHierarchy() {
+        privateBackground.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(privateBackground)
+        NSLayoutConstraint.activate([
+            privateBackground.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            privateBackground.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            privateBackground.topAnchor.constraint(equalTo: view.topAnchor),
+            privateBackground.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
         view.addSubview(wallpaperImageView)
         view.addSubview(scrollView)
         scrollView.addSubview(sectionStackView)
@@ -258,6 +267,7 @@ final class HomepageRootViewController: UIViewController {
         summaryView = nil
         sectionStackView.spacing = 28
         overrideUserInterfaceStyle = isPrivateBrowsing ? .dark : .unspecified
+        privateBackground.isHidden = !isPrivateBrowsing
         view.backgroundColor = isPrivateBrowsing ? FennecTheme.privateSurface : FennecTheme.surface
         let extras = UIStackView()
         extras.axis = .vertical
@@ -316,7 +326,11 @@ final class HomepageRootViewController: UIViewController {
             let header = UIView()
             let normal = FennecClosureButton(frame: .zero)
             normal.translatesAutoresizingMaskIntoConstraints = false
-            normal.setImage(UIImage(named: "ieynec-logo"), for: .normal)
+            normal.setImage(FennecTheme.privateBrowsingImage, for: .normal)
+            normal.tintColor = FennecTheme.privateSurface
+            normal.backgroundColor = UIColor(white: 0.96, alpha: 1)
+            normal.layer.cornerRadius = 22
+            normal.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
             normal.imageView?.contentMode = .scaleAspectFit
             normal.accessibilityLabel = FennecTheme.text("Normal tabs")
             normal.accessibilityIdentifier = "homepage.returnToNormal"
@@ -409,6 +423,10 @@ final class HomepageRootViewController: UIViewController {
             
         case .privateBrowsing:
             let viewController = PrivateBrowsingSectionViewController()
+            viewController.onLearnMore = { [weak self] in
+                guard let self, let url = URL(string: "https://support.mozilla.org/kb/common-myths-about-private-browsing") else { return }
+                self.delegate?.homepageRootViewController(self, didRequestOpenURL: url, disposition: .currentTab)
+            }
             viewController.setContentMode(contentMode)
             viewController.setPrivateBrowsing(isPrivateBrowsing)
             return viewController

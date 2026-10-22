@@ -106,6 +106,7 @@ final class TopToolbar: UIView {
     }
     func setContentAlpha(_ alpha: CGFloat) { contentView.alpha = alpha }
     func setTabCount(_ count: Int) { controls.setTabCount(count) }
+    func setPrivateBrowsing(_ value: Bool) { controls.setPrivateBrowsing(value) }
     func updateNavigation(canGoBack: Bool, canGoForward: Bool, canShare: Bool) {}
     // Navigation controls live in the main menu, not a second toolbar row.
     func configureNavigationMenus(itemsProvider: @escaping (ToolbarButtonMenus.NavigationDirection) -> [NavigationHistoryStore.HistoryItem], onSelect: @escaping (ToolbarButtonMenus.NavigationDirection, Int) -> Void) {}

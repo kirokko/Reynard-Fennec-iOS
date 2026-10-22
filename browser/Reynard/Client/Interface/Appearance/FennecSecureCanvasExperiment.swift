@@ -1,10 +1,10 @@
-// GPL-3.0. ISOLATED EXPERIMENT ONLY: not linked into the browser.
+// GPL-3.0. ISOLATED DIAGNOSTIC ONLY: never wraps live browser/Gecko content.
 // UITextField documents protection for its own secure text, NOT arbitrary child
 // views. Hosting content under its implementation canvas is unsupported behavior.
 // A successful Simulator experiment cannot establish actual-device protection.
 import UIKit
 
-final class SecureCanvasPrototype: UIView {
+final class FennecSecureCanvasExperiment: UIView {
     private final class Carrier: UITextField {
         weak var hostedContent: UIView?
         override var canBecomeFirstResponder: Bool { false }
@@ -18,6 +18,17 @@ final class SecureCanvasPrototype: UIView {
     private var contentConstraints: [NSLayoutConstraint] = []
     private(set) var discoveredCanvasName = "none"
     private(set) var canvasFound = false
+
+    // Unsupported compositor flag, used ONLY on synthetic diagnostic content.
+    // Avoid undefined-key exceptions: do not call KVC unless a setter exists.
+    // This is not a supported API or a verified privacy guarantee.
+    @discardableResult
+    func setExperimentalLayerFlag(_ value: Bool) -> Bool {
+        let selector = NSSelectorFromString("setDisableUpdateMask:")
+        guard content.layer.responds(to: selector) else { return false }
+        content.layer.setValue(NSNumber(value: value ? 0x12 : 0), forKey: "disableUpdateMask")
+        return true
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,8 +48,8 @@ final class SecureCanvasPrototype: UIView {
 
     @discardableResult
     func setProtected(_ value: Bool) -> Bool {
-        // Never move/reassign CALayers, call private selectors, change engine
-        // surfaces, or suppress capture notifications to fake a successful test.
+        // Never move/reassign CALayers, change engine surfaces, or suppress
+        // capture notifications to fake a successful test.
         carrier.isSecureTextEntry = value
         carrier.setNeedsLayout()
         carrier.layoutIfNeeded()

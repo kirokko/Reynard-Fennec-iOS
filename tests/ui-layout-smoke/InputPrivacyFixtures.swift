@@ -7,7 +7,7 @@ func checkInputAndPrivacy() {
         for inactive in [false, true] {
             for captured in [false, true] {
                 precondition(FennecPrivacyShield.shouldCover(isSensitive: sensitive, isInactive: inactive, isCaptured: captured)
-                             == (sensitive && (inactive || captured)))
+                             == (sensitive && inactive))
             }
         }
     }
