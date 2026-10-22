@@ -107,6 +107,8 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
         checkNoJITController()
         checkpoint("fullscreen rotation and refresh")
         checkFullscreenRotationAndRefresh()
+        checkpoint("first-entry count color and address-only display")
+        checkCountColorAndAddressDisplay()
         checkpoint("top/bottom chrome and real scroll controller")
         checkToolbarScrollController()
         screenshot(checkFennecChrome(), name: "chrome-controls")

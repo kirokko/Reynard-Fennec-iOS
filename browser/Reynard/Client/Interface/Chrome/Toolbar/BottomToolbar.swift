@@ -11,9 +11,7 @@ final class BottomToolbar: UIView {
     var onNewTab: (() -> Void)?
     var onTabOverview: (() -> Void)?
 
-    // Clip the moving row ABOVE the home-indicator area. Translating the
-    // entire toolbar would leave controls visible/clickable in that OS inset.
-    private let rowViewport = UIView()
+    // The complete bar (row + bottom inset + background) moves as ONE plate.
     private let contentView = UIView()
     private let backgroundView = UIView()
     private let controls = FennecToolbarControls()
@@ -28,28 +26,20 @@ final class BottomToolbar: UIView {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundView.backgroundColor = FennecTheme.surface
-        contentView.backgroundColor = FennecTheme.surface
-        rowViewport.clipsToBounds = true
-        for child in [backgroundView, rowViewport] {
+        for child in [backgroundView, contentView] {
             child.translatesAutoresizingMaskIntoConstraints = false
             addSubview(child)
         }
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        rowViewport.addSubview(contentView)
         contentView.addSubview(controls)
-        contentHeight = rowViewport.heightAnchor.constraint(equalToConstant: 56)
+        contentHeight = contentView.heightAnchor.constraint(equalToConstant: 56)
         NSLayoutConstraint.activate([
-            backgroundView.topAnchor.constraint(equalTo: rowViewport.bottomAnchor),
+            backgroundView.topAnchor.constraint(equalTo: topAnchor),
             backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
             backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
             backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            rowViewport.topAnchor.constraint(equalTo: topAnchor),
-            rowViewport.leadingAnchor.constraint(equalTo: leadingAnchor),
-            rowViewport.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentView.topAnchor.constraint(equalTo: rowViewport.topAnchor),
+            contentView.topAnchor.constraint(equalTo: topAnchor),
             contentView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            contentView.heightAnchor.constraint(equalTo: rowViewport.heightAnchor),
             contentHeight,
             controls.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
             controls.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -62,7 +52,7 @@ final class BottomToolbar: UIView {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let hit = super.hitTest(point, with: event)
-        return hit === self || hit === rowViewport || hit === backgroundView || hit === contentView ? nil : hit
+        return hit === self || hit === backgroundView || hit === contentView ? nil : hit
     }
     func configureTopAnchor(to safeAreaBottomAnchor: NSLayoutYAxisAnchor) {
         topConstraint = topAnchor.constraint(equalTo: safeAreaBottomAnchor, constant: -56)
@@ -88,7 +78,6 @@ final class BottomToolbar: UIView {
     func hitTestAddressBar(at point: CGPoint, with event: UIEvent?) -> UIView? {
         guard !isHidden, alpha > 0.01, isUserInteractionEnabled, contentView.alpha > 0.01,
               let addressBar else { return nil }
-        guard rowViewport.bounds.contains(rowViewport.convert(point, from: self)) else { return nil }
         return addressBar.hitTest(addressBar.convert(point, from: self), with: event)
     }
     func sharePopoverSourceView() -> UIView { controls.menuButton }
@@ -105,13 +94,12 @@ final class BottomToolbar: UIView {
         addressTrailing?.constant = editing ? -8 : -140
     }
     func setAddressBarDockOffset(_ offset: CGFloat) {
-        rowViewport.transform = CGAffineTransform(translationX: 0, y: offset)
+        contentView.transform = CGAffineTransform(translationX: 0, y: offset)
         backgroundView.transform = CGAffineTransform(translationX: 0, y: offset)
     }
     func setScrollTranslation(_ offset: CGFloat) {
-        contentView.transform = CGAffineTransform(translationX: 0, y: offset)
-        // Do not leave an opaque home-indicator strip over the released page.
-        backgroundView.alpha = 1 - min(max(offset / max(contentHeight.constant, 1), 0), 1)
+        // No clipping seam, separate bottom fade or second-phase motion.
+        transform = CGAffineTransform(translationX: 0, y: offset)
     }
     func setContentAlpha(_ alpha: CGFloat) { contentView.alpha = alpha }
     func setTabCount(_ count: Int) { controls.setTabCount(count) }

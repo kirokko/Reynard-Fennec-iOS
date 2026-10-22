@@ -8,6 +8,26 @@ final class AddressBar: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = FennecTheme.container
         layer.cornerRadius = 22
+        let shield = UIImageView(image: FennecTheme.siteProtectionImage)
+        shield.translatesAutoresizingMaskIntoConstraints = false
+        shield.tintColor = FennecTheme.ink
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = FennecTheme.ink
+        label.lineBreakMode = .byTruncatingTail
+        label.text = FennecAddressDisplay.text("https://example.invalid/search?q=toolbar", fullAddress: false)
+        addSubview(shield)
+        addSubview(label)
+        NSLayoutConstraint.activate([
+            shield.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            shield.centerYAnchor.constraint(equalTo: centerYAnchor),
+            shield.widthAnchor.constraint(equalToConstant: 24),
+            shield.heightAnchor.constraint(equalToConstant: 24),
+            label.leadingAnchor.constraint(equalTo: shield.trailingAnchor, constant: 8),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            label.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
     }
     required init?(coder: NSCoder) { fatalError() }
 }

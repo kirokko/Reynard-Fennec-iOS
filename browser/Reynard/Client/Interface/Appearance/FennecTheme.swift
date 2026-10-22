@@ -25,6 +25,8 @@ enum FennecTheme {
         ? UIColor(red: 0.27, green: 0.23, blue: 0.40, alpha: 1)
         : UIColor(red: 0.90, green: 0.86, blue: 1, alpha: 1) }
 
+    static let siteProtectionImage = UIImage(named: "FennecProtectionShield")?.withRenderingMode(.alwaysTemplate)
+
     // Render these tiny immutable assets once, not on every chrome refresh.
     static let privateBrowsingImage: UIImage? = {
         // Pinned Android reference vector, not an approximate generic mask.
@@ -50,6 +52,21 @@ enum FennecTheme {
     }
 }
 
+/// CALayer stores a resolved CGColor, unlike UILabel's dynamic text color.
+/// Refresh on attachment/trait/layout, not only after a second category tap.
+final class FennecTabCountLabel: UILabel {
+    func refreshBorderColor() {
+        let color = (textColor ?? UIColor.label).resolvedColor(with: traitCollection).cgColor
+        if layer.borderColor != color { layer.borderColor = color }
+    }
+    override func didMoveToWindow() { super.didMoveToWindow(); refreshBorderColor() }
+    override func layoutSubviews() { super.layoutSubviews(); refreshBorderColor() }
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        refreshBorderColor()
+    }
+}
+
 /// Shared 44pt targets, used in both top and bottom single-row browser bars.
 final class FennecToolbarControls: UIStackView {
     var onNewTab: (() -> Void)?
@@ -58,7 +75,7 @@ final class FennecToolbarControls: UIStackView {
     lazy var newTabButton = ToolbarButton(buttonType: .newTab, target: self, action: #selector(newTab))
     lazy var tabButton = ToolbarButton(buttonType: .tabOverview, target: self, action: #selector(tabs))
     lazy var menuButton = ToolbarButton(buttonType: .library, target: self, action: #selector(menu))
-    private let countLabel = UILabel()
+    private let countLabel = FennecTabCountLabel()
     private let downloadProgress = UIProgressView(progressViewStyle: .bar)
 
     init() {
@@ -72,6 +89,9 @@ final class FennecToolbarControls: UIStackView {
             widthAnchor.constraint(equalToConstant: 132),
             heightAnchor.constraint(equalToConstant: 44),
         ])
+        for button in [newTabButton, tabButton, menuButton] { button.tintColor = FennecTheme.ink }
+        countLabel.textColor = FennecTheme.ink
+        newTabButton.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .regular)), for: .normal)
         newTabButton.accessibilityLabel = FennecTheme.text("New tab")
         menuButton.accessibilityLabel = FennecTheme.text("Menu")
         menuButton.setImage(FennecTheme.overflowImage, for: .normal)
@@ -108,12 +128,12 @@ final class FennecToolbarControls: UIStackView {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        countLabel.layer.borderColor = UIColor.label.resolvedColor(with: traitCollection).cgColor
+        countLabel.refreshBorderColor()
     }
 
     func setTabCount(_ count: Int) {
         countLabel.text = count > 99 ? "∞" : String(max(0, count))
-        countLabel.layer.borderColor = UIColor.label.resolvedColor(with: traitCollection).cgColor
+        countLabel.refreshBorderColor()
         tabButton.accessibilityLabel = FennecTheme.text("Tabs")
         tabButton.accessibilityValue = String(count)
     }

@@ -184,10 +184,10 @@ final class BrowserChrome: UIView, UIGestureRecognizerDelegate {
     }
     
     func minimizedToolbarHeight(for mode: BrowserChromeMode) -> CGFloat {
-        let inset = mode == .phone ? safeAreaInsets.bottom : (state?.topInset ?? safeAreaInsets.top)
-        // Android bottom chrome slides away as one row; retain only the OS
-        // home-indicator inset, not Reynard's miniature URL strip.
-        return inset + (mode == .phone ? 0 : UX.minimizedToolbarContentHeight)
+        // Phone chrome translates its ENTIRE row + safe-area plate off-screen.
+        // No retained strip, no separate inset phase, and no miniature URL.
+        if mode == .phone { return 0 }
+        return (state?.topInset ?? safeAreaInsets.top) + UX.minimizedToolbarContentHeight
     }
     
     func addressBarFrame(in view: UIView) -> CGRect {

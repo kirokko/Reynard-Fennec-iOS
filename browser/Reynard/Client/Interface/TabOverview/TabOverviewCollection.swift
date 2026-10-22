@@ -9,10 +9,6 @@ import UIKit
 
 final class TabOverviewCollection: NSObject {
     private enum UX {
-        static let privateModeIntroIconSideLength: CGFloat = 80
-        static let privateModeIntroMaximumWidth: CGFloat = 360
-        static let privateModeIntroHorizontalInset: CGFloat = 48
-        static let privateModeIntroItemSpacing: CGFloat = 10
         static let tabCardReorderMinimumPressDuration: TimeInterval = 0.35
         static let tabCardReorderStartDelay: TimeInterval = 0.06
         static let tabCardReorderAutoScrollEdgeInset: CGFloat = 96
@@ -66,11 +62,11 @@ final class TabOverviewCollection: NSObject {
         let view = makeTabCollectionView()
         view.transform = CGAffineTransform(translationX: -1, y: 0)
         view.isUserInteractionEnabled = false
-        view.backgroundView = privateModeIntroView
+        // TabOverview owns the single Fennec private empty state.
+        view.backgroundView = nil
         return view
     }()
     
-    private lazy var privateModeIntroView = makePrivateModeIntroView()
     
     var allCollectionViews: [UICollectionView] {
         return [privateTabsCollectionView, regularTabsCollectionView]
@@ -319,45 +315,6 @@ final class TabOverviewCollection: NSObject {
         return view
     }
     
-    private func makePrivateModeIntroView() -> UIView {
-        let container = UIView()
-        container.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        container.isUserInteractionEnabled = false
-        let imageView = UIImageView(image: UIImage(named: "private.mode.icon")?.withRenderingMode(.alwaysTemplate))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .secondaryLabel
-        let titleLabel = UILabel()
-        titleLabel.text = NSLocalizedString("Private Browsing", comment: "")
-        titleLabel.textAlignment = .center
-        titleLabel.textColor = .secondaryLabel
-        titleLabel.font = .preferredFont(forTextStyle: .title2)
-        titleLabel.adjustsFontForContentSizeCategory = true
-        let subtitleLabel = UILabel()
-        subtitleLabel.text = NSLocalizedString("Reynard won’t remember any of your browsing history or cookies. However, downloads and new bookmarks will be saved.", comment: "")
-        subtitleLabel.textAlignment = .center
-        subtitleLabel.textColor = .secondaryLabel
-        subtitleLabel.font = .preferredFont(forTextStyle: .subheadline)
-        subtitleLabel.adjustsFontForContentSizeCategory = true
-        subtitleLabel.numberOfLines = 0
-        let stackView = UIStackView(arrangedSubviews: [imageView, titleLabel, subtitleLabel])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = UX.privateModeIntroItemSpacing
-        container.addSubview(stackView)
-        NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: UX.privateModeIntroIconSideLength),
-            imageView.heightAnchor.constraint(equalToConstant: UX.privateModeIntroIconSideLength),
-            titleLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            subtitleLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            stackView.centerXAnchor.constraint(equalTo: container.centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-            stackView.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, constant: -UX.privateModeIntroHorizontalInset),
-            stackView.widthAnchor.constraint(lessThanOrEqualToConstant: UX.privateModeIntroMaximumWidth),
-        ])
-        return container
-    }
     
     // MARK: - Animation Helpers
     

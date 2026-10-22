@@ -10,7 +10,7 @@ func checkToolbarScrollController() {
     func pump(_ duration: TimeInterval) { RunLoop.main.run(until: Date().addingTimeInterval(duration)) }
     func expect(_ offset: CGFloat) {
         precondition(abs(chrome.bottomOffset - offset) < 0.01, "Scroll offset \(chrome.bottomOffset), expected \(offset)")
-        precondition(abs(content.bottomOffset - offset * 90 / 56) < 0.01, "Webpage must reclaim the row AND the 34pt system inset")
+        precondition(abs(content.bottomOffset - offset) < 0.01, "Visual plate and webpage must have exactly the SAME displacement")
     }
     content.onScrollInteractionBegan?()
     content.onVerticalScroll?(20, 100)
@@ -23,17 +23,17 @@ func checkToolbarScrollController() {
     pump(0.22)
     expect(0) // less than half -> expand
     content.onScrollInteractionBegan?()
-    content.onVerticalScroll?(28, 121)
+    content.onVerticalScroll?(45, 138)
     content.onScrollInteractionEnded?()
     pump(0.22)
-    expect(56) // exactly half -> collapse, no tiny-URL remainder
+    expect(90) // half of the ENTIRE plate -> collapse
     content.onScrollInteractionBegan?()
     content.onVerticalScroll?(-12, 109)
-    expect(44)
+    expect(78)
     content.onVerticalScroll?(-1000, 0)
     expect(0) // top and overscroll clamp
     content.onVerticalScroll?(1000, 1000)
-    expect(56)
+    expect(90)
     content.onScrollInteractionEnded?()
     content.onScrollInteractionBegan?()
     content.onVerticalScroll?(-36, 964)
@@ -75,10 +75,11 @@ func checkToolbarScrollController() {
 }
 
 func scrollChromeSample() -> UIView {
-    let canvas = UIView(frame: CGRect(x: 0, y: 0, width: 393, height: 270))
+    let canvas = UIView(frame: CGRect(x: 0, y: 0, width: 393, height: 450))
     canvas.backgroundColor = .systemYellow // makes leftover opaque row backgrounds obvious
-    for (index, offset) in [CGFloat(0), 28, 56].enumerated() {
+    for (index, offset) in [CGFloat(0), 22.5, 45, 67.5, 90].enumerated() {
         let band = UIView()
+        band.clipsToBounds = true // each sample is a separate simulated screen
         band.translatesAutoresizingMaskIntoConstraints = false
         canvas.addSubview(band)
         let bottom = BottomToolbar(), address = AddressBar()
@@ -107,10 +108,15 @@ func scrollChromeSample() -> UIView {
         bottom.setScrollTranslation(offset)
         let shifted = address.convert(address.bounds, to: band)
         precondition(shifted.size == original.size && shifted.minY == original.minY + offset)
-        if offset == 56 {
-            precondition(bottom.subviews.first!.alpha == 0, "No opaque strip over the webpage at full collapse")
+        precondition(bottom.transform.ty == offset)
+        precondition(bottom.subviews.first!.alpha == 1, "The plate never fades or separates from its inset")
+        let background = bottom.subviews.first!
+        precondition(background.convert(background.bounds, to: band).minY == offset)
+        if offset == 90 {
             for y in stride(from: CGFloat(0), to: 90, by: 4) {
-                precondition(bottom.hitTest(CGPoint(x: 40, y: y), with: nil) == nil, "Hidden row must not intercept webpage/home-indicator touches")
+                let point = bottom.convert(CGPoint(x: 40, y: y), from: band)
+                precondition(bottom.hitTest(point, with: nil) == nil, "Hidden plate must not intercept webpage/home-indicator touches")
+                precondition(bottom.hitTestAddressBar(at: point, with: nil) == nil)
             }
         }
     }

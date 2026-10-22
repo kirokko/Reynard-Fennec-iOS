@@ -27,7 +27,7 @@ final class ContentView: UIView {
 final class BrowserChrome: UIView {
     var onToolbarExpansionRequested: (() -> Void)?
     var bottomOffset: CGFloat = 0
-    func minimizedToolbarHeight(for mode: BrowserChromeMode) -> CGFloat { mode == .phone ? 34 : 24 }
+    func minimizedToolbarHeight(for mode: BrowserChromeMode) -> CGFloat { mode == .phone ? 0 : 24 }
     func topToolbarTransitionFrame(in view: UIView) -> CGRect { CGRect(x: 0, y: 0, width: 393, height: 56) }
     func bottomToolbarTransitionFrame(in view: UIView) -> CGRect { CGRect(x: 0, y: 0, width: 393, height: 90) }
     func setToolbarTransition(topOffset: CGFloat, bottomOffset: CGFloat, tabBarCollapseOffset: CGFloat, collapseProgress: CGFloat, textCenterProgress: CGFloat, isBottomToolbarCollapsed: Bool, animatesContent: Bool) { self.bottomOffset = bottomOffset }

@@ -12,9 +12,6 @@ extension TabOverviewCollection: UICollectionViewDataSource, UICollectionViewDel
         guard let tabMode = tabMode(for: collectionView) else { return 0 }
         let tabCount = tabs(for: tabMode).count
         let includesInsertionPlaceholder = hasInsertionPlaceholder(for: tabMode)
-        if tabMode == .privateTabs {
-            collectionView.backgroundView?.isHidden = tabCount != 0 || includesInsertionPlaceholder
-        }
         return tabCount + (includesInsertionPlaceholder ? 1 : 0)
     }
     

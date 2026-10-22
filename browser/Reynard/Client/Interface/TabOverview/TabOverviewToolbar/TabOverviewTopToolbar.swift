@@ -17,7 +17,7 @@ final class TabOverviewTopToolbar: UIView {
     private let regularButton = FennecClosureButton(frame: .zero)
     private let groupsButton = FennecClosureButton(frame: .zero)
     private let indicator = UIView()
-    private let countLabel = UILabel()
+    private let countLabel = FennecTabCountLabel()
     private let overflow = FennecClosureButton(frame: .zero)
     private let search = FennecClosureButton(frame: .zero)
     private let add = FennecClosureButton(frame: .zero)
@@ -39,6 +39,7 @@ final class TabOverviewTopToolbar: UIView {
         privateButton.setImage(FennecTheme.privateBrowsingImage, for: .normal)
         privateButton.imageView?.contentMode = .scaleAspectFit
         privateButton.accessibilityLabel = FennecTheme.text("Private")
+        countLabel.accessibilityIdentifier = "tray.regularCount"
         countLabel.translatesAutoresizingMaskIntoConstraints = false
         countLabel.text = "0"
         countLabel.font = .systemFont(ofSize: 12, weight: .semibold)
@@ -127,7 +128,7 @@ final class TabOverviewTopToolbar: UIView {
         backgroundColor = mode == .privateTabs ? FennecTheme.privateSurface : FennecTheme.surface
         privateButton.tintColor = mode == .privateTabs ? FennecTheme.ink : .secondaryLabel
         countLabel.textColor = mode == .regularTabs ? FennecTheme.ink : .secondaryLabel
-        countLabel.layer.borderColor = countLabel.textColor.resolvedColor(with: traitCollection).cgColor
+        countLabel.refreshBorderColor()
         privateButton.accessibilityTraits = mode == .privateTabs ? [.button, .selected] : .button
         regularButton.accessibilityTraits = mode == .regularTabs ? [.button, .selected] : .button
         indicatorCenter.isActive = false

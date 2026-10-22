@@ -47,12 +47,13 @@ ui=browser/Reynard/Client/Interface
 xcrun swiftc -g -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" \
   tests/ui-layout-smoke/App.swift tests/ui-layout-smoke/TrayFixtures.swift \
   tests/ui-layout-smoke/ChromeFixtures.swift tests/ui-layout-smoke/ScrollFixtures.swift \
-  tests/ui-layout-smoke/FavoritesFixtures.swift \
+  tests/ui-layout-smoke/FavoritesFixtures.swift tests/ui-layout-smoke/CountColorFixtures.swift \
   tests/ui-layout-smoke/NoJITFixtures.swift browser/Reynard/JIT/JITController.swift \
   "$ui/Appearance/FennecTheme.swift" \
   "$ui/Chrome/Toolbar/TopToolbar.swift" \
   "$ui/Chrome/Toolbar/BottomToolbar.swift" \
   "$ui/Chrome/Toolbar/ToolbarController.swift" \
+  "$ui/Chrome/AddressBar/FennecAddressDisplay.swift" \
   "$ui/FennecFullscreenRotation.swift" \
   "$ui/ContentView/FennecRefreshIndicator.swift" \
   "$ui/Chrome/FennecMenuViewController.swift" \
@@ -79,6 +80,7 @@ assets=browser/Reynard/Resources/Assets.xcassets
 mkdir -p "$work/FixtureAssets.xcassets"
 cp "$assets/Contents.json" "$work/FixtureAssets.xcassets/"
 cp -R "$assets/FennecPrivateMask.imageset" "$work/FixtureAssets.xcassets/"
+cp -R "$assets/FennecProtectionShield.imageset" "$work/FixtureAssets.xcassets/"
 xcrun actool --compile "$app" --platform iphonesimulator \
   --minimum-deployment-target 17.0 --target-device iphone --target-device ipad \
   "$work/FixtureAssets.xcassets"

@@ -273,12 +273,12 @@ test('removed frequent sites cannot return through old preferences or settings; 
 
 test('phone scroll translates the complete row without miniature URL, fade or delayed follow', () => {
   const chrome = read(ui + 'Chrome/BrowserChrome.swift');
-  assert.match(chrome, /mode == \.phone \? 0 : UX.minimizedToolbarContentHeight/);
+  assert.match(chrome, /if mode == \.phone \{ return 0 \}/);
   assert.match(chrome, /state.mode != \.phone/);
   assert.match(chrome, /bottomToolbar.setScrollTranslation\(bottomOffset\)/);
   const bottom = read(ui + 'Chrome/Toolbar/BottomToolbar.swift');
-  assert.match(bottom, /rowViewport.clipsToBounds = true/);
-  assert.match(bottom, /rowViewport.bounds.contains/);
+  assert.doesNotMatch(bottom, /rowViewport|backgroundView.alpha/);
+  assert.match(bottom, /transform = CGAffineTransform\(translationX: 0, y: offset\)/);
   const controller = read(ui + 'Chrome/Toolbar/ToolbarController.swift');
   assert.match(controller, /transitionOffset \+ delta, 0/);
   assert.match(controller, /if !isScrollTouchActive \{ scheduleSnap\(\) \}/);
@@ -296,9 +296,10 @@ test('collapsed phone viewport releases the system inset and shortcuts size on t
   const toolbar = read(ui + 'Chrome/Toolbar/ToolbarController.swift');
   assert.match(toolbar, /minHeight: canHideToolbar && chromeMode != \.phone/);
   assert.match(toolbar, /contentBottomInset: 0/);
-  assert.match(toolbar, /bottomSafeAreaHeight \* collapseProgress/);
+  assert.doesNotMatch(toolbar, /bottomSafeAreaHeight/);
+  assert.match(toolbar, /bottom: bottomToolbarOffset,/);
   const bottom = read(ui + 'Chrome/Toolbar/BottomToolbar.swift');
-  assert.match(bottom, /backgroundView.alpha = 1 - min/);
+  assert.doesNotMatch(bottom, /backgroundView.alpha/);
   const favorites = read(ui + 'Homepage/Sections/Favorites/FavoritesSectionViewController.swift');
   assert.match(favorites, /let width = view.bounds.width/);
   assert.doesNotMatch(favorites, /let width = collectionView.bounds.width/);
@@ -308,6 +309,35 @@ test('collapsed phone viewport releases the system inset and shortcuts size on t
   const script = read('tools/Test-HomepageLayout.sh');
   assert.match(script, /Sections\/Favorites\/FavoritesSectionViewController.swift/);
   assert.match(script, /Sections\/Favorites\/FavoritesCollectionViewLayout.swift/);
+});
+
+test('tray count refreshes its dynamic outline on first attachment and private empty state has one owner', () => {
+  const theme = read(ui + 'Appearance/FennecTheme.swift');
+  assert.match(theme, /class FennecTabCountLabel: UILabel/);
+  assert.match(theme, /override func didMoveToWindow/);
+  assert.match(theme, /override func layoutSubviews/);
+  assert.match(read(ui + 'TabOverview/TabOverviewToolbar/TabOverviewTopToolbar.swift'), /countLabel = FennecTabCountLabel\(\)/);
+  const collection = read(ui + 'TabOverview/TabOverviewCollection.swift');
+  assert.doesNotMatch(collection, /privateModeIntroView|makePrivateModeIntroView|private.mode.icon|Reynard won/);
+  assert.match(collection, /view.backgroundView = nil/);
+  assert.match(read(ui + 'TabOverview/TabOverview.swift'), /tray.privateEmpty/);
+  assert.match(read('tests/ui-layout-smoke/CountColorFixtures.swift'), /Second tap must not change/);
+});
+
+test('address appearance uses the pinned Android shield and URL without a page-title suffix', () => {
+  const svg = read('browser/Reynard/Resources/Assets.xcassets/FennecProtectionShield.imageset/shield.svg');
+  assert.match(svg, /Mozilla Public/);
+  assert.match(svg, /FIREFOX-ANDROID_158_0_RELEASE/);
+  const paths = [...svg.matchAll(/ d="([^"]+)"/g)].map(m => m[1]);
+  assert.equal(paths.length, 2);
+  assert.equal(createHash('sha256').update(paths.join('\n')).digest('hex'), '8a49d246b430e6382c5dfaf1b32574a7d14dcbfc16de75f9b18e02f4435e64d9');
+  const address = read(ui + 'Chrome/AddressBar/AddressBar.swift');
+  const display = address.split('private func displayAttributedText()')[1].split('private func locationHost()')[0];
+  assert.match(display, /FennecAddressDisplay.text/);
+  assert.doesNotMatch(display, /currentLocationTitle|NSMutableAttributedString/);
+  assert.match(address, /addressBarButtonSize: CGFloat = 24/);
+  assert.match(address, /addressBarTextFontSize: CGFloat = 16/);
+  assert.doesNotMatch(address, /UIImage\(systemName: "checkmark.shield"\)/);
 });
 
 test('app icon uses a reproducible dimensional light surface instead of a white plate', () => {

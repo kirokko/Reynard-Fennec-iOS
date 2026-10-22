@@ -34,11 +34,11 @@ final class AddressBar: UIView {
         static let addressBarContentHorizontalInset: CGFloat = 12
         static let addressBarButtonToTextSpacing: CGFloat = 8
         static let addressBarDismissButtonSpacing: CGFloat = 9
-        static let addressBarButtonSize: CGFloat = 18
+        static let addressBarButtonSize: CGFloat = 24
         static let addressBarHeight: CGFloat = 44
         static let addressBarLoadingProgressHeight: CGFloat = 2
         static let addressBarAutocompleteTrailingInset: CGFloat = 30
-        static let addressBarTextFontSize: CGFloat = 17
+        static let addressBarTextFontSize: CGFloat = 16
         static let addressBarDismissButtonAnimationDuration: TimeInterval = 0.2
         static let addressBarAudioButtonAnimationDuration: TimeInterval = 0.18
         static let addressBarBackgroundDarkModeShadowAlpha: CGFloat = 0.3
@@ -903,14 +903,14 @@ final class AddressBar: UIView {
         
         if state == .loading {
             leadingButton.tintColor = .secondaryLabel
-            leadingButton.setImage(UIImage(systemName: "checkmark.shield"), for: .normal)
+            leadingButton.setImage(FennecTheme.siteProtectionImage, for: .normal)
             leadingButton.setMenuPreservingPresentation(nil)
             leadingButton.isUserInteractionEnabled = false
             return
         }
         
-        leadingButton.tintColor = .label
-        leadingButton.setImage(UIImage(systemName: "checkmark.shield"), for: .normal)
+        leadingButton.tintColor = FennecTheme.ink
+        leadingButton.setImage(FennecTheme.siteProtectionImage, for: .normal)
         leadingButton.accessibilityLabel = FennecTheme.text("Site settings")
         if #available(iOS 14.0, *) {
             leadingButton.showsMenuAsPrimaryAction = false
@@ -1055,35 +1055,11 @@ final class AddressBar: UIView {
             return nil
         }
         
-        guard !Prefs.AppearanceSettings.showsFullWebsiteAddress,
-              canShowBarMenu,
-              let host = locationHost() else {
-            return NSAttributedString(
-                string: currentText,
-                attributes: [.foregroundColor: UIColor.label]
-            )
-        }
-        
-        let attributedText = NSMutableAttributedString(
-            string: host,
-            attributes: [.foregroundColor: UIColor.label]
+        let source = canShowBarMenu ? (currentLocationText ?? currentText) : currentText
+        return NSAttributedString(
+            string: FennecAddressDisplay.text(source, fullAddress: Prefs.AppearanceSettings.showsFullWebsiteAddress),
+            attributes: [.foregroundColor: FennecTheme.ink]
         )
-        attributedText.append(
-            NSAttributedString(
-                string: " / ",
-                attributes: [.foregroundColor: UIColor.secondaryLabel]
-            )
-        )
-        if let title = currentLocationTitle,
-           !title.isEmpty {
-            attributedText.append(
-                NSAttributedString(
-                    string: title,
-                    attributes: [.foregroundColor: UIColor.secondaryLabel]
-                )
-            )
-        }
-        return attributedText
     }
     
     private func locationHost() -> String? {
