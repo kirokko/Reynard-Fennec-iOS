@@ -44,6 +44,9 @@ xcrun swiftc -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" \
   tests/ui-layout-smoke/NoJITFixtures.swift browser/Reynard/JIT/JITController.swift \
   "$ui/Appearance/FennecTheme.swift" \
   "$ui/Chrome/FennecMenuViewController.swift" \
+  "$ui/Library/Bookmarks/BookmarkSortOrder.swift" \
+  "$ui/Library/Downloads/FennecDownloadFilter.swift" \
+  "$ui/Library/Downloads/FennecDownloadFilterView.swift" \
   "$ui/Homepage/Sections/HomepageSection.swift" \
   "$ui/Homepage/FennecHomepageSummaryView.swift" \
   "$ui/Homepage/Sections/PrivateBrowsing/PrivateBrowsingSectionViewController.swift" \
@@ -67,8 +70,8 @@ container=$(xcrun simctl get_app_container "$device" local.ieynec.LayoutSmoke da
 rm -f "$container/Documents/layout-pass.txt" "$container/Documents/"*-ready "$container/Documents/"*-captured
 mkdir -p "$work/screenshots"
 xcrun simctl launch --terminate-running-process --stdout="$work/stdout.log" --stderr="$work/stderr.log" "$device" local.ieynec.LayoutSmoke
-for ((i=0; i<180; i++)); do
-  for stage in home groups; do
+for ((i=0; i<300; i++)); do
+  for stage in private home groups; do
     if [[ -f "$container/Documents/$stage-ready" && ! -f "$container/Documents/$stage-captured" ]]; then
       xcrun simctl io "$device" screenshot "$work/screenshots/$stage-on-screen.png"
       touch "$container/Documents/$stage-captured"

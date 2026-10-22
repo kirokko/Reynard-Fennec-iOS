@@ -187,6 +187,17 @@ test('homepage switches control real cards and omit the obsolete update switch',
   assert.doesNotMatch(select, /\[weak self\]|self\?\.tabManager\.selectTab/);
 });
 
+test('filmed download categories and bookmark sort choices use original stores', () => {
+  const downloads = read(ui + 'Library/Downloads/DownloadsViewController.swift');
+  assert.match(downloads, /filterView\.selected\.matches\(fileName: \$0\.fileName, mimeType: \$0\.mimeType\)/);
+  assert.match(downloads, /DownloadStore\.shared\.currentSnapshot\(\)/);
+  const bookmarks = read(ui + 'Library/Bookmarks/BookmarksViewController.swift');
+  for (const key of ['Sort by custom order', 'Sort by newest', 'Sort by oldest', 'Sort by A to Z', 'Sort by Z to A']) assert.ok(bookmarks.includes(key));
+  assert.match(bookmarks, /folder\.isProtected \{\s*return item/);
+  const catalog = JSON.parse(read(ui + 'Appearance/FennecLocalizable.xcstrings'));
+  for (const key of ['All', 'Images', 'Other']) for (const language of ['zh-Hans', 'zh-Hant']) assert.ok(catalog.strings[key].localizations[language]);
+});
+
 test('menu routes connect to original engine actions instead of placeholder handlers', () => {
   const menu = read(ui + 'BrowserViewController+FennecMenu.swift');
   for (const operation of ['addressBarDidRequestReader', 'addressBarDidRequestPageZoom', 'addressBarDidRequestFindInPage', 'addressBarDidRequestWebsiteModeChange', 'addressBarDidRequestReloadOrStop', 'addressBarDidRequestHardReload', 'addressBarAddonItems', 'presentBookmarkEditor', 'presentLibrary']) assert.ok(menu.includes(operation), operation);

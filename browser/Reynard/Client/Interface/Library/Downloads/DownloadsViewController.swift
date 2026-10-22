@@ -80,6 +80,7 @@ final class DownloadsViewController: UIViewController, UITableViewDataSource, UI
     private var appActiveObserver: NSObjectProtocol?
     private var isSwipeEditing = false
     private var query = ""
+    private let filterView = FennecDownloadFilterView(frame: .zero)
     private var quickLookPreviewItem: NSURL?
     
     // MARK: - Lifecycle
@@ -197,10 +198,16 @@ final class DownloadsViewController: UIViewController, UITableViewDataSource, UI
     
     private func installHeader() {
         headerView.layoutMargins = tableView.layoutMargins
+        headerView.addSubview(filterView)
+        filterView.translatesAutoresizingMaskIntoConstraints = false
+        filterView.onSelect = { [weak self] _ in self?.reloadDownloads() }
         headerView.addSubview(searchBar)
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         var constraints = [
-            searchBar.topAnchor.constraint(equalTo: headerView.layoutMarginsGuide.topAnchor),
+            filterView.topAnchor.constraint(equalTo: headerView.layoutMarginsGuide.topAnchor),
+            filterView.leadingAnchor.constraint(equalTo: headerView.layoutMarginsGuide.leadingAnchor),
+            filterView.trailingAnchor.constraint(equalTo: headerView.layoutMarginsGuide.trailingAnchor),
+            searchBar.topAnchor.constraint(equalTo: filterView.bottomAnchor, constant: 4),
             searchBar.leadingAnchor.constraint(equalTo: headerView.layoutMarginsGuide.leadingAnchor),
             searchBar.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
         ]
@@ -319,11 +326,10 @@ final class DownloadsViewController: UIViewController, UITableViewDataSource, UI
     
     private func matchingDownloads(from items: [DownloadItemSnapshot]) -> [DownloadItemSnapshot] {
         let normalizedTerm = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !normalizedTerm.isEmpty else {
-            return items
+        return items.filter {
+            filterView.selected.matches(fileName: $0.fileName, mimeType: $0.mimeType)
+                && (normalizedTerm.isEmpty || $0.fileName.localizedCaseInsensitiveContains(normalizedTerm))
         }
-        
-        return items.filter { $0.fileName.localizedCaseInsensitiveContains(normalizedTerm) }
     }
     
     private func searchDownloads(term: String, preserveFocusOnClear: Bool = false) {
@@ -351,7 +357,7 @@ final class DownloadsViewController: UIViewController, UITableViewDataSource, UI
     // MARK: - Display State
     
     private func updateEmptyState() {
-        emptyStateView.message = query.isEmpty ? NSLocalizedString("Files you download appear here", comment: "") : NSLocalizedString("No matching downloads", comment: "")
+        emptyStateView.message = query.isEmpty && filterView.selected == .all ? NSLocalizedString("Files you download appear here", comment: "") : NSLocalizedString("No matching downloads", comment: "")
         tableView.backgroundView = sections.isEmpty ? emptyStateView : nil
         emptyStateView.updateContentInsets(from: tableView)
     }

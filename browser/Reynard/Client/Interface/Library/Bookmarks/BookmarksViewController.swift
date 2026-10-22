@@ -490,9 +490,11 @@ final class BookmarksViewController: UIViewController, UITableViewDataSource, UI
     private func makeSortMenu() -> UIMenu {
         let selectedOrder = Prefs.BookmarkSettings.sortOrders
         let sortOptions: [(title: String, order: BookmarkSortOrder)] = [
-            (NSLocalizedString("None", comment: "Sort option"), .none),
-            (NSLocalizedString("Date Added", comment: "Sort option"), .date_added),
-            (NSLocalizedString("Name", comment: "Sort option"), .name),
+            (FennecTheme.text("Sort by custom order"), .none),
+            (FennecTheme.text("Sort by newest"), .date_added),
+            (FennecTheme.text("Sort by oldest"), .date_added_oldest),
+            (FennecTheme.text("Sort by A to Z"), .name),
+            (FennecTheme.text("Sort by Z to A"), .name_descending),
             (NSLocalizedString("Address", comment: "Sort option"), .address),
         ]
         let menu = UIMenu(
@@ -598,28 +600,9 @@ final class BookmarksViewController: UIViewController, UITableViewDataSource, UI
             
             return true
         }
-        let sortedMovableItems: [BookmarkContentSnapshot]
-        switch Prefs.BookmarkSettings.sortOrders {
-        case .none:
-            return newItems
-        case .date_added:
-            sortedMovableItems = movableItems.sorted { lhs, rhs in
-                let lhsValues = values(lhs)
-                let rhsValues = values(rhs)
-                if lhsValues.dateAdded == rhsValues.dateAdded {
-                    return lhsValues.title.localizedCaseInsensitiveCompare(rhsValues.title) == .orderedAscending
-                }
-                return lhsValues.dateAdded > rhsValues.dateAdded
-            }
-        case .name:
-            sortedMovableItems = movableItems.sorted { lhs, rhs in
-                values(lhs).title.localizedCaseInsensitiveCompare(values(rhs).title) == .orderedAscending
-            }
-        case .address:
-            sortedMovableItems = movableItems.sorted { lhs, rhs in
-                values(lhs).address.localizedCaseInsensitiveCompare(values(rhs).address) == .orderedAscending
-            }
-        }
+        let order = Prefs.BookmarkSettings.sortOrders
+        guard order != .none else { return newItems }
+        let sortedMovableItems = movableItems.sorted { order.precedes(values($0), values($1)) }
         
         var movableIndex = 0
         return newItems.map { item in

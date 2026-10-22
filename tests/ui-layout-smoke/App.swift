@@ -105,6 +105,7 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
     }
     private func exercise() {
         checkNoJITController()
+        checkDownloadFilters()
         checkInstantTray()
         let thumbnail = UIGraphicsImageRenderer(size: CGSize(width: 393, height: 1800)).image { context in
             UIColor.systemGray4.setFill(); context.fill(CGRect(x: 0, y: 0, width: 393, height: 1800))
@@ -143,22 +144,76 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
                 precondition(summary.arrangedSubviews.count == (showProtection ? 1 : 0) + (showContinue ? 1 : 0))
             }
         }
+        // Restore the real window geometry after wide synthetic layout cases.
+        root.view.frame = window!.bounds
+        root.setContentMode(.embeddedNarrow)
         root.setPrivateBrowsing(true)
         root.view.layoutIfNeeded()
         precondition(root.overrideUserInterfaceStyle == .dark)
         precondition(descendants(root.view).contains { $0.accessibilityIdentifier == "homepage.private" })
         precondition(!descendants(root.view).compactMap { $0 as? UILabel }.contains { $0.text == "ieynec" })
         precondition(!descendants(root.view).compactMap { $0 as? UIButton }.contains { $0.title(for: .normal) == "More" })
-        screenshot(window!, name: "private-homepage-layout")
-        root.setPrivateBrowsing(false)
-        root.view.layoutIfNeeded()
-        root.view.frame = window!.bounds
-        root.view.layoutIfNeeded()
-        screenshot(window!, name: "homepage-layout")
-        waitForScreenCapture("home") { [self] in
-            checkCategories()
-            checkNavigation()
+        for label in descendants(root.view).compactMap({ $0 as? UILabel }) where !label.isHidden {
+            let frame = label.convert(label.bounds, to: root.view)
+            precondition(frame.minX >= 0 && frame.maxX <= root.view.bounds.width + 0.5, "Private copy must fit the physical phone viewport")
         }
+        screenshot(window!, name: "private-homepage-layout")
+        waitForScreenCapture("private") { [self] in
+            root.setPrivateBrowsing(false)
+            root.view.layoutIfNeeded()
+            screenshot(window!, name: "homepage-layout")
+            waitForScreenCapture("home") { [self] in
+                checkCategories()
+                checkNavigation()
+            }
+        }
+    }
+
+    private func checkDownloadFilters() {
+        let entries: [BookmarkSortOrder.Values] = [
+            (Date(timeIntervalSince1970: 3), "Beta", "https://b.invalid"),
+            (Date(timeIntervalSince1970: 1), "Zulu", "https://a.invalid"),
+            (Date(timeIntervalSince1970: 2), "alpha", "https://c.invalid"),
+        ]
+        let sorts: [(BookmarkSortOrder, [String])] = [
+            (.date_added, ["Beta", "alpha", "Zulu"]),
+            (.date_added_oldest, ["Zulu", "alpha", "Beta"]),
+            (.name, ["alpha", "Beta", "Zulu"]),
+            (.name_descending, ["Zulu", "Beta", "alpha"]),
+            (.address, ["Zulu", "Beta", "alpha"]),
+        ]
+        for (order, expected) in sorts {
+            precondition(entries.sorted { order.precedes($0, $1) }.map { $0.title } == expected)
+        }
+        precondition(BookmarkSortOrder(rawValue: "date_added") == .date_added)
+        precondition(!BookmarkSortOrder.none.precedes(entries[0], entries[1]))
+        let cases: [(String, String?, Bool)] = [
+            ("photo.JPG", nil, true), ("photo.avif", "application/octet-stream", true),
+            ("unnamed", " IMAGE/PNG ; charset=binary", true), ("photo.heic", nil, true),
+            ("vector.svg", "image/svg+xml", true), ("file.zip", nil, false),
+            ("video.mp4", "video/mp4", false), ("fake.jpg", "text/html", false),
+            ("document.pdf", "application/pdf", false), ("unknown", nil, false),
+        ]
+        for (name, mime, image) in cases {
+            precondition(FennecDownloadFilter.all.matches(fileName: name, mimeType: mime))
+            precondition(FennecDownloadFilter.images.matches(fileName: name, mimeType: mime) == image)
+            precondition(FennecDownloadFilter.other.matches(fileName: name, mimeType: mime) != image)
+        }
+        let chips = FennecDownloadFilterView(frame: CGRect(x: 0, y: 0, width: 288, height: 56))
+        var changes = 0
+        chips.onSelect = { _ in changes += 1 }
+        chips.layoutIfNeeded()
+        for button in chips.arrangedSubviews.compactMap({ $0 as? UIButton }) {
+            precondition(button.frame.minX >= 0 && button.frame.maxX <= 288)
+            precondition(button.bounds.height >= 44)
+        }
+        chips.select(.images)
+        chips.select(.images)
+        precondition(chips.selected == .images && changes == 1)
+        chips.select(.other)
+        precondition(changes == 2)
+        precondition(chips.arrangedSubviews.compactMap { $0 as? UIButton }.filter { $0.accessibilityTraits.contains(.selected) }.count == 1)
+        screenshot(chips, name: "download-categories")
     }
 
     private func checkCategories() {

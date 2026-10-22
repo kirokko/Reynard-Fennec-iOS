@@ -1,6 +1,14 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Sort by custom order": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "按自定义顺序排列" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "依自訂順序排列" } } } },
+    "Sort by newest": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "按最新排列" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "依最新排列" } } } },
+    "Sort by oldest": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "按最早排列" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "依最舊排列" } } } },
+    "Sort by A to Z": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "按 A 到 Z 排列" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "依 A 到 Z 排列" } } } },
+    "Sort by Z to A": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "按 Z 到 A 排列" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "依 Z 到 A 排列" } } } },
+    "All": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "全部" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "全部" } } } },
+    "Images": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "图片" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "圖片" } } } },
+    "Other": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "其他" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "其他" } } } },
     "Leave no traces on this device": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "不在此设备上留下痕迹" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "不在此裝置上留下痕跡" } } } },
     "Private browsing": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "隐私浏览" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "隱私瀏覽" } } } },
     "Private tabs stay separate from your regular tabs. Close them to clear their browsing history and cookies.": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "隐私标签页与普通标签页相互独立。关闭隐私标签页即可清除其中的浏览记录和 Cookie。" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "隱私分頁與一般分頁相互獨立。關閉隱私分頁即可清除其中的瀏覽紀錄與 Cookie。" } } } },
