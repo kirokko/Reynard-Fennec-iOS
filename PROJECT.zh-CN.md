@@ -1,6 +1,18 @@
 # ieynec（原 Reynard / Fennec iOS）改版记录
 
-## 最新交付：底部网页区域／捷径首次显示（构建 #20）
+## 最新交付：首次计数图标／隐私遗留／整块底栏（构建 #21）
+
+用户新增四图和9.5s录屏仅本地分析。计数边框由动态文字色转为CGColor后可能在首次继承主题前取色；新增共享`FennecTabCountLabel`在挂到window／layout／trait变化刷新，避免第二次点击才正确。删除TabOverviewCollection旧Reynard狐狸说明的factory／背景绑定／空数据切换，保留TabOverview单套面具说明，不删除隐私数据。
+
+底栏由“56pt行裁切＋底部单独透明／补偿”改为整块（例如56+34=90pt）从上到下平移；背景、行、OS inset同一UIView，视觉位移和Gecko bottom offset相同，不再分段，不留下不透明底部空白。Android原始盾牌矢量保留MPL2.0来源；显示真实网址而非域名／标题拼接，隐藏scheme但尊重完整地址偏好，不改变输入／提交。16pt文字、24pt盾牌、20pt regular加号；44pt触控目标保留。原App图标和捷径修正不变。
+
+完整[#21](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39755850470)成功，30m04s，SDK缓存命中、引擎未重编；源码`6ce67d68482ebf1f4e940135153fc0310deda603`，包内`6ce67d6`。当前IPA已下载双重哈希核验：106,731,181 bytes，SHA-256 `EF9E93FD6303CBDF880DDA72FEA4577616D762CBC83C4070984F824FACFA003F`；主App与两扩展plist原标识、0.18.0／6ce67d6、最低系统13.0保留。
+
+25项源码／本地化、Foundation组、Swift解析、扩大UIKit与完整App打包、6项下载器隔离测试通过。新增真实计数初次挂到深色host／多次主题变化／二次点击不变、实际actool盾牌加载、网址格式运行用例；五段底栏导出检查同位移不淡出，截图已查看。地址视图／引擎边界仍有替身，隐私collection清理有源码检查，不冒称完整Gecko／真机总览已验收。测试仍有fixture生命周期／region和原deprecated等警告，不是无警告构建。
+
+当前`IPA\current\ieynec-no-jit.ipa`为#21，原#20及来源已按旧哈希归档`IPA\rollback\ieynec-no-jit-build20.ipa`；更早回滚保留。SideStore覆盖、保留全部扩展、不卸载／清数据；无JIT。完整Gecko一段式隐藏、初次总览深色框、私密总览单套说明和地址栏实际观感待手机确认。系统键盘动画等原边界不变；Codeberg旧包未更新上传。
+
+## 历史交付：底部网页区域／捷径首次显示（构建 #20）
 
 新五图仅本地分析。按新要求，底栏收起后不再保留不透明的底部安全区空白，网页可用区域同步释放整行和底部安全区；不是恢复旧的小网址条。保留底栏既有跟手／收尾方式，不重写系统手势。捷径原本不在“更多”内，问题是首次布局读取尚未有宽度的内部collection导致1pt高度；改为从已经解析的外层section宽度计算，不再依赖点击“更多”触发布局。
 
