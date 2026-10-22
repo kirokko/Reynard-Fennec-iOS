@@ -49,6 +49,8 @@ final class WebContentView: UIView, UIScrollViewDelegate {
     var onHistorySwipeDidComplete: ((GeckoEdgeSwipeDirections) -> Void)?
     var onHistorySwipeDidEnd: (() -> Void)?
     var onVerticalScroll: ((CGFloat, CGFloat) -> Void)?
+    var onScrollInteractionBegan: (() -> Void)?
+    var onScrollInteractionEnded: (() -> Void)?
     
     var keyCommandDelegate: GeckoViewKeyCommandDelegate? {
         get { return webView.keyCommandDelegate }
@@ -382,6 +384,7 @@ final class WebContentView: UIView, UIScrollViewDelegate {
 
 extension WebContentView: GeckoViewInteractionDelegate {
     func touchSequenceDidBegin(_ sequenceID: UInt64) {
+        onScrollInteractionBegan?()
         pullToRefreshRecognizer?.beginInputSequence(sequenceID)
     }
     
@@ -400,9 +403,12 @@ extension WebContentView: GeckoViewInteractionDelegate {
         ))
     }
     
-    func touchSequenceDidEnd(_ sequenceID: UInt64) {}
+    func touchSequenceDidEnd(_ sequenceID: UInt64) {
+        onScrollInteractionEnded?()
+    }
     
     func trackpadScrollDidBegin(_ delta: CGPoint) {
+        onScrollInteractionBegan?()
         awaitsScrollInteraction = false
         guard currentScrollY <= 0.5 else {
             return
@@ -415,10 +421,12 @@ extension WebContentView: GeckoViewInteractionDelegate {
     }
     
     func trackpadScrollDidEnd() {
+        onScrollInteractionEnded?()
         pullToRefreshRecognizer?.endTrackpadScroll()
     }
     
     func trackpadScrollDidCancel() {
+        onScrollInteractionEnded?()
         pullToRefreshRecognizer?.cancelTrackpadScroll()
     }
     

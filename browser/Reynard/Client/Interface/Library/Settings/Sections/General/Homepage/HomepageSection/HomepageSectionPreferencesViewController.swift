@@ -10,7 +10,6 @@ import UIKit
 final class HomepageSectionPreferencesViewController: SettingsTableViewController {
     enum OverviewRow: CaseIterable {
         case favorites
-        case frequentlyVisited
         case recentlyClosedTabs
         
         var title: String {
@@ -25,8 +24,6 @@ final class HomepageSectionPreferencesViewController: SettingsTableViewControlle
             switch self {
             case .favorites:
                 return .favorites
-            case .frequentlyVisited:
-                return .frequentlyVisited
             case .recentlyClosedTabs:
                 return .recentlyClosedTabs
             }
@@ -41,7 +38,7 @@ final class HomepageSectionPreferencesViewController: SettingsTableViewControlle
         var title: String {
             switch self {
             case .favorites:
-                return NSLocalizedString("Favorites", comment: "")
+                return FennecTheme.text("Shortcuts")
             case .frequentlyVisited:
                 return NSLocalizedString("Frequently Visited", comment: "")
             case .recentlyClosedTabs:
@@ -52,7 +49,7 @@ final class HomepageSectionPreferencesViewController: SettingsTableViewControlle
         var switchTitle: String {
             switch self {
             case .favorites:
-                return NSLocalizedString("Show Favorites", comment: "")
+                return FennecTheme.text("Shortcuts")
             case .frequentlyVisited:
                 return NSLocalizedString("Show Frequently Visited", comment: "")
             case .recentlyClosedTabs:

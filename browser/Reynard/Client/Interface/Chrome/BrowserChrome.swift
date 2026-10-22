@@ -185,7 +185,9 @@ final class BrowserChrome: UIView, UIGestureRecognizerDelegate {
     
     func minimizedToolbarHeight(for mode: BrowserChromeMode) -> CGFloat {
         let inset = mode == .phone ? safeAreaInsets.bottom : (state?.topInset ?? safeAreaInsets.top)
-        return inset + UX.minimizedToolbarContentHeight
+        // Android bottom chrome slides away as one row; retain only the OS
+        // home-indicator inset, not Reynard's miniature URL strip.
+        return inset + (mode == .phone ? 0 : UX.minimizedToolbarContentHeight)
     }
     
     func addressBarFrame(in view: UIView) -> CGRect {
@@ -725,7 +727,13 @@ final class BrowserChrome: UIView, UIGestureRecognizerDelegate {
     ) {
         topToolbar.transform = CGAffineTransform(translationX: 0, y: topOffset)
         topToolbar.setBackgroundCollapseOffset(tabBarCollapseOffset)
-        bottomToolbar.transform = CGAffineTransform(translationX: 0, y: bottomOffset)
+        if state?.mode == .phone {
+            bottomToolbar.transform = .identity
+            bottomToolbar.setScrollTranslation(bottomOffset)
+        } else {
+            bottomToolbar.setScrollTranslation(0)
+            bottomToolbar.transform = CGAffineTransform(translationX: 0, y: bottomOffset)
+        }
         actionBar.transform = actionBarKeyboardBottomConstraint == nil
         ? CGAffineTransform(translationX: 0, y: bottomOffset)
         : .identity
@@ -741,7 +749,8 @@ final class BrowserChrome: UIView, UIGestureRecognizerDelegate {
         
         let contentAlpha: CGFloat = isToolbarContentHidden ? 0 : 1
         let topAlpha: CGFloat = state?.mode == .phone ? 1 : contentAlpha
-        let bottomAlpha: CGFloat = isBottomToolbarCollapsed ? 0 : (state?.mode == .pad ? 1 : contentAlpha)
+        // Keep the pill, URL and all buttons together throughout the slide.
+        let bottomAlpha: CGFloat = isBottomToolbarCollapsed ? 0 : (state?.mode == .phone || state?.mode == .pad ? 1 : contentAlpha)
         guard !animatesContent || toolbarContentAlphas != (topAlpha, bottomAlpha) else {
             return
         }
@@ -780,6 +789,7 @@ final class BrowserChrome: UIView, UIGestureRecognizerDelegate {
     private func updateToolbarTextTransition(textCenterProgress: CGFloat) -> Bool {
         guard toolbarCollapseProgress > 0,
               let state,
+              state.mode != .phone,
               state.presentation == .browsing,
               state.search == .inactive,
               let presentation = addressBar.toolbarTextPresentation(in: self) else {

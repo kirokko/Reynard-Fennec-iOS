@@ -101,6 +101,8 @@ final class ContentView: UIView, UIGestureRecognizerDelegate {
     var onHistorySwipeBegan: (() -> Void)?
     var onHistorySwipeEnded: (() -> Void)?
     var onVerticalScroll: ((CGFloat, CGFloat) -> Void)?
+    var onScrollInteractionBegan: (() -> Void)?
+    var onScrollInteractionEnded: (() -> Void)?
     var onAppearanceChanged: (() -> Void)?
     
     private var topConstraint: NSLayoutConstraint?
@@ -218,6 +220,12 @@ final class ContentView: UIView, UIGestureRecognizerDelegate {
         }
         webContentView.onHistorySwipeDidEnd = { [weak self] in
             self?.endTrackpadHistoryNavigation()
+        }
+        webContentView.onScrollInteractionBegan = { [weak self] in
+            self?.onScrollInteractionBegan?()
+        }
+        webContentView.onScrollInteractionEnded = { [weak self] in
+            self?.onScrollInteractionEnded?()
         }
         webContentView.onVerticalScroll = { [weak self] delta, position in
             self?.onVerticalScroll?(delta, position)

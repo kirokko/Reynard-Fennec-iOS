@@ -49,6 +49,7 @@ final class ToolbarController {
     private var pendingSnap: DispatchWorkItem?
     private var animationDisplayLink: CADisplayLink?
     private var permitsScrollMotion = false
+    private var isScrollTouchActive = false
     private var isBottomToolbarCollapsed = false
     private var isCollapsedUntilReset = false
     private var resizesPage = false
@@ -82,6 +83,17 @@ final class ToolbarController {
             self?.unlock(for: .historyNavigation)
         }
         
+        contentView.onScrollInteractionBegan = { [weak self] in
+            guard let self else { return }
+            isScrollTouchActive = true
+            cancelAnimation()
+            targetOffset = transitionOffset
+        }
+        contentView.onScrollInteractionEnded = { [weak self] in
+            guard let self else { return }
+            isScrollTouchActive = false
+            if permitsScrollMotion { beginSnap() }
+        }
         contentView.onVerticalScroll = { [weak self] scrollDelta, position in
             self?.handleScroll(delta: scrollDelta, position: position)
         }
@@ -214,6 +226,21 @@ final class ToolbarController {
             return
         }
         
+        if chromeMode == .phone {
+            // Same whole-row translation policy as Android's BottomViewBehaviorStrategy:
+            // 1:1 scroll distance, immediate reversal, no follower lag or shrunken URL.
+            // A new compositor sample interrupts settling from its CURRENT position.
+            cancelAnimation()
+            permitsScrollMotion = true
+            targetOffset = min(max(transitionOffset + delta, 0), maxTransitionOffset)
+            if scrollPosition <= 0 { targetOffset = 0 }
+            setTransitionOffset(targetOffset, animatesContent: false)
+            // Never snap under a stationary finger. After release, compositor
+            // inertia keeps replacing this work until scrolling becomes quiet.
+            if !isScrollTouchActive { scheduleSnap() }
+            return
+        }
+
         // Resume from the visible position when scrolling takes over or changes direction.
         if animationDisplayLink == nil || snapStartTime != nil || delta * (targetOffset - transitionOffset) < 0 {
             targetOffset = transitionOffset
@@ -281,9 +308,10 @@ final class ToolbarController {
         var requestedOffset = targetOffset
         var requestedTextCenterProgress: CGFloat?
         if let snapStartTime {
-            let progress = min(CGFloat((time - snapStartTime) / UX.snapDuration) * speedMultiplier, 1)
+            let duration = permitsScrollMotion && chromeMode == .phone ? 0.15 : UX.snapDuration
+            let progress = min(CGFloat((time - snapStartTime) / duration) * speedMultiplier, 1)
             let easedProgress = 1 - pow(1 - progress, 2)
-            requestedOffset = snapOrigin + (targetOffset - snapOrigin) * easedProgress
+            requestedOffset = progress == 1 ? targetOffset : snapOrigin + (targetOffset - snapOrigin) * easedProgress
             if targetOffset > snapOrigin {
                 let centerProgress = min(
                     CGFloat((time - snapStartTime) / UX.maxTextCenterDuration) * speedMultiplier,
@@ -294,12 +322,15 @@ final class ToolbarController {
                 + (1 - snapTextCenterOrigin) * easedCenterProgress
             }
         }
-        let step = min(max(requestedOffset - transitionOffset, -maximumStep), maximumStep)
+        // Android uses the decelerator directly, without a second speed limiter.
+        let step = permitsScrollMotion && chromeMode == .phone
+        ? requestedOffset - transitionOffset
+        : min(max(requestedOffset - transitionOffset, -maximumStep), maximumStep)
         setTransitionOffset(
             transitionOffset + step,
             textCenterProgress: requestedTextCenterProgress
         )
-        let isTextCentered = targetOffset <= snapOrigin || textCenterProgress == 1
+        let isTextCentered = chromeMode == .phone || targetOffset <= snapOrigin || textCenterProgress == 1
         if transitionOffset == targetOffset && isTextCentered {
             animationDisplayLink?.invalidate()
             animationDisplayLink = nil

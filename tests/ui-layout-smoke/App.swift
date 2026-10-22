@@ -12,6 +12,7 @@ enum HomepageContentMode {
 }
 enum HomepageWallpaper { static var image: UIImage? { nil } }
 enum Prefs {
+    enum AppearanceSettings { static let scrollToHideToolbarEnabled = true }
     enum JITSettings { static var isJITEnabled = true }
     enum HomepageSettings {
         static var showsContinue = true
@@ -111,8 +112,10 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
         checkNoJITController()
         checkpoint("fullscreen rotation and refresh")
         checkFullscreenRotationAndRefresh()
-        checkpoint("top/bottom chrome")
+        checkpoint("top/bottom chrome and real scroll controller")
+        checkToolbarScrollController()
         screenshot(checkFennecChrome(), name: "chrome-controls")
+        screenshot(scrollChromeSample(), name: "chrome-scroll-states")
         checkpoint("download filters and homepage")
         checkDownloadFilters()
         checkInstantTray()
@@ -142,6 +145,8 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
                 root.view.layoutIfNeeded()
             }
         }
+        precondition(!HomepageSection.allCases.contains(.frequentlyVisited))
+        precondition(!root.children.contains { $0 is FrequentlyVisitedSectionViewController }, "No frequent-site controller/query on the homepage")
         for showProtection in [false, true] {
             for showContinue in [false, true] {
                 Prefs.HomepageSettings.showsProtection = showProtection

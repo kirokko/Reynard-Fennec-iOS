@@ -6,7 +6,24 @@ Reviewed three owner-provided videos locally: Android screen recording (~105s), 
 
 The Android screen recording is mostly black before ~44s because private-mode capture is blocked. Do not infer an empty/black UI from it. Use the filmed private-mode demonstration instead. The iOS recording does not visibly exercise every search/keyboard path; the owner's additional report about address-bar motion is a separate input, investigated in source.
 
-## Additional annotated reference pass (build #17; device acceptance pending)
+## Follow-up device feedback: icon surface, homepage and whole-row scroll
+
+Three new owner-provided pictures and two short comparison recordings (~10.91s Android / ~6.40s iOS) were inspected locally. The iOS recording shows the old shrinking/centering URL strip and early disappearance of toolbar controls; Android moves the complete row out of view, leaving only its system navigation area. No private frames, URLs or recordings are committed.
+
+This revision removes the frequent-sites section from homepage enumeration AND visibility filtering (including old enabled preferences), and removes its settings entry. History/bookmark data are not deleted. Shortcuts remain backed by the existing favorites folder; a per-profile one-time migration enables them on upgrade, after which manual off/on choices remain respected. No fabricated favorites are inserted.
+
+The icon surface is regenerated from the untouched fox logo with a neutral white-to-light-gray gradient, subtle edge illumination and soft artwork shadow, retaining proportions and outer iOS masking. The prior flat white canvas was insufficient. This is a baked light asset approximation of the photographed Safari surface, not Apple's proprietary layered icon or a guarantee of identical OS lighting in all appearance modes.
+
+The phone scroll path now applies compositor distance immediately at 1:1 scale, without the former 0.8 factor, 600pt/s follower limit, content fade, text scaling/centering or persistent 24pt URL strip. The entire address pill and three controls slide together inside a clipped row above the retained home-indicator area. Hidden controls cannot intercept touches. Touch/trackpad begin/end boundaries are forwarded from the existing Gecko interaction delegate: a stationary finger does not trigger a timer snap; release settles to the nearest endpoint, and later inertial compositor samples interrupt settling at its current position. Quiet inertial updates use the existing 100ms debounce because the current bridge has no APZ animation-ended callback. The endpoint animation uses a 150ms quadratic decelerator, without an additional speed cap. Focus, keyboard docking, tray and programmatic resets remain nonanimated; no engine patch/cache key or Gecko version change.
+
+Public policy reference, same pinned `FIREFOX-ANDROID_158_0_RELEASE` tag:
+- `mobile/android/android-components/components/ui/widgets/src/main/java/mozilla/components/ui/widgets/behavior/ViewYTranslationStrategy.kt`: bottom translation clamps to full view height, half-height endpoint selection (half collapses), 150ms `DecelerateInterpolator`.
+- Same directory: `EngineViewScrollingDataBehavior.kt` / `EngineViewScrollingGesturesBehavior.kt`: cancel translation on scroll start, direct distance translation, snap on stop.
+- `mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/toolbar/BottomToolbarContainerView.kt`: bottom toolbar container uses the engine scrolling behavior.
+
+Tests now compile the real `ToolbarController` against engine/chrome doubles, checking direct movement, reversal, stationary touches, half-height snap, end states, interruption, lock/reset cancellation and repeated interactions. Real `BottomToolbar` fixtures check unchanged pill dimensions during translation, safe-inset clipping and hidden-row hit testing, with expanded/half/hidden component exports. These are not complete Gecko/APZ/website timing tests. New source checks cover section removal, migration and icon generation; installed icon appearance and full-browser scroll parity still require device review. Build/test results are recorded only after actual runs.
+
+## Additional annotated reference pass (build #17; historical delivery)
 
 Four additional owner-provided annotated pictures and four short videos (approximately 5.45s / 9.87s / 20.73s / 4.63s) were inspected locally. No pictures, frames, URLs or device recordings are committed. The first two references demonstrate page-scroll address-bar hiding/return, address focus and refresh feedback; the video reference demonstrates portrait fullscreen before requesting landscape. This is visual sampling, not recorded touch coordinates or a timing benchmark.
 

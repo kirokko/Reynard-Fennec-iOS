@@ -265,7 +265,7 @@ final class HomepageRootViewController: UIViewController {
         // A collapsed stack must be detached, not hidden with a required 0pt
         // UISV-hiding constraint against fixed-height child sections.
         let extraSections = displayedSections.filter {
-            folder == nil && ($0 == .frequentlyVisited || $0 == .recentlyClosedTabs || $0 == .recommendation(.donation))
+            folder == nil && ($0 == .recentlyClosedTabs || $0 == .recommendation(.donation))
         }
         if folder == nil && !isPrivateBrowsing {
             let header = UIView()
@@ -479,8 +479,9 @@ final class HomepageRootViewController: UIViewController {
                 return Prefs.HomepageSettings.showsFavorites &&
                 (!isPrivateBrowsing || Prefs.HomepageSettings.showsFavoritesInPrivateBrowsing)
             case .frequentlyVisited:
-                return Prefs.HomepageSettings.showsFrequentlyVisited &&
-                (!isPrivateBrowsing || Prefs.HomepageSettings.showsFrequentlyVisitedInPrivateBrowsing)
+                // Removed from both normal/private homepages, including upgrades
+                // with an old true preference. History storage is untouched.
+                return false
             case .recentlyClosedTabs:
                 return Prefs.HomepageSettings.showsRecentlyClosedTabs && !isPrivateBrowsing
             default:

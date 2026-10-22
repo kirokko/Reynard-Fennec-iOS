@@ -84,7 +84,7 @@ test('settings keep the agreed groups and engine controls', () => {
 test('second-pass homepage resumes real regular tabs and preserves extra sections', () => {
   const root = read(ui + 'Homepage/HomepageRootViewController.swift');
   assert.match(root, /UIStackView\(arrangedSubviews: \[logo, brand\]\)/);
-  assert.match(root, /\$0 == \.frequentlyVisited/);
+  assert.doesNotMatch(root, /\$0 == \.frequentlyVisited/);
   assert.match(root, /FennecHomepageSummaryView/);
   const summary = read(ui + 'Homepage/FennecHomepageSummaryView.swift');
   assert.match(summary, /!\$0\.isPrivate/);
@@ -257,6 +257,47 @@ test('pull to refresh overlays a disc without displacing the page or issuing a f
   const fixture = read('tests/ui-layout-smoke/ChromeFixtures.swift');
   assert.match(fixture, /checkFullscreenRotationAndRefresh/);
   assert.match(fixture, /Stale full-screen controls/);
+});
+
+test('removed frequent sites cannot return through old preferences or settings; shortcuts migrate once', () => {
+  const sections = read(ui + 'Homepage/Sections/HomepageSection.swift').split('static var allCases')[1];
+  assert.doesNotMatch(sections, /\.frequentlyVisited/);
+  const root = read(ui + 'Homepage/HomepageRootViewController.swift');
+  assert.match(root, /case \.frequentlyVisited:\s*\/\/[^]*?return false/);
+  const rows = read(ui + 'Library/Settings/Sections/General/Homepage/HomepageSection/HomepageSectionPreferencesViewController.swift').split('enum Preference')[0];
+  assert.doesNotMatch(rows, /frequentlyVisited/);
+  const prefs = read('browser/Reynard/Client/Preferences/BrowserPreferences.swift');
+  assert.match(prefs, /if !UserDefaults.standard.bool\(forKey: shortcutDefaultKey\)/);
+  assert.match(prefs, /set\(true, forKey: key\("HomepageSettings", "showsFavorites"\)\)/);
+});
+
+test('phone scroll translates the complete row without miniature URL, fade or delayed follow', () => {
+  const chrome = read(ui + 'Chrome/BrowserChrome.swift');
+  assert.match(chrome, /mode == \.phone \? 0 : UX.minimizedToolbarContentHeight/);
+  assert.match(chrome, /state.mode != \.phone/);
+  assert.match(chrome, /bottomToolbar.setScrollTranslation\(bottomOffset\)/);
+  const bottom = read(ui + 'Chrome/Toolbar/BottomToolbar.swift');
+  assert.match(bottom, /rowViewport.clipsToBounds = true/);
+  assert.match(bottom, /rowViewport.bounds.contains/);
+  const controller = read(ui + 'Chrome/Toolbar/ToolbarController.swift');
+  assert.match(controller, /transitionOffset \+ delta, 0/);
+  assert.match(controller, /if !isScrollTouchActive \{ scheduleSnap\(\) \}/);
+  assert.match(controller, /chromeMode == \.phone \? 0.15 : UX.snapDuration/);
+  for (const name of ['ContentView', 'WebContentView']) {
+    const source = read(ui + 'ContentView/' + name + '.swift');
+    assert.match(source, /onScrollInteractionBegan/);
+    assert.match(source, /onScrollInteractionEnded/);
+  }
+  assert.match(read('tools/Test-HomepageLayout.sh'), /ToolbarController.swift/);
+  assert.match(read('tests/ui-layout-smoke/ScrollFixtures.swift'), /expect\(visible \+ 4\)/);
+});
+
+test('app icon uses a reproducible dimensional light surface instead of a white plate', () => {
+  const script = read('tools/Prepare-AppIcon.sh');
+  assert.match(script, /geq=r=/);
+  assert.match(script, /gblur=sigma=/);
+  assert.match(script, /format=rgb24/);
+  assert.doesNotMatch(script, /rounded|roundrect/);
 });
 
 test('menu routes connect to original engine actions instead of placeholder handlers', () => {

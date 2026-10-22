@@ -18,6 +18,13 @@ final class BrowserPreferences {
     init(profile: String = "default") {
         self.profile = profile
         registerDefaults()
+        // Apply the owner's new shortcut default to existing installations once.
+        // Subsequent explicit changes remain respected; no bookmark/history edits.
+        let shortcutDefaultKey = key("HomepageSettings", "fennecShortcutsDefaultV1")
+        if !UserDefaults.standard.bool(forKey: shortcutDefaultKey) {
+            UserDefaults.standard.set(true, forKey: key("HomepageSettings", "showsFavorites"))
+            UserDefaults.standard.set(true, forKey: shortcutDefaultKey)
+        }
     }
     
     // Possible future work
@@ -87,7 +94,7 @@ final class BrowserPreferences {
             key("HomepageSettings", "showsProtection"): true,
             key("HomepageSettings", "showsFavoritesInPrivateBrowsing"): false,
             key("HomepageSettings", "favoriteRowCount"): 2,
-            key("HomepageSettings", "showsFrequentlyVisited"): true,
+            key("HomepageSettings", "showsFrequentlyVisited"): false,
             key("HomepageSettings", "showsFrequentlyVisitedInPrivateBrowsing"): false,
             key("HomepageSettings", "frequentlyVisitedSiteCount"): 8,
             key("HomepageSettings", "showsRecentlyClosedTabs"): true,

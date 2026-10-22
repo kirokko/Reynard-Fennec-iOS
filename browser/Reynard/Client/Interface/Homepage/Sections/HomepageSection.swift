@@ -24,7 +24,6 @@ enum HomepageSection: CaseIterable, Hashable {
         return HomepageRecommendation.allCases.map { .recommendation($0) } + [
             .privateBrowsing,
             .favorites,
-            .frequentlyVisited,
             .recentlyClosedTabs,
         ]
     }
