@@ -46,6 +46,14 @@ Existing lazy session restoration is already present: restored sessions are crea
 
 No percentage speed-up is claimed. Native responsiveness is distinct from JavaScript throughput; these changes cannot replace an unavailable JIT. Device benchmarks must compare the same page/network/cache state and distinguish cold start, first useful content, interaction and tab-switch latency.
 
+## Completed build
+
+Full standard SideStore build **#11** succeeded: https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39712078402 , App revision `98d694d34a4319ec3b0e4c0bc7d9f93285bcdc24`, build job 28m23s with cached Gecko SDK. IPA SHA-256 `9C68D4F63649F692C21F62F8FAE55D378417B712381AF46C049749D3AB94D5FD` (106,590,894 bytes); main App and both extension plists were verified after download. Source policy/localization (16 checks), Foundation groups, Swift parsing, expanded UIKit fixture and full App build/package passed. Windows downloader's six isolated tests passed locally.
+
+Downloaded and inspected actual private/groups Simulator compositor captures from #11. The private page fits the physical phone viewport. Download chips were also inspected as a component export; that image is not a complete Downloads screen. Remaining warnings include existing deprecated UIKit API use; a successful build is not a warning-free build.
+
+No device installation, performance benchmark, full address-focus/keyboard integration recording, Gecko extension end-to-end test, or all-pages parity acceptance has been performed.
+
 ## Validation boundaries
 
 Local source checks inspect policies/localization only. The UIKit fixture compiles real homepage root/summary/private page/theme, group navigation and tray presentation; store/engine sections remain doubles. It now also compiles the real no-JIT controller against a fake engine-reporting boundary, checking old-preference migration, observer idempotency and false status reports for child processes. This is not an actual Gecko or SideStore integration test. Full App compilation and new-device acceptance must be reported separately with a build run and revision.

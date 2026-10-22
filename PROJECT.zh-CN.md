@@ -1,6 +1,6 @@
 # ieynec（原 Reynard / Fennec iOS）改版记录
 
-## 最新源码变更：视频对照、取消 JIT（新包尚待构建验收）
+## 最新交付：视频对照、取消 JIT（构建 #11，待真机验收）
 
 用户提供 Android / iOS 录屏及 Android 私密模式补拍视频，明确取消 JIT 功能，并再次要求去掉地址栏聚焦的原生过渡。新要求覆盖下面历史记录中“保留 JIT”的约定。
 
@@ -10,7 +10,15 @@
 
 详细对照和未完成差异：[docs/VIDEO-REVIEW.md](docs/VIDEO-REVIEW.md)。书签/下载/历史深层页面并未全部复刻 Android，不能宣称全完成。无 JIT 原生性能优化也不代表补齐 JavaScript 性能差距。
 
-最新工作路径：`C:\Users\Orie\Downloads\ieynec-项目\source`。下文旧下载路径/状态均为历史。当前可回滚完整 IPA 仍是 `ieynec-项目\IPA\current\ieynec-ui-fix.ipa`（#7）；本轮新 IPA 尚未交付。
+最新工作路径：`C:\Users\Orie\Downloads\ieynec-项目\source`。下文旧下载路径/状态均为历史。可回滚完整 IPA 是 `ieynec-项目\IPA\rollback\ieynec-ui-fix.ipa`（#7）；本轮新 IPA 已成功下载核验：`ieynec-项目\IPA\current\ieynec-no-jit.ipa`。#7 及来源文件已移至 `IPA\rollback` 保留，不覆盖旧数据。
+
+完整构建 #11：https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39712078402 ，App revision `98d694d34a4319ec3b0e4c0bc7d9f93285bcdc24`，构建任务 28m23s，Gecko SDK 缓存命中。IPA 大小 106,590,894 bytes，SHA-256 `9C68D4F63649F692C21F62F8FAE55D378417B712381AF46C049749D3AB94D5FD`。主 App 及两个扩展 plist 已检查保留。
+
+16 项源码/简繁本地化检查、Foundation 标签组测试、Swift 语法、完整 App 编译打包和扩大 UIKit fixture 通过；6 项 Windows 下载器隔离测试通过。fixture 新增真实私密首页、主页两个开关的四种组合、无 JIT 控制器旧偏好迁移及子进程状态回报、下载分类/按钮和书签排序方向检查；引擎/存储边界仍用替身。已查看 #11 的实际私密页面与群组页面屏幕截图；没有把先前合成宽度截图的裁切当作真机结果。
+
+另补上视频里的下载类型筛选和书签正反排序，保留原数据、受保护文件夹位置和额外网址排序。Android 悬浮搜索按钮、详细历史分组、部分深层页面仍未完全复刻；地址栏聚焦/键盘联动的最终真机录屏验收尚未完成。无 JIT 性能尚无设备基准，不声称达到 Safari。
+
+Codeberg 发布准备 ZIP 仍是之前 `4cb058f`，不含本轮修改；本次没有重新打包或上传 Codeberg。发布当前版本应使用最新 Git 分支或另行更新准备包。
 
 ## 历史状态
 
