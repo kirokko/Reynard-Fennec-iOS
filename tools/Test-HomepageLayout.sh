@@ -5,6 +5,10 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 work="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/ieynec-layout-smoke"
 mkdir -p "$work/screenshots"
+xcrun swiftc browser/Reynard/Client/Search/SearchEngines.swift \
+  browser/Reynard/Client/Shared/URLUtils.swift tests/search-engines.test.swift \
+  -o "$work/test-search-engines"
+"$work/test-search-engines"
 # Preserve diagnostics even if an outer Actions timeout interrupts the test.
 collect_diagnostics() {
   cp "$work/stdout.log" "$work/stderr.log" "$work/screenshots/" 2>/dev/null || true
@@ -48,6 +52,9 @@ xcrun swiftc -g -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" \
   tests/ui-layout-smoke/App.swift tests/ui-layout-smoke/TrayFixtures.swift \
   tests/ui-layout-smoke/ChromeFixtures.swift tests/ui-layout-smoke/ScrollFixtures.swift \
   tests/ui-layout-smoke/FavoritesFixtures.swift tests/ui-layout-smoke/CountColorFixtures.swift \
+  tests/ui-layout-smoke/InputPrivacyFixtures.swift \
+  "$ui/Chrome/AddressBar/AddressBarTextField.swift" \
+  "$ui/Appearance/FennecPrivacyShield.swift" \
   tests/ui-layout-smoke/NoJITFixtures.swift browser/Reynard/JIT/JITController.swift \
   "$ui/Appearance/FennecTheme.swift" \
   "$ui/Chrome/Toolbar/TopToolbar.swift" \

@@ -38,9 +38,26 @@ enum SearchEngine: String, CaseIterable {
         }
     }
     
-    static func destination(for query: String) -> String {
-        let escapedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        return selectedQueryTemplate.replacingOccurrences(of: "%s", with: escapedQuery)
+    private static let navigationExpression = try! NSRegularExpression(
+        pattern: "^\\s*(\\w+-+)*[\\w\\[]+(://[/]*|:|\\.)(\\w+-+)*[\\w\\[:]+([\\S&&[^\\w-]]\\S*)?\\s*$"
+    )
+
+    static func isDirectNavigationInput(_ input: String) -> Bool {
+        navigationExpression.firstMatch(in: input, range: NSRange(location: 0, length: (input as NSString).length)) != nil
+    }
+
+    static func destination(for query: String, engine: SearchEngine? = nil) -> String {
+        // Encode a query VALUE, not an entire URL (otherwise & and # change it).
+        var allowed = CharacterSet.urlQueryAllowed
+        allowed.remove(charactersIn: "&=+#?")
+        let escapedQuery = query.addingPercentEncoding(withAllowedCharacters: allowed) ?? ""
+        let template: String
+        template = queryTemplate(for: engine ?? Prefs.SearchSettings.searchEngine)
+        return template.replacingOccurrences(of: "%s", with: escapedQuery)
+    }
+
+    var iconAssetName: String {
+        self == .google ? "google.com" : "FennecSearch-\(rawValue)"
     }
     
     static func canSearch(using customQueryTemplate: String) -> Bool {
@@ -74,8 +91,8 @@ enum SearchEngine: String, CaseIterable {
         }
     }
     
-    private static var selectedQueryTemplate: String {
-        switch Prefs.SearchSettings.searchEngine {
+    private static func queryTemplate(for engine: SearchEngine) -> String {
+        switch engine {
         case .custom:
             let customQueryTemplate = Prefs.SearchSettings.customSearchTemplate.trimmingCharacters(in: .whitespacesAndNewlines)
             guard canSearch(using: customQueryTemplate) else {

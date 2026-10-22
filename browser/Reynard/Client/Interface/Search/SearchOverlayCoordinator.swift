@@ -216,6 +216,7 @@ final class SearchOverlayCoordinator {
     // MARK: - Search Session
     
     func endSearchSession() {
+        delegate?.searchChrome.addressBar.oneOffSearchEngine = nil
         restoresSuggestionsOnFocus = false
         overlayCoordinator.clearAddressBarScrollDismissal(for: .search)
         delegate?.searchChrome.setAddressBarEditingState(.inactive)
@@ -288,6 +289,10 @@ final class SearchOverlayCoordinator {
         isFocused = focused
         if focused {
             delegate?.searchContentView.resetFocusedInputRelocation()
+        } else {
+            // Reset even if UIKit omits/defers keyboardWillHide (quick cancel,
+            // hardware keyboard, or interrupted keyboard transition).
+            delegate?.searchChrome.dockAddressBar(offset: 0)
         }
         delegate?.updateSearchLayout(animated: animated && FennecTheme.animatesBrowserUI, duration: UX.layoutAnimationDuration)
     }
@@ -334,6 +339,7 @@ extension SearchOverlayCoordinator: AddressBarSearchDelegate, SearchViewControll
     }
     
     func addressBarDidTapDismiss(_ addressBar: AddressBar) {
+        addressBar.oneOffSearchEngine = nil
         if overlayCoordinator.endAddressBarScrollDismissal(for: .search) {
             endSearchSession()
             return

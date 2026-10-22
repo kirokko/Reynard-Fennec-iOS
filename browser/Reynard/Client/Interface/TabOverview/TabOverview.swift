@@ -71,6 +71,7 @@ final class TabOverview: UIView {
     
     weak var dataSource: TabOverviewDataSource?
     weak var delegate: TabOverviewDelegate?
+    var onPrivacyModeChanged: (() -> Void)?
     weak var presentationContext: TabOverviewPresentationContext?
     
     private(set) var toolbarPosition: ToolbarPosition = .bottom
@@ -205,12 +206,14 @@ final class TabOverview: UIView {
     
     func setPresented(_ presented: Bool, animated: Bool) {
         presentation.setPresented(presented, animated: animated)
+        onPrivacyModeChanged?()
     }
     
     func setMode(_ mode: Mode, animated: Bool) {
         collection.setMode(mode, containerWidth: bounds.width, animated: animated)
         topToolbar.setMode(mode)
         bottomToolbar.setMode(mode)
+        onPrivacyModeChanged?()
         updateToolbarState()
     }
     

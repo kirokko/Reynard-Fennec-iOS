@@ -57,7 +57,15 @@ extension BrowserViewController: ContentOverlayCoordinatorHost, SearchOverlayCoo
     }
     
     func browseSearchTerm(_ term: String) {
-        tabManager.browse(to: term)
+        let engine = browserChrome.addressBar.oneOffSearchEngine
+        let input = term.trimmingCharacters(in: .whitespacesAndNewlines)
+        let isURL = SearchEngine.isDirectNavigationInput(input)
+        if let engine, !isURL {
+            tabManager.browse(to: SearchEngine.destination(for: input, engine: engine))
+        } else {
+            tabManager.browse(to: term)
+        }
+        browserChrome.addressBar.oneOffSearchEngine = nil
     }
     
     func selectSearchTab(at index: Int, mode: TabMode) {
@@ -100,7 +108,17 @@ extension BrowserViewController: ContentOverlayCoordinatorHost, SearchOverlayCoo
     }
     func createPrivateHomepageTab() {
         dismissAddressBarEditingAndOverlays()
-        _ = tabManager.createTab(selecting: true, target: .end, mode: .private)
+        if tabManager.selectedTabMode == .private {
+            if !tabManager.regularTabs.isEmpty {
+                let index = tabManager.regularTabs.firstIndex { $0.id == homepageReturnTabID } ?? 0
+                tabManager.selectTab(at: index, mode: .regular)
+            } else {
+                _ = tabManager.createTab(selecting: true, target: .end, mode: .regular)
+            }
+        } else {
+            homepageReturnTabID = tabManager.selectedTab?.id
+            _ = tabManager.createTab(selecting: true, target: .end, mode: .private)
+        }
     }
     func openHomepageProtection() {
         presentContentModal(TrackingProtectionPreferencesViewController())

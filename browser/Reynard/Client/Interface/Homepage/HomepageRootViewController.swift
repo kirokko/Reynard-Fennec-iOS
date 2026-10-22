@@ -310,6 +310,27 @@ final class HomepageRootViewController: UIViewController {
             ])
             sectionStackView.addArrangedSubview(header)
         }
+        if folder == nil && isPrivateBrowsing {
+            // Match Android's persistent top-right mode switch, including the
+            // empty private homepage. Never require opening the tab tray to exit.
+            let header = UIView()
+            let normal = FennecClosureButton(frame: .zero)
+            normal.translatesAutoresizingMaskIntoConstraints = false
+            normal.setImage(UIImage(named: "ieynec-logo"), for: .normal)
+            normal.imageView?.contentMode = .scaleAspectFit
+            normal.accessibilityLabel = FennecTheme.text("Normal tabs")
+            normal.accessibilityIdentifier = "homepage.returnToNormal"
+            normal.onTap = { [weak self] in self?.onPrivateTab?() }
+            header.addSubview(normal)
+            NSLayoutConstraint.activate([
+                header.heightAnchor.constraint(equalToConstant: 44),
+                normal.topAnchor.constraint(equalTo: header.topAnchor),
+                normal.trailingAnchor.constraint(equalTo: header.trailingAnchor),
+                normal.widthAnchor.constraint(equalToConstant: 44),
+                normal.heightAnchor.constraint(equalToConstant: 44),
+            ])
+            sectionStackView.addArrangedSubview(header)
+        }
         for section in displayedSections where !extraSections.contains(section) {
             appendSection(section, to: sectionStackView)
         }

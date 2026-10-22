@@ -61,6 +61,47 @@ extension BrowserViewController: AddressBarDelegate, AddressBarGestureDelegate {
     }
     
     // MARK: - AddressBarDelegate
+
+    func addressBarDidRequestSearchEnginePicker(_ addressBar: AddressBar) {
+        let engines = SearchEngine.allCases.filter {
+            $0 != .custom || SearchEngine.canSearch(using: Prefs.SearchSettings.customSearchTemplate)
+        }
+        let engineRows = engines.map { engine in
+            FennecMenuItem(title: engine.displayName, symbol: "globe",
+                          image: UIImage(named: engine.iconAssetName)?.withRenderingMode(.alwaysOriginal),
+                          badge: engine == addressBar.searchEngine ? "✓" : nil,
+                          action: { [weak self, weak addressBar] in
+                guard let self, let addressBar else { return }
+                addressBar.selectSearchEngine(engine)
+                let query = addressBar.searchQuery.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !query.isEmpty {
+                    self.tabManager.browse(to: SearchEngine.destination(for: query, engine: engine))
+                    addressBar.oneOffSearchEngine = nil
+                    self.endSearchEditing()
+                } else {
+                    _ = addressBar.becomeFirstResponder()
+                }
+            })
+        }
+        let controller = FennecMenuViewController(groups: [
+            .rows(engineRows),
+            .rows([
+                FennecMenuItem(title: FennecTheme.text("Bookmarks"), symbol: "star", action: { [weak self] in
+                    self?.presentLibrary(initialSection: .bookmarks)
+                }),
+                FennecMenuItem(title: FennecTheme.text("Tabs"), symbol: "square.on.square", action: { [weak self] in
+                    self?.presentTabSearch()
+                }),
+                FennecMenuItem(title: FennecTheme.text("History"), symbol: "clock", action: { [weak self] in
+                    self?.presentLibrary(initialSection: .history)
+                }),
+                FennecMenuItem(title: FennecTheme.text("Search settings"), symbol: "gearshape", action: { [weak self] in
+                    self?.presentContentModal(SearchPreferencesViewController())
+                }),
+            ]),
+        ], heading: FennecTheme.text("This time search in"))
+        present(controller, animated: false)
+    }
     
     func addressBarAudioMenuState(_ addressBar: AddressBar) -> AddressBarMenu.AudioState? {
         let playingTabs = tabsPlayingAudio

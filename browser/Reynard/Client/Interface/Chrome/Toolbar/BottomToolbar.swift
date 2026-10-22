@@ -94,8 +94,19 @@ final class BottomToolbar: UIView {
         addressTrailing?.constant = editing ? -8 : -140
     }
     func setAddressBarDockOffset(_ offset: CGFloat) {
-        contentView.transform = CGAffineTransform(translationX: 0, y: offset)
-        backgroundView.transform = CGAffineTransform(translationX: 0, y: offset)
+        // Keyboard notifications can be delivered inside an active Core
+        // Animation transaction. Cancel any old presentation transform as well
+        // as disabling UIView animations, so the old docked bar cannot linger.
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        UIView.performWithoutAnimation {
+            contentView.layer.removeAllAnimations()
+            backgroundView.layer.removeAllAnimations()
+            contentView.transform = CGAffineTransform(translationX: 0, y: offset)
+            backgroundView.transform = CGAffineTransform(translationX: 0, y: offset)
+            layoutIfNeeded()
+        }
+        CATransaction.commit()
     }
     func setScrollTranslation(_ offset: CGFloat) {
         // No clipping seam, separate bottom fade or second-phase motion.

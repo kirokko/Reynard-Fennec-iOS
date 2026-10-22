@@ -101,6 +101,9 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
     }
     private func exercise() {
         func checkpoint(_ name: String) { FileHandle.standardError.write(Data(("CHECK: " + name + "\n").utf8)) }
+        checkpoint("marked-text c -> cn and capture policy")
+        checkInputAndPrivacy()
+        window?.makeKeyAndVisible()
         checkpoint("real shortcuts before More")
         checkInitialShortcuts()
         checkpoint("no-JIT")
@@ -161,6 +164,13 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
         root.setPrivateBrowsing(true)
         root.view.layoutIfNeeded()
         precondition(root.overrideUserInterfaceStyle == .dark)
+        var returnedToNormal = 0
+        root.onPrivateTab = { returnedToNormal += 1 }
+        let returnButton = descendants(root.view).compactMap { $0 as? FennecClosureButton }
+            .first { $0.accessibilityIdentifier == "homepage.returnToNormal" }!
+        precondition(returnButton.bounds.width >= 44 && returnButton.bounds.height >= 44)
+        returnButton.sendActions(for: .touchUpInside)
+        precondition(returnedToNormal == 1)
         precondition(descendants(root.view).contains { $0.accessibilityIdentifier == "homepage.private" })
         precondition(!descendants(root.view).compactMap { $0 as? UILabel }.contains { $0.text == "ieynec" })
         precondition(!descendants(root.view).compactMap { $0 as? UIButton }.contains { $0.title(for: .normal) == "More" })

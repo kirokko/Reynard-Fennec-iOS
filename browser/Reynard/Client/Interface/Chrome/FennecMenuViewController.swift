@@ -4,6 +4,7 @@ import UIKit
 struct FennecMenuItem {
     let title: String
     let symbol: String
+    var image: UIImage? = nil
     var enabled = true
     var badge: String? = nil
     var children: [FennecMenuItem] = []
@@ -33,13 +34,15 @@ final class FennecMenuViewController: UIViewController {
         case navigation([FennecMenuItem])
     }
     private let groups: [Group]
+    private let heading: String?
     private let panel = UIView()
     private let scrollView = UIScrollView()
     private let stack = UIStackView()
     private var panelHeight: NSLayoutConstraint!
 
-    init(groups: [Group]) {
+    init(groups: [Group], heading: String? = nil) {
         self.groups = groups
+        self.heading = heading
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overFullScreen
         modalTransitionStyle = .crossDissolve
@@ -107,6 +110,14 @@ final class FennecMenuViewController: UIViewController {
             stack.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             stack.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
         ])
+        if let heading {
+            let label = UILabel()
+            label.text = heading
+            label.font = .preferredFont(forTextStyle: .headline)
+            label.textColor = FennecTheme.ink
+            label.numberOfLines = 0
+            stack.addArrangedSubview(label)
+        }
         for group in groups {
             switch group {
             case .rows(let items):
@@ -159,7 +170,7 @@ final class FennecMenuViewController: UIViewController {
         button.accessibilityValue = item.badge
         button.backgroundColor = FennecTheme.card
         button.heightAnchor.constraint(greaterThanOrEqualToConstant: 52).isActive = true
-        let icon = UIImageView(image: UIImage(systemName: item.symbol))
+        let icon = UIImageView(image: item.image ?? UIImage(systemName: item.symbol))
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.tintColor = item.enabled ? .label : .tertiaryLabel
         icon.contentMode = .scaleAspectFit

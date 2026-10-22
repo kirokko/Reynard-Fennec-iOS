@@ -9,6 +9,13 @@ import GeckoView
 import UIKit
 
 final class BrowserViewController: UIViewController, GeckoScreenOrientationDelegate {
+    let privacyShield = FennecPrivacyShield()
+    var homepageReturnTabID: UUID?
+
+    func updatePrivacyShield() {
+        if let scene = view.window?.windowScene { privacyShield.attach(to: scene) }
+        privacyShield.update()
+    }
     private enum UX {
         static let layoutAnimationDuration: TimeInterval = 0.22
         static let fallbackTopInset: CGFloat = 24
@@ -166,6 +173,12 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
         RuntimePreferences.apply() // Gecko prefs
         
         configureBrowserInterface()
+        privacyShield.isSensitive = { [weak self] in
+            guard let self else { return false }
+            return self.tabManager.selectedTabMode == .private
+                || (self.tabOverview.isPresented && self.tabOverview.mode == .privateTabs)
+        }
+        tabOverview.onPrivacyModeChanged = { [weak self] in self?.updatePrivacyShield() }
         observeNotifications()
         contextMenuCoordinator.configure()
         downloadsCoordinator.startObservingStore()
@@ -213,6 +226,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        updatePrivacyShield()
         performContentLifecycle {
             syncBrowserNavigationChrome(animated: false)
             browserChrome.syncSidebarButton(splitViewController: splitViewController)
@@ -1093,6 +1107,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
     }
     
     func updateNavigationButtons() {
+        updatePrivacyShield()
         browserChrome.overrideUserInterfaceStyle = tabManager.selectedTabMode == .private ? .dark : .unspecified
         browserChrome.setTabCount(tabManager.activeTabs.count)
         guard let tab = tabManager.selectedTab else {

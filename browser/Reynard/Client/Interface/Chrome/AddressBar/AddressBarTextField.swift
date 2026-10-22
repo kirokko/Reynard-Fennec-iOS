@@ -13,6 +13,15 @@ final class AddressBarTextField: UITextField {
         case end
     }
     
+    // Clear our synthetic completion BEFORE UIKit creates marked text. Applying
+    // transparent text attributes during composition can make the IME's entire
+    // marked run invisible (e.g. Chinese keyboard: c -> cn).
+    var onWillSetMarkedText: (() -> Void)?
+    override func setMarkedText(_ markedText: String?, selectedRange: NSRange) {
+        onWillSetMarkedText?()
+        super.setMarkedText(markedText, selectedRange: selectedRange)
+    }
+
     var isAutocompleteActive = false
     var isFocusPreviewActive = false
     var isSuggestionNavigationEnabled: (() -> Bool)?

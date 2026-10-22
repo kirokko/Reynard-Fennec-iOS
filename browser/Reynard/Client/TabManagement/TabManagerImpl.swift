@@ -67,11 +67,6 @@ final class TabManagerImplementation: NSObject, TabManager {
     // Keep the session eligible for silent recovery until a foreground composite confirms it survived.
     private weak var sessionEligibleForSilentRecovery: GeckoSession?
     
-    private lazy var lenientURLExpression: NSRegularExpression = {
-        let pattern = "^\\s*(\\w+-+)*[\\w\\[]+(://[/]*|:|\\.)(\\w+-+)*[\\w\\[:]+([\\S&&[^\\w-]]\\S*)?\\s*$"
-        return try! NSRegularExpression(pattern: pattern)
-    }()
-    
     init(
         delegate: TabManagerDelegate?,
         sessionManager: SessionManager,
@@ -956,8 +951,7 @@ final class TabManagerImplementation: NSObject, TabManager {
             notifyUpdate(at: location.index, mode: location.mode, reason: .location)
         }
         
-        let navigationInputRange = NSRange(location: 0, length: (navigationInput as NSString).length)
-        let shouldNavigateDirectly = lenientURLExpression.firstMatch(in: navigationInput, range: navigationInputRange) != nil
+        let shouldNavigateDirectly = SearchEngine.isDirectNavigationInput(navigationInput)
         
         if shouldNavigateDirectly {
             loadURL(navigationInput, in: tab)

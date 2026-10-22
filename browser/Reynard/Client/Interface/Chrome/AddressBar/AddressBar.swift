@@ -8,6 +8,7 @@
 import UIKit
 
 protocol AddressBarDelegate: AnyObject {
+    func addressBarDidRequestSearchEnginePicker(_ addressBar: AddressBar)
     func addressBarDidRequestReloadOrStop(_ addressBar: AddressBar)
     func addressBarDidRequestHardReload(_ addressBar: AddressBar)
     func addressBarAudioMenuState(_ addressBar: AddressBar) -> AddressBarMenu.AudioState?
@@ -121,6 +122,16 @@ final class AddressBar: UIView {
     private var trailingButtonState: TrailingButtonState = .hidden
     private var audioButtonState: SecondaryTrailingButtonState = .hidden
     
+    // Per-search override only. Never silently replace the saved default.
+    var oneOffSearchEngine: SearchEngine?
+    var searchEngine: SearchEngine { oneOffSearchEngine ?? Prefs.SearchSettings.searchEngine }
+    var searchQuery: String { textField.text ?? "" }
+
+    func selectSearchEngine(_ engine: SearchEngine) {
+        oneOffSearchEngine = engine
+        applyState()
+    }
+
     private var currentText: String?
     private var currentLocationText: String?
     private var currentLocationTitle: String?
@@ -143,6 +154,7 @@ final class AddressBar: UIView {
     private var secondaryTrailingButtonToButtonConstraint: NSLayoutConstraint!
     private var secondaryTrailingButtonToBackgroundConstraint: NSLayoutConstraint!
     private var textTrailingToBackgroundConstraint: NSLayoutConstraint!
+    private var leadingButtonWidthConstraint: NSLayoutConstraint!
     private var labelLeadingToButtonConstraint: NSLayoutConstraint!
     private var labelLeadingToBackgroundConstraint: NSLayoutConstraint!
     private var labelTrailingToButtonConstraint: NSLayoutConstraint!
@@ -333,6 +345,7 @@ final class AddressBar: UIView {
         self.delegate = delegate
         self.searchDelegate = searchDelegate
         textField.delegate = self
+        textField.onWillSetMarkedText = { [weak self] in self?.clearAutocomplete() }
         textField.isSuggestionNavigationEnabled = { [weak self] in
             guard let self else {
                 return false
@@ -526,7 +539,8 @@ final class AddressBar: UIView {
     }
     
     func setAutocomplete(displayText: NSAttributedString, committedText: String, submissionText: String) {
-        guard textField.isFirstResponder else {
+        guard textField.isFirstResponder, textField.markedTextRange == nil else {
+            clearAutocomplete()
             return
         }
         
@@ -541,7 +555,7 @@ final class AddressBar: UIView {
     }
     
     func applySearchAutocomplete(query: String, result: UserDataSearchResult?, topDomain: String?) {
-        guard isEditingText else {
+        guard isEditingText, textField.markedTextRange == nil else {
             clearAutocomplete()
             return
         }
@@ -662,6 +676,7 @@ final class AddressBar: UIView {
         secondaryTrailingButtonToButtonConstraint = secondaryTrailingButton.trailingAnchor.constraint(equalTo: trailingButton.leadingAnchor, constant: -UX.addressBarButtonToTextSpacing)
         secondaryTrailingButtonToBackgroundConstraint = secondaryTrailingButton.trailingAnchor.constraint(equalTo: addressBarContent.trailingAnchor, constant: -UX.addressBarContentHorizontalInset)
         
+        leadingButtonWidthConstraint = leadingButton.widthAnchor.constraint(equalToConstant: UX.addressBarButtonSize)
         NSLayoutConstraint.activate([
             addressBarBackground.leadingAnchor.constraint(equalTo: leadingAnchor),
             backgroundTrailingFullConstraint,
@@ -686,7 +701,7 @@ final class AddressBar: UIView {
             
             leadingButton.leadingAnchor.constraint(equalTo: addressBarContent.leadingAnchor, constant: UX.addressBarContentHorizontalInset),
             leadingButton.centerYAnchor.constraint(equalTo: addressBarContent.centerYAnchor),
-            leadingButton.widthAnchor.constraint(equalToConstant: UX.addressBarButtonSize),
+            leadingButtonWidthConstraint,
             leadingButton.heightAnchor.constraint(equalToConstant: UX.addressBarButtonSize),
             
             trailingButton.trailingAnchor.constraint(equalTo: addressBarContent.trailingAnchor, constant: -UX.addressBarContentHorizontalInset),
@@ -802,7 +817,7 @@ final class AddressBar: UIView {
     }
     
     private func resolveLeadingButtonState(for content: ContentState) -> LeadingButtonState {
-        guard editingState == .inactive else { return .hidden }
+        guard editingState == .inactive else { return .search }
         if isReaderActive { return .menu }
         if case .loading = loadingState { return .loading }
         switch content {
@@ -823,6 +838,7 @@ final class AddressBar: UIView {
     private func applyRenderModel(_ model: RenderModel) {
         applyContentState(model.content)
         applyLeadingButtonState(model.leadingButton)
+        leadingButtonWidthConstraint.constant = model.leadingButton == .search ? 40 : UX.addressBarButtonSize
         applyTrailingButtonState(model.trailingButton)
         applySecondaryTrailingButtonState(model.secondaryTrailingButton)
         
@@ -880,7 +896,11 @@ final class AddressBar: UIView {
     }
     
     @objc private func handleReaderButtonTap() {
-        delegate?.addressBarDidRequestWebsiteSettings(self)
+        if resolveRenderModel().leadingButton == .search {
+            delegate?.addressBarDidRequestSearchEnginePicker(self)
+        } else {
+            delegate?.addressBarDidRequestWebsiteSettings(self)
+        }
     }
     
     private func applyLeadingButtonState(_ state: LeadingButtonState) {
@@ -893,11 +913,17 @@ final class AddressBar: UIView {
         }
         
         leadingButton.isHidden = false
+        leadingButton.backgroundColor = .clear
         if state == .search {
-            leadingButton.tintColor = .secondaryLabel
-            leadingButton.setImage(UIImage(named: "reynard.magnifyingglass"), for: .normal)
+            leadingButton.tintColor = FennecTheme.ink
+            leadingButton.backgroundColor = FennecTheme.card
+            leadingButton.layer.cornerRadius = 16
+            leadingButton.setImage(searchEnginePickerImage(), for: .normal)
+            leadingButton.accessibilityLabel = "\(searchEngine.displayName), \(FennecTheme.text("Search engines"))"
+            leadingButton.accessibilityIdentifier = "address.searchEngine"
             leadingButton.setMenuPreservingPresentation(nil)
-            leadingButton.isUserInteractionEnabled = false
+            if #available(iOS 14.0, *) { leadingButton.showsMenuAsPrimaryAction = false }
+            leadingButton.isUserInteractionEnabled = true
             return
         }
         
@@ -919,6 +945,15 @@ final class AddressBar: UIView {
         leadingButton.isUserInteractionEnabled = true
     }
     
+    private func searchEnginePickerImage() -> UIImage? {
+        let icon = UIImage(named: searchEngine.iconAssetName) ?? UIImage(systemName: "globe")
+        return UIGraphicsImageRenderer(size: CGSize(width: 36, height: 28)).image { _ in
+            icon?.draw(in: CGRect(x: 1, y: 3, width: 22, height: 22))
+            UIImage(systemName: "chevron.down")?.withTintColor(FennecTheme.ink, renderingMode: .alwaysOriginal)
+                .draw(in: CGRect(x: 26, y: 11, width: 8, height: 5))
+        }.withRenderingMode(.alwaysOriginal)
+    }
+
     private func applyTrailingButtonState(_ state: TrailingButtonState) {
         trailingButtonState = state
         let visible = state != .hidden
@@ -1465,6 +1500,13 @@ extension AddressBar: UITextFieldDelegate {
         replacementString string: String
     ) -> Bool {
         restoreEditingLayout()
+
+        // Never replace a marked run ourselves; UIKit owns its text and range.
+        if textField.markedTextRange != nil {
+            clearAutocomplete()
+            lastEditWasDelete = string.isEmpty && range.length > 0
+            return true
+        }
         
         if case .focusPreview = autocompleteState {
             clearFocusPreview()
