@@ -83,6 +83,8 @@ final class BrowserPreferences {
             // Homepage
             key("HomepageSettings", "openingScreen"): HomepageOpeningScreen.homepage.rawValue,
             key("HomepageSettings", "showsFavorites"): true,
+            key("HomepageSettings", "showsContinue"): true,
+            key("HomepageSettings", "showsProtection"): true,
             key("HomepageSettings", "showsFavoritesInPrivateBrowsing"): false,
             key("HomepageSettings", "favoriteRowCount"): 2,
             key("HomepageSettings", "showsFrequentlyVisited"): true,
@@ -631,6 +633,20 @@ final class BrowserPreferences {
     
     // MARK: - Homepage
     struct HomepageSettings {
+        static var showsContinue: Bool {
+            get { prefs.bool(forSetting: "HomepageSettings", key: "showsContinue") }
+            set {
+                prefs.set(newValue, forSetting: "HomepageSettings", key: "showsContinue")
+                NotificationCenter.default.post(name: .homepageSettingsDidChange, object: nil)
+            }
+        }
+        static var showsProtection: Bool {
+            get { prefs.bool(forSetting: "HomepageSettings", key: "showsProtection") }
+            set {
+                prefs.set(newValue, forSetting: "HomepageSettings", key: "showsProtection")
+                NotificationCenter.default.post(name: .homepageSettingsDidChange, object: nil)
+            }
+        }
         static var openingScreen: HomepageOpeningScreen {
             get {
                 let rawValue = prefs.string(forSetting: "HomepageSettings", key: "openingScreen") ?? HomepageOpeningScreen.homepage.rawValue
@@ -1071,13 +1087,11 @@ final class BrowserPreferences {
         
         static var isJITEnabled: Bool {
             get {
-                guard hasPairingFile else {
-                    return false
-                }
-                return prefs.bool(forSetting: "JITSettings", key: "isJITEnabled")
+                // JIT was removed from ieynec, including for existing installs.
+                return false
             }
             set {
-                prefs.set(hasPairingFile && newValue, forSetting: "JITSettings", key: "isJITEnabled")
+                prefs.set(false, forSetting: "JITSettings", key: "isJITEnabled")
             }
         }
     }

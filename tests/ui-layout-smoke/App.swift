@@ -12,7 +12,11 @@ enum HomepageContentMode {
 }
 enum HomepageWallpaper { static var image: UIImage? { nil } }
 enum Prefs {
+    enum JITSettings { static var isJITEnabled = true }
     enum HomepageSettings {
+        static var showsContinue = true
+        static var showsProtection = true
+        static let showsRecommendations = true
         static let showsWallpaper = false
         static let showsFavorites = true
         static let showsFavoritesInPrivateBrowsing = false
@@ -41,7 +45,6 @@ class MockRecommendation: MockSection, HomepageRecommendationViewController {
 typealias PerformanceRecommendationViewController = MockRecommendation
 typealias UpdateAvailableViewController = MockRecommendation
 typealias DonationRecommendationViewController = MockRecommendation
-typealias PrivateBrowsingSectionViewController = MockSection
 class FrequentlyVisitedSectionViewController: MockSection { weak var delegate: HomepageSectionDelegate? }
 class RecentlyClosedTabsSectionViewController: MockSection { weak var delegate: HomepageSectionDelegate? }
 protocol FavoritesSectionViewControllerDelegate: HomepageSectionDelegate {
@@ -101,6 +104,7 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
         try! image.pngData()!.write(to: url)
     }
     private func exercise() {
+        checkNoJITController()
         checkInstantTray()
         let thumbnail = UIGraphicsImageRenderer(size: CGSize(width: 393, height: 1800)).image { context in
             UIColor.systemGray4.setFill(); context.fill(CGRect(x: 0, y: 0, width: 393, height: 1800))
@@ -128,8 +132,24 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
                 root.view.layoutIfNeeded()
             }
         }
+        for showProtection in [false, true] {
+            for showContinue in [false, true] {
+                Prefs.HomepageSettings.showsProtection = showProtection
+                Prefs.HomepageSettings.showsContinue = showContinue
+                tabs = [Tab()]
+                root.refreshBrowserSummary()
+                root.view.layoutIfNeeded()
+                let summary = descendants(root.view).compactMap { $0 as? FennecHomepageSummaryView }.first!
+                precondition(summary.arrangedSubviews.count == (showProtection ? 1 : 0) + (showContinue ? 1 : 0))
+            }
+        }
         root.setPrivateBrowsing(true)
         root.view.layoutIfNeeded()
+        precondition(root.overrideUserInterfaceStyle == .dark)
+        precondition(descendants(root.view).contains { $0.accessibilityIdentifier == "homepage.private" })
+        precondition(!descendants(root.view).compactMap { $0 as? UILabel }.contains { $0.text == "ieynec" })
+        precondition(!descendants(root.view).compactMap { $0 as? UIButton }.contains { $0.title(for: .normal) == "More" })
+        screenshot(window!, name: "private-homepage-layout")
         root.setPrivateBrowsing(false)
         root.view.layoutIfNeeded()
         root.view.frame = window!.bounds
@@ -157,6 +177,11 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
         let privateButton = descendants(toolbar).compactMap { $0 as? UIButton }.first { $0.accessibilityLabel == "Private" }!
         precondition(privateButton.image(for: .normal)?.size == CGSize(width: 26, height: 26))
         screenshot(container, name: "tab-categories")
+        toolbar.setMode(.privateTabs)
+        precondition(toolbar.overrideUserInterfaceStyle == .dark)
+        precondition(toolbar.floatingControls.overrideUserInterfaceStyle == .dark)
+        toolbar.setMode(.regularTabs)
+        precondition(toolbar.overrideUserInterfaceStyle == .unspecified)
     }
 
     private func activate(_ item: UIBarButtonItem) {
@@ -217,7 +242,7 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
     private func verifyDismissal(count: @escaping () -> Int, remaining: Int = 40) {
         if root.presentedViewController == nil && count() == 1 {
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("layout-pass.txt")
-            try! "PASS: viewport widths 320/393/430/844/1024, tall thumbnails, first frame, More/privacy; real group editor save/pop/root dismissal; instant tray even with UIKit animations enabled and late captures. Engine/store homepage sections remain test doubles.\n".write(to: url, atomically: true, encoding: .utf8)
+            try! "PASS: viewport widths 320/393/430/844/1024, tall thumbnails, all Continue/protection toggle combinations, real private homepage without normal wordmark/More, no-JIT controller migration/child reporting; real group editor save/pop/root dismissal; instant tray even with UIKit animations enabled and late captures. Engine/store homepage sections remain test doubles.\n".write(to: url, atomically: true, encoding: .utf8)
             return
         }
         precondition(remaining > 0, "Root back must dismiss: presented=\(String(describing: root.presentedViewController)), callbacks=\(count())")

@@ -10,6 +10,7 @@ final class TabOverviewTopToolbar: UIView {
     var onGroups: (() -> Void)?
     var onSearch: (() -> Void)?
     var onRecentlyClosed: (() -> Void)?
+    var onMenu: (() -> Void)?
     let floatingControls = UIView()
     private let categoryStack = UIStackView()
     private let privateButton = FennecClosureButton(frame: .zero)
@@ -17,7 +18,7 @@ final class TabOverviewTopToolbar: UIView {
     private let groupsButton = FennecClosureButton(frame: .zero)
     private let indicator = UIView()
     private let countLabel = UILabel()
-    private let overflow = UIButton(type: .system)
+    private let overflow = FennecClosureButton(frame: .zero)
     private let search = FennecClosureButton(frame: .zero)
     private let add = FennecClosureButton(frame: .zero)
     private var indicatorCenter: NSLayoutConstraint!
@@ -86,6 +87,7 @@ final class TabOverviewTopToolbar: UIView {
         overflow.setImage(FennecTheme.overflowImage, for: .normal)
         overflow.tintColor = FennecTheme.ink
         overflow.accessibilityLabel = FennecTheme.text("Menu")
+        overflow.onTap = { [weak self] in self?.onMenu?() }
         search.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
         search.tintColor = FennecTheme.ink
         search.accessibilityLabel = FennecTheme.text("Search tabs")
@@ -114,6 +116,9 @@ final class TabOverviewTopToolbar: UIView {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     func setMode(_ mode: TabOverview.Mode) {
         currentMode = mode
+        overrideUserInterfaceStyle = mode == .privateTabs ? .dark : .unspecified
+        floatingControls.overrideUserInterfaceStyle = overrideUserInterfaceStyle
+        backgroundColor = mode == .privateTabs ? FennecTheme.privateSurface : FennecTheme.surface
         privateButton.tintColor = mode == .privateTabs ? FennecTheme.ink : .secondaryLabel
         countLabel.textColor = mode == .regularTabs ? FennecTheme.ink : .secondaryLabel
         countLabel.layer.borderColor = countLabel.textColor.resolvedColor(with: traitCollection).cgColor
@@ -126,14 +131,6 @@ final class TabOverviewTopToolbar: UIView {
     func apply(tabCount: Int, visibleTabCount: Int, hasVisibleTab: Bool) {
         countLabel.text = tabCount > 99 ? "∞" : String(max(0, tabCount))
         regularButton.accessibilityValue = String(tabCount)
-        let clearMenu = TabOverviewClearTabsMenu.make(tabCount: visibleTabCount,
-            onClearTabs: { [weak self] in self?.onClearTabs?() },
-            onClearTabsOlderThan: { [weak self] age in self?.onClearTabsOlderThan?(age) })
-        let done = UIAction(title: FennecTheme.text("Back to browsing"), image: UIImage(systemName: "arrow.backward"), attributes: hasVisibleTab ? [] : .disabled) { [weak self] _ in self?.onDone?() }
-        if #available(iOS 14.0, *) {
-            overflow.menu = UIMenu(children: [clearMenu, done])
-            overflow.showsMenuAsPrimaryAction = true
-        }
         add.accessibilityLabel = FennecTheme.text(currentMode == .privateTabs ? "New private tab" : "New tab")
     }
 }

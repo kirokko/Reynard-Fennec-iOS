@@ -300,6 +300,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
         tabOverview.topToolbar.onGroups = { [weak self] in self?.presentTabGroups() }
         tabOverview.topToolbar.onSearch = { [weak self] in self?.presentTabSearch() }
         tabOverview.topToolbar.onRecentlyClosed = { [weak self] in self?.presentRecentlyClosedTrayMenu() }
+        tabOverview.topToolbar.onMenu = { [weak self] in self?.presentFennecTrayMenu() }
         
         view.addSubview(contentView)
         view.addSubview(browserChrome)
@@ -1032,9 +1033,13 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
         && (browserChrome.isShowingFindInPage || browserChrome.isShowingKeyboardDismissal)
         let shouldDockAddressBar = shouldAdjustForKeyboard
         && browserLayout.chromeMode == .phone && searchOverlayCoordinator.isFocused
-        browserChrome.dockActionBar(offset: shouldDockActionBar ? -keyboardOverlap : 0)
-        browserChrome.dockAddressBar(offset: shouldDockAddressBar ? -keyboardInset : 0)
-        animateLayout(animation)
+        // Keyboard notifications arrive inside UIKit animation transactions.
+        // Commit our chrome directly; only the system keyboard may animate.
+        UIView.performWithoutAnimation {
+            browserChrome.dockActionBar(offset: shouldDockActionBar ? -keyboardOverlap : 0)
+            browserChrome.dockAddressBar(offset: shouldDockAddressBar ? -keyboardInset : 0)
+            view.layoutIfNeeded()
+        }
         
         contentView.updateFocusedInputRelocation(
             above: shouldRelocateInput ? keyboardFrame : nil,
@@ -1054,9 +1059,11 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
             animationDuration: animation.duration,
             animationOptions: animation.curve
         )
-        browserChrome.dockActionBar(offset: 0)
-        browserChrome.dockAddressBar(offset: 0)
-        animateLayout(animation)
+        UIView.performWithoutAnimation {
+            browserChrome.dockActionBar(offset: 0)
+            browserChrome.dockAddressBar(offset: 0)
+            view.layoutIfNeeded()
+        }
     }
     
     private func keyboardAnimation(from notification: Notification) -> KeyboardAnimation {
@@ -1070,12 +1077,6 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
         )
     }
     
-    private func animateLayout(_ animation: KeyboardAnimation) {
-        UIView.animate(withDuration: animation.duration, delay: 0, options: [animation.curve]) {
-            self.view.layoutIfNeeded()
-        }
-    }
-    
     // MARK: - Browser UI Updates
     
     func syncBrowserNavigationChrome(animated: Bool) {
@@ -1087,6 +1088,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
     }
     
     func updateNavigationButtons() {
+        browserChrome.overrideUserInterfaceStyle = tabManager.selectedTabMode == .private ? .dark : .unspecified
         browserChrome.setTabCount(tabManager.activeTabs.count)
         guard let tab = tabManager.selectedTab else {
             contentView.setHistoryNavigation(

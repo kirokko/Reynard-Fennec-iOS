@@ -9,7 +9,8 @@ import UIKit
 import UniformTypeIdentifiers
 import MobileCoreServices
 
-final class JITSettingsSection: NSObject {
+// Legacy upstream implementation, not exposed by ieynec settings.
+final class JITSettingsSection: NSObject, UIDocumentPickerDelegate {
     private enum UX {
         static let footerSpacing: CGFloat = 4
     }
@@ -50,6 +51,10 @@ final class JITSettingsSection: NSObject {
         return Row.allCases.count
     }
     
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        // Intentionally disabled: ieynec no longer imports pairing files.
+    }
+
     func attach(to settingsController: SettingsViewController) {
         self.settingsController = settingsController
         connectSwitchActions()
@@ -145,7 +150,7 @@ final class JITSettingsSection: NSObject {
             picker = UIDocumentPickerViewController(documentTypes: allowedPairingDocumentTypeIdentifiers(), in: .import)
         }
         
-        picker.delegate = settingsController
+        picker.delegate = self
         picker.allowsMultipleSelection = false
         viewController.present(picker, animated: true)
     }

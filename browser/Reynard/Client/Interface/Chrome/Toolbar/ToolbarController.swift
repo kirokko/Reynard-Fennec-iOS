@@ -324,6 +324,12 @@ final class ToolbarController {
         isBottomToolbarCollapsed = false
         isCollapsedUntilReset = false
         targetOffset = 0
+        guard FennecTheme.animatesBrowserUI else {
+            UIView.performWithoutAnimation {
+                self.setTransitionOffset(0, refresh: true, animatesContent: false)
+            }
+            return
+        }
         UIView.animate(
             withDuration: UIAccessibility.isReduceMotionEnabled ? 0 : UX.snapDuration,
             delay: 0,

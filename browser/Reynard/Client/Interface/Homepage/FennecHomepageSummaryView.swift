@@ -7,6 +7,7 @@ final class FennecHomepageSummaryView: UIStackView {
     var onProtection: (() -> Void)?
     private var resumedTabID: UUID?
     private let protection = FennecClosureButton(frame: .zero)
+    private var protectionRow: UIStackView!
     private let continueStack = UIStackView()
     private let resume = FennecClosureButton(frame: .zero)
     private let preview = UIImageView()
@@ -17,7 +18,7 @@ final class FennecHomepageSummaryView: UIStackView {
         super.init(frame: frame)
         axis = .vertical
         spacing = 36
-        let protectionRow = UIStackView(arrangedSubviews: [UIView(), protection, UIView()])
+        protectionRow = UIStackView(arrangedSubviews: [UIView(), protection, UIView()])
         protectionRow.axis = .horizontal
         protectionRow.arrangedSubviews[0].widthAnchor.constraint(equalTo: protectionRow.arrangedSubviews[2].widthAnchor).isActive = true
         protection.backgroundColor = FennecTheme.card
@@ -96,6 +97,12 @@ final class FennecHomepageSummaryView: UIStackView {
     required init(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     func refresh(tabs: [Tab], blockedCount: Int) {
+        if Prefs.HomepageSettings.showsProtection {
+            if protectionRow.superview == nil { insertArrangedSubview(protectionRow, at: 0) }
+        } else if protectionRow.superview != nil {
+            removeArrangedSubview(protectionRow)
+            protectionRow.removeFromSuperview()
+        }
         // This number is deliberately scoped to currently open regular tabs.
         let countDescription = String(format: FennecTheme.text("%d blocked trackers in open tabs"), blockedCount)
         if protection.accessibilityValue != countDescription { protection.accessibilityValue = countDescription }
@@ -103,7 +110,8 @@ final class FennecHomepageSummaryView: UIStackView {
             !$0.isPrivate && !($0.url ?? "").isEmpty && !($0.url ?? "").hasPrefix("about:")
         }.max { $0.state.selectionOrder < $1.state.selectionOrder }
         resumedTabID = tab?.id
-        guard let tab else {
+        guard let tab, Prefs.HomepageSettings.showsContinue else {
+            resumedTabID = nil
             if continueStack.superview != nil {
                 removeArrangedSubview(continueStack)
                 continueStack.removeFromSuperview()

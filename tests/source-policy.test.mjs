@@ -24,14 +24,16 @@ test('all string catalogs are valid JSON with nonempty source language', () => {
   }
 });
 
-test('new static UI strings have Simplified Chinese translations', () => {
+test('new static UI strings have Simplified and Traditional Chinese translations', () => {
   const catalog = JSON.parse(read(ui + 'Appearance/FennecLocalizable.xcstrings'));
   const swift = files(path.join(root, ui)).filter(p => p.endsWith('.swift'));
   const keys = new Set();
   for (const p of swift) {
     for (const match of fs.readFileSync(p, 'utf8').matchAll(/FennecTheme\.text\("([^"\n]+)"\)/g)) keys.add(match[1]);
   }
-  for (const key of keys) assert.ok(catalog.strings[key]?.localizations?.['zh-Hans']?.stringUnit?.value, key);
+  for (const key of keys) {
+    for (const language of ['zh-Hans', 'zh-Hant']) assert.ok(catalog.strings[key]?.localizations?.[language]?.stringUnit?.value, `${language}: ${key}`);
+  }
 });
 
 test('ieynec identity and supplied opaque app icon replace the first-build branding', () => {
@@ -72,8 +74,7 @@ test('only manually dispatched standard SideStore build is exposed', () => {
 test('settings keep the agreed groups and engine controls', () => {
   const settings = read(ui + 'Library/Settings/SettingsViewController.swift');
   assert.match(settings, /\["Search", "Tabs", "Homepage", "Customize", "Accessibility", "Language"\]/);
-  assert.match(settings, /jitSection\.attach\(to: self\)/);
-  assert.match(settings, /jitSection\.savePairingFile/);
+  assert.doesNotMatch(settings, /jitSection|case \.jit|JITSettingsSection/);
   assert.doesNotMatch(settings, /DefaultBrowser|MakeDefault|Set as default/);
   const advanced = read(ui + 'Library/Settings/Sections/Advanced/AdvancedSettingsSection.swift');
   for (const name of ['DeveloperPreferencesViewController', 'CompatibilityPreferencesViewController', 'BrowsingPreferencesViewController']) assert.ok(advanced.includes(name));
@@ -135,6 +136,55 @@ test('motion-free policy covers UIKit, toolbar display link and tab overview sta
   const actions = read(ui + 'BrowserViewController+BrowserActions.swift');
   assert.match(actions, /modalPresentationStyle = \.fullScreen/);
   assert.doesNotMatch(actions, /let libraryController = LibraryViewController/);
+});
+
+test('JIT removal keeps only the required Gecko no-JIT status handshake', () => {
+  const controller = read('browser/Reynard/JIT/JITController.swift');
+  assert.match(controller, /ReportJITStatusForChild\(pid, false, runtime\)/);
+  assert.match(controller, /Prefs\.JITSettings\.isJITEnabled = false/);
+  assert.doesNotMatch(controller, /JITEnabler|DDIManager|BackgroundAudioManager|presentEnablementFailureScreen|tunnel_create|schedulePreflight/);
+  assert.doesNotMatch(read('browser/Reynard/AppDelegate.swift'), /startBackgroundAudio/);
+  const prefs = read('browser/Reynard/Client/Preferences/BrowserPreferences.swift').split('struct JITSettings')[1].split('// MARK: - Bookmarks')[0];
+  assert.doesNotMatch(prefs, /return prefs\.bool|hasPairingFile && newValue/);
+});
+
+test('address focus and keyboard docking commit app-owned chrome without animation', () => {
+  const browser = read(ui + 'BrowserViewController.swift');
+  assert.doesNotMatch(browser, /animateLayout\(animation\)|private func animateLayout/);
+  assert.match(browser, /UIView\.performWithoutAnimation \{\s*browserChrome\.dockActionBar/);
+  const search = read(ui + 'Search/SearchOverlayCoordinator.swift');
+  assert.match(search, /dismiss\(\.search, animated: animated && FennecTheme\.animatesBrowserUI\)/);
+  assert.match(search, /on: targetHost,\s*animated: animated && FennecTheme\.animatesBrowserUI/);
+  const gestures = read(ui + 'Chrome/AddressBar/AddressBarGestures.swift');
+  const newTab = gestures.split('func animateAutomaticNewTabTransition')[1].split('private func setupSourceContentPreview')[0];
+  assert.doesNotMatch(newTab, /UIView\.animate|translationX|snapshotView/);
+});
+
+test('private pages and tray follow the filmed Android structure without fake counters', () => {
+  const home = read(ui + 'Homepage/HomepageRootViewController.swift');
+  assert.match(home, /folder == nil && !isPrivateBrowsing \{\s*let header/);
+  assert.match(home, /case \.recommendation\(\.donation\):\s*return !isPrivateBrowsing/);
+  const page = read(ui + 'Homepage/Sections/PrivateBrowsing/PrivateBrowsingSectionViewController.swift');
+  assert.match(page, /Leave no traces on this device/);
+  assert.doesNotMatch(page, /UIVisualEffectView|UIBlurEffect/);
+  const tray = read(ui + 'TabOverview/TabOverview.swift');
+  assert.match(tray, /privateEmptyState\.isHidden = !isPrivate \|\| visibleCount > 0/);
+  const menu = read(ui + 'BrowserViewController+TabPresentation.swift');
+  for (const label of ['Recently closed tabs', 'Tab settings', 'Close all tabs']) assert.ok(menu.includes(label));
+  assert.doesNotMatch(read(ui + 'TabOverview/TabOverviewToolbar/TabOverviewTopToolbar.swift'), /showsMenuAsPrimaryAction/);
+});
+
+test('homepage switches control real cards and omit the obsolete update switch', () => {
+  const page = read(ui + 'Library/Settings/Sections/General/Homepage/HomepagePreferencesViewController.swift');
+  assert.doesNotMatch(page, /newUpdatesSwitch|case newUpdates/);
+  assert.match(page, /Prefs\.HomepageSettings\.showsContinue = sender\.isOn/);
+  assert.match(page, /Prefs\.HomepageSettings\.showsProtection = sender\.isOn/);
+  const summary = read(ui + 'Homepage/FennecHomepageSummaryView.swift');
+  assert.match(summary, /removeArrangedSubview\(protectionRow\)/);
+  assert.match(summary, /Prefs\.HomepageSettings\.showsContinue else/);
+  const source = read(ui + 'BrowserViewController+TabPresentation.swift');
+  const select = source.split('func selectTab(at index:')[1].split('func closeTab')[0];
+  assert.doesNotMatch(select, /\[weak self\]|self\?\.tabManager\.selectTab/);
 });
 
 test('menu routes connect to original engine actions instead of placeholder handlers', () => {

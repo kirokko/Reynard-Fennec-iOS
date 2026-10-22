@@ -56,7 +56,10 @@ final class HomepageRootViewController: UIViewController {
 
     func refreshBrowserSummary() {
         guard isViewLoaded, !isPrivateBrowsing else { return }
-        summaryView?.refresh(tabs: browserTabs(), blockedCount: blockedTrackerCount())
+        summaryView?.refresh(
+            tabs: Prefs.HomepageSettings.showsContinue ? browserTabs() : [],
+            blockedCount: Prefs.HomepageSettings.showsProtection ? blockedTrackerCount() : 0
+        )
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -254,7 +257,8 @@ final class HomepageRootViewController: UIViewController {
         sectionStackView.arrangedSubviews.forEach { sectionStackView.removeArrangedSubview($0); $0.removeFromSuperview() }
         summaryView = nil
         sectionStackView.spacing = 28
-        view.backgroundColor = FennecTheme.surface
+        overrideUserInterfaceStyle = isPrivateBrowsing ? .dark : .unspecified
+        view.backgroundColor = isPrivateBrowsing ? FennecTheme.privateSurface : FennecTheme.surface
         let extras = UIStackView()
         extras.axis = .vertical
         extras.spacing = 16
@@ -263,11 +267,11 @@ final class HomepageRootViewController: UIViewController {
         let extraSections = displayedSections.filter {
             folder == nil && ($0 == .frequentlyVisited || $0 == .recentlyClosedTabs || $0 == .recommendation(.donation))
         }
-        if folder == nil {
+        if folder == nil && !isPrivateBrowsing {
             let header = UIView()
             let brand = UILabel()
             brand.text = "ieynec"
-            brand.font = UIFontMetrics(forTextStyle: .title1).scaledFont(for: .systemFont(ofSize: 30, weight: .semibold))
+            brand.font = UIFontMetrics(forTextStyle: .title1).scaledFont(for: .systemFont(ofSize: 24, weight: .semibold))
             brand.adjustsFontForContentSizeCategory = true
             brand.adjustsFontSizeToFitWidth = true
             brand.minimumScaleFactor = 0.5
@@ -292,7 +296,7 @@ final class HomepageRootViewController: UIViewController {
             privacy.isHidden = isPrivateBrowsing
             header.addSubview(privacy)
             NSLayoutConstraint.activate([
-                header.heightAnchor.constraint(greaterThanOrEqualToConstant: 116),
+                header.heightAnchor.constraint(greaterThanOrEqualToConstant: 96),
                 wordmark.centerXAnchor.constraint(equalTo: header.centerXAnchor),
                 wordmark.centerYAnchor.constraint(equalTo: header.centerYAnchor, constant: 12),
                 wordmark.leadingAnchor.constraint(greaterThanOrEqualTo: header.leadingAnchor),
@@ -465,8 +469,10 @@ final class HomepageRootViewController: UIViewController {
         return sections.filter { section in
             switch section {
             case .recommendation(.performance), .recommendation(.updateAvailable):
-                // Performance/JIT guidance is kept in iOS / JIT. No app update feed.
+                // No JIT feature or application update feed.
                 return false
+            case .recommendation(.donation):
+                return !isPrivateBrowsing && Prefs.HomepageSettings.showsRecommendations
             case .privateBrowsing:
                 return isPrivateBrowsing
             case .favorites:

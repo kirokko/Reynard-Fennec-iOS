@@ -1,32 +1,26 @@
 // Settings order follows Fennec 158; unsupported Android-only entries are omitted.
-// Reynard-specific controls remain available under Advanced and iOS / JIT. GPL-3.0.
+// Reynard-specific controls remain under Advanced; JIT was removed. GPL-3.0.
 import UIKit
 
 final class SettingsViewController: SettingsTableViewController {
-    private enum Section: CaseIterable { case general, privacy, advanced, jit, about }
-    private let jitSection = JITSettingsSection()
+    private enum Section: CaseIterable { case general, privacy, advanced, about }
     private let privacySection = PrivacySettingsSection()
     private let externalLinksSwitch = UISwitch()
-    private var sections: [Section] {
-        Section.allCases.filter { $0 != .jit || !getEntitlementValue("com.apple.private.security.no-sandbox") }
-    }
+    private let sections = Section.allCases
     private let generalTitles = ["Search", "Tabs", "Homepage", "Customize", "Accessibility", "Language"]
     private let advancedTitles = ["Extensions", "Open links in apps", "Reynard-specific"]
 
     init() {
         super.init(style: .plain)
         title = FennecTheme.text("Settings")
-        jitSection.attach(to: self)
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     override func viewDidLoad() {
         super.viewDidLoad()
         externalLinksSwitch.addTarget(self, action: #selector(externalLinksChanged), for: .valueChanged)
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshJIT), name: .jitlessModeDidActivate, object: nil)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        jitSection.refreshDisplayedState()
         externalLinksSwitch.isOn = Prefs.BrowsingSettings.openLinksInExternalApps
         tableView.reloadData()
     }
@@ -36,7 +30,6 @@ final class SettingsViewController: SettingsTableViewController {
         case .general: return generalTitles.count
         case .privacy: return privacySection.rowCount
         case .advanced: return advancedTitles.count
-        case .jit: return jitSection.rowCount
         case .about: return 1
         }
     }
@@ -46,7 +39,6 @@ final class SettingsViewController: SettingsTableViewController {
         case .general: key = "General"
         case .privacy: key = "Privacy and security"
         case .advanced: key = "Advanced"
-        case .jit: key = "iOS / JIT"
         case .about: key = "About"
         }
         return SettingsSectionText(headerTitle: FennecTheme.text(key))
@@ -59,7 +51,6 @@ final class SettingsViewController: SettingsTableViewController {
             let result = cell(advancedTitles[indexPath.row])
             if indexPath.row == 1 { result.accessoryView = externalLinksSwitch; result.selectionStyle = .none }
             return result
-        case .jit: return jitSection.cell(at: indexPath.row, tintColor: FennecTheme.accent)
         case .about: return cell("About ieynec")
         }
     }
@@ -97,22 +88,10 @@ final class SettingsViewController: SettingsTableViewController {
             case 2: navigationController?.pushViewController(ReynardSpecificPreferencesViewController(), animated: true)
             default: break
             }
-        case .jit: jitSection.selectRow(at: indexPath.row, from: self)
         case .about: navigationController?.pushViewController(FennecAboutViewController(), animated: true)
         }
     }
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        sections[section] == .jit ? jitSection.footerView() : nil
-    }
     @objc private func externalLinksChanged() { Prefs.BrowsingSettings.openLinksInExternalApps = externalLinksSwitch.isOn }
-    @objc private func refreshJIT() { jitSection.refreshDisplayedState(); tableView.reloadData() }
-}
-
-extension SettingsViewController: UIDocumentPickerDelegate {
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        guard let url = urls.first else { return }
-        jitSection.savePairingFile(from: url)
-    }
 }
 
 final class FennecSettingsListController: SettingsTableViewController {

@@ -62,7 +62,7 @@ try {
         Set-Content -LiteralPath ($Destination + '.build.txt') -Encoding UTF8
     Write-Host "Saved: $Destination"
     Write-Host "SHA256: $hash"
-    Write-Host 'Keep App Extensions when installing in SideStore. Installation does not automatically enable JIT.'
+    Write-Host 'Keep App Extensions when installing in SideStore. Current ieynec builds run without JIT; no LocalDevVPN is required for browsing.'
 } finally {
     Remove-Item -LiteralPath $temp -Recurse -Force -ErrorAction SilentlyContinue
 }

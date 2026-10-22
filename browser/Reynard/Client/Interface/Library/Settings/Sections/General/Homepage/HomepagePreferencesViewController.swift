@@ -15,10 +15,10 @@ final class HomepagePreferencesViewController: SettingsTableViewController {
     }
     
     private enum Section: CaseIterable {
-        case openingScreen
+        case wallpaper
         case includeOnHomepage
         case homepageBanners
-        case wallpaper
+        case openingScreen
         
         var text: SettingsSectionText {
             switch self {
@@ -27,7 +27,7 @@ final class HomepagePreferencesViewController: SettingsTableViewController {
             case .includeOnHomepage:
                 return SettingsSectionText(headerTitle: NSLocalizedString("Homepage Sections", comment: ""))
             case .homepageBanners:
-                return SettingsSectionText(headerTitle: NSLocalizedString("Homepage Banners", comment: ""))
+                return SettingsSectionText(headerTitle: FennecTheme.text("Homepage"))
             case .wallpaper:
                 return SettingsSectionText(headerTitle: NSLocalizedString("Wallpaper", comment: ""))
             }
@@ -35,8 +35,9 @@ final class HomepagePreferencesViewController: SettingsTableViewController {
     }
     
     private enum HomepageBannerRow: CaseIterable {
+        case protection
+        case continueBrowsing
         case recommendations
-        case newUpdates
     }
     
     private enum WallpaperRow: CaseIterable {
@@ -45,7 +46,8 @@ final class HomepagePreferencesViewController: SettingsTableViewController {
     }
     
     private let recommendationsSwitch = UISwitch()
-    private let newUpdatesSwitch = UISwitch()
+    private let protectionSwitch = UISwitch()
+    private let continueSwitch = UISwitch()
     private let showWallpaperSwitch = UISwitch()
     private let wallpaperPreviewImageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(
@@ -149,9 +151,12 @@ final class HomepagePreferencesViewController: SettingsTableViewController {
             case .recommendations:
                 cell.textLabel?.text = NSLocalizedString("Recommendations", comment: "")
                 cell.accessoryView = recommendationsSwitch
-            case .newUpdates:
-                cell.textLabel?.text = NSLocalizedString("New Updates", comment: "")
-                cell.accessoryView = newUpdatesSwitch
+            case .protection:
+                cell.textLabel?.text = FennecTheme.text("Tracking protection")
+                cell.accessoryView = protectionSwitch
+            case .continueBrowsing:
+                cell.textLabel?.text = FennecTheme.text("Continue")
+                cell.accessoryView = continueSwitch
             }
             return cell
         case .wallpaper:
@@ -216,13 +221,15 @@ final class HomepagePreferencesViewController: SettingsTableViewController {
     
     private func configureSwitches() {
         recommendationsSwitch.addTarget(self, action: #selector(recommendationsSwitchDidChange(_:)), for: .valueChanged)
-        newUpdatesSwitch.addTarget(self, action: #selector(newUpdatesSwitchDidChange(_:)), for: .valueChanged)
+        protectionSwitch.addTarget(self, action: #selector(protectionSwitchDidChange(_:)), for: .valueChanged)
+        continueSwitch.addTarget(self, action: #selector(continueSwitchDidChange(_:)), for: .valueChanged)
         showWallpaperSwitch.addTarget(self, action: #selector(showWallpaperSwitchDidChange(_:)), for: .valueChanged)
     }
     
     private func refreshDisplayedState() {
         recommendationsSwitch.isOn = Prefs.HomepageSettings.showsRecommendations
-        newUpdatesSwitch.isOn = Prefs.HomepageSettings.showsNewUpdates
+        protectionSwitch.isOn = Prefs.HomepageSettings.showsProtection
+        continueSwitch.isOn = Prefs.HomepageSettings.showsContinue
         showWallpaperSwitch.isOn = Prefs.HomepageSettings.showsWallpaper
     }
     
@@ -230,8 +237,12 @@ final class HomepagePreferencesViewController: SettingsTableViewController {
         Prefs.HomepageSettings.showsRecommendations = sender.isOn
     }
     
-    @objc private func newUpdatesSwitchDidChange(_ sender: UISwitch) {
-        Prefs.HomepageSettings.showsNewUpdates = sender.isOn
+    @objc private func protectionSwitchDidChange(_ sender: UISwitch) {
+        Prefs.HomepageSettings.showsProtection = sender.isOn
+    }
+
+    @objc private func continueSwitchDidChange(_ sender: UISwitch) {
+        Prefs.HomepageSettings.showsContinue = sender.isOn
     }
     
     @objc private func showWallpaperSwitchDidChange(_ sender: UISwitch) {

@@ -491,10 +491,10 @@ final class AddressBar: UIView {
             }
         }
         
-        if animated {
+        if animated && FennecTheme.animatesBrowserUI {
             UIView.animate(withDuration: UX.addressBarDismissButtonAnimationDuration, animations: animations, completion: completion)
         } else {
-            animations()
+            UIView.performWithoutAnimation(animations)
             completion(true)
         }
     }
@@ -937,7 +937,7 @@ final class AddressBar: UIView {
         let alpha: CGFloat = visible ? 1 : 0
         if secondaryTrailingButton.alpha != alpha {
             UIView.animate(
-                withDuration: UX.addressBarAudioButtonAnimationDuration,
+                withDuration: FennecTheme.animatesBrowserUI ? UX.addressBarAudioButtonAnimationDuration : 0,
                 delay: 0,
                 options: [.beginFromCurrentState, .allowUserInteraction]
             ) {

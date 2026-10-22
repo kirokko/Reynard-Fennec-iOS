@@ -185,7 +185,7 @@ final class SearchOverlayCoordinator {
     private func dismissSearch(animated: Bool, completion: (() -> Void)? = nil) {
         searchTransitionID += 1
         let transitionID = searchTransitionID
-        overlayCoordinator.dismiss(.search, animated: animated) { [weak self] in
+        overlayCoordinator.dismiss(.search, animated: animated && FennecTheme.animatesBrowserUI) { [weak self] in
             guard let self,
                   self.searchTransitionID == transitionID else {
                 completion?()
@@ -260,7 +260,7 @@ final class SearchOverlayCoordinator {
             searchViewController,
             for: .search,
             on: targetHost,
-            animated: animated
+            animated: animated && FennecTheme.animatesBrowserUI
         ) { [weak self] in
             self?.configureOverlay()
         }
@@ -289,7 +289,7 @@ final class SearchOverlayCoordinator {
         if focused {
             delegate?.searchContentView.resetFocusedInputRelocation()
         }
-        delegate?.updateSearchLayout(animated: animated, duration: UX.layoutAnimationDuration)
+        delegate?.updateSearchLayout(animated: animated && FennecTheme.animatesBrowserUI, duration: UX.layoutAnimationDuration)
     }
     
     func tabOverviewWillPresent() {

@@ -108,6 +108,7 @@ final class TabOverview: UIView {
     let collection: TabOverviewCollection
     let topToolbar = TabOverviewTopToolbar()
     let bottomToolbar = TabOverviewBottomToolbar()
+    private let privateEmptyState = UIStackView()
     private let statusBarBlurView: VariableBlurView = {
         let view = VariableBlurView()
         view.direction = .down
@@ -288,6 +289,31 @@ final class TabOverview: UIView {
         addSubview(bottomToolbar)
         addSubview(topToolbar)
         addSubview(topToolbar.floatingControls)
+        privateEmptyState.translatesAutoresizingMaskIntoConstraints = false
+        privateEmptyState.axis = .vertical
+        privateEmptyState.alignment = .center
+        privateEmptyState.spacing = 12
+        privateEmptyState.isUserInteractionEnabled = false
+        privateEmptyState.isHidden = true
+        privateEmptyState.accessibilityIdentifier = "tray.privateEmpty"
+        let icon = UIImageView(image: FennecTheme.privateBrowsingImage)
+        icon.tintColor = FennecTheme.selectedOutline
+        icon.contentMode = .scaleAspectFit
+        icon.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        icon.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        privateEmptyState.addArrangedSubview(icon)
+        for (key, style) in [("Private browsing", UIFont.TextStyle.headline), ("Private tabs stay separate from your regular tabs. Close them to clear their browsing history and cookies.", .subheadline)] {
+            let label = UILabel()
+            label.text = FennecTheme.text(key)
+            label.font = .preferredFont(forTextStyle: style)
+            label.adjustsFontForContentSizeCategory = true
+            label.numberOfLines = 0
+            label.textAlignment = .center
+            label.textColor = FennecTheme.ink
+            privateEmptyState.addArrangedSubview(label)
+            label.widthAnchor.constraint(equalTo: privateEmptyState.widthAnchor).isActive = true
+        }
+        addSubview(privateEmptyState)
     }
     
     private func configureConstraints() {
@@ -300,6 +326,9 @@ final class TabOverview: UIView {
         privateTabsCollectionBottomToContainerConstraint = collection.privateTabsCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
         privateTabsCollectionBottomToToolbarConstraint = collection.privateTabsCollectionView.bottomAnchor.constraint(equalTo: bottomToolbar.topAnchor)
         NSLayoutConstraint.activate([
+            privateEmptyState.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 116),
+            privateEmptyState.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            privateEmptyState.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.8),
             collection.regularTabsCollectionView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             collection.regularTabsCollectionView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             collection.privateTabsCollectionView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
@@ -364,6 +393,11 @@ final class TabOverview: UIView {
         let visibleCount = mode == .privateTabs
         ? dataSource?.privateTabs.count ?? 0
         : regularCount
+        let isPrivate = mode == .privateTabs
+        overrideUserInterfaceStyle = isPrivate ? .dark : .unspecified
+        backgroundColor = isPrivate ? FennecTheme.privateSurface : FennecTheme.surface
+        collection.privateTabsCollectionView.backgroundColor = FennecTheme.privateSurface
+        privateEmptyState.isHidden = !isPrivate || visibleCount > 0
         topToolbar.apply(tabCount: regularCount, visibleTabCount: visibleCount, hasVisibleTab: visibleCount > 0)
         bottomToolbar.apply(tabCount: regularCount, visibleTabCount: visibleCount, hasVisibleTab: visibleCount > 0)
     }

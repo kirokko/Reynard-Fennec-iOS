@@ -13,7 +13,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // ieynec has no app-owned UIKit animations. Completion handlers still run;
         // Gecko web content and out-of-process system pickers are not altered.
         UIView.setAnimationsEnabled(false)
-        JITController.shared.startBackgroundAudioIfNeeded()
         return true
     }
     

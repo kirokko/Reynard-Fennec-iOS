@@ -3,6 +3,7 @@ import UIKit
 
 enum FennecTheme {
     static let animatesBrowserUI = false
+    static let privateSurface = UIColor(red: 0.16, green: 0.15, blue: 0.21, alpha: 1)
     static let surface = UIColor { $0.userInterfaceStyle == .dark
         ? UIColor(red: 0.08, green: 0.075, blue: 0.11, alpha: 1)
         : UIColor(red: 0.969, green: 0.965, blue: 0.988, alpha: 1) }
@@ -24,7 +25,8 @@ enum FennecTheme {
         ? UIColor(red: 0.27, green: 0.23, blue: 0.40, alpha: 1)
         : UIColor(red: 0.90, green: 0.86, blue: 1, alpha: 1) }
 
-    static var privateBrowsingImage: UIImage? {
+    // Render these tiny immutable assets once, not on every chrome refresh.
+    static let privateBrowsingImage: UIImage? = {
         guard let source = UIImage(named: "private.mode.icon") else {
             return UIImage(systemName: "theatermasks")
         }
@@ -34,16 +36,16 @@ enum FennecTheme {
         return UIGraphicsImageRenderer(size: size).image { _ in
             source.draw(in: CGRect(x: (size.width - fitted.width) / 2, y: (size.height - fitted.height) / 2, width: fitted.width, height: fitted.height))
         }.withRenderingMode(.alwaysTemplate)
-    }
+    }()
 
-    static var overflowImage: UIImage {
+    static let overflowImage: UIImage = {
         UIGraphicsImageRenderer(size: CGSize(width: 24, height: 24)).image { _ in
             UIColor.black.setFill()
             for y in [5.0, 12.0, 19.0] {
                 UIBezierPath(ovalIn: CGRect(x: 10.5, y: y - 1.5, width: 3, height: 3)).fill()
             }
         }.withRenderingMode(.alwaysTemplate)
-    }
+    }()
 
     static func text(_ key: String) -> String {
         NSLocalizedString(key, tableName: "FennecLocalizable", comment: "")

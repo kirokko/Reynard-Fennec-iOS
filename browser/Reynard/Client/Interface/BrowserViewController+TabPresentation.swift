@@ -32,9 +32,10 @@ extension BrowserViewController: TabBarDataSource, TabOverviewDataSource, TabOve
                 return
             }
             
-            captureThumbnail(forTabAt: tabManager.selectedTabIndex, mode: tabManager.selectedTabMode) { [weak self] _ in
-                self?.tabManager.selectTab(at: index, mode: mode)
-            }
+            // Cache the outgoing preview, but never delay selection on a
+            // homepage snapshot callback (or let an old callback select a tab).
+            captureThumbnail(forTabAt: tabManager.selectedTabIndex, mode: tabManager.selectedTabMode)
+            tabManager.selectTab(at: index, mode: mode)
             return
         }
         tabManager.selectTab(at: index, mode: mode)
@@ -154,6 +155,40 @@ extension BrowserViewController: TabBarDataSource, TabOverviewDataSource, TabOve
     }
     
     // MARK: - Tab Overview Actions
+
+    func presentFennecTrayMenu() {
+        guard presentedViewController == nil else { return }
+        let isPrivate = tabOverview.mode == .privateTabs
+        let tabs = isPrivate ? tabManager.privateTabs : tabManager.regularTabs
+        var items: [FennecMenuItem] = []
+        if !isPrivate {
+            let hasClosed = !TabManagementStore.shared.recentlyClosedTabs(limit: 1).isEmpty
+            items.append(FennecMenuItem(title: FennecTheme.text("Recently closed tabs"), symbol: "clock.arrow.circlepath", enabled: hasClosed, action: { [weak self] in
+                self?.presentRecentlyClosedTrayMenu()
+            }))
+        }
+        items.append(FennecMenuItem(title: FennecTheme.text("Tab settings"), symbol: "gearshape", action: { [weak self] in
+            self?.presentContentModal(FennecSettingsListController(title: "Tabs", entries: [
+                ("New tab", { NewTabPreferencesViewController() }),
+                ("Open links in new tabs", { OpenLinksInNewTabsPreferencesViewController() }),
+            ]))
+        }))
+        items.append(FennecMenuItem(title: FennecTheme.text("Close all tabs"), symbol: "trash", enabled: !tabs.isEmpty, action: { [weak self] in
+            self?.tabOverview.topToolbar.onClearTabs?()
+        }))
+        let ageItems = TabOverviewClearTabsMenu.Age.allCases.map { age in
+            FennecMenuItem(title: age.title, symbol: "clock", enabled: !tabs.isEmpty, action: { [weak self] in
+                self?.tabOverview.topToolbar.onClearTabsOlderThan?(age)
+            })
+        }
+        items.append(FennecMenuItem(title: FennecTheme.text("More"), symbol: "ellipsis", children: ageItems))
+        items.append(FennecMenuItem(title: FennecTheme.text("Back to browsing"), symbol: "arrow.backward", enabled: !tabs.isEmpty, action: { [weak self] in
+            self?.tabOverview.topToolbar.onDone?()
+        }))
+        let menu = FennecMenuViewController(groups: [.rows(items)])
+        menu.overrideUserInterfaceStyle = isPrivate ? .dark : .unspecified
+        present(menu, animated: false)
+    }
 
     func presentRecentlyClosedTrayMenu() {
         guard tabOverview.mode == .regularTabs else { return }

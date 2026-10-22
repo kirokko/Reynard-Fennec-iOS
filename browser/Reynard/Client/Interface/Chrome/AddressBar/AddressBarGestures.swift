@@ -147,39 +147,8 @@ final class AddressBarGestures: NSObject {
     }
     
     func animateAutomaticNewTabTransition(completion: @escaping () -> Void) {
-        guard let delegate,
-              delegate.chromeMode == .phone,
-              !delegate.isTabOverviewPresented,
-              !delegate.isTabOverviewTransitionRunning else {
-            DispatchQueue.main.async(execute: completion)
-            return
-        }
-        
-        let width = delegate.transitionContentView.bounds.width
-        guard width > 1 else {
-            DispatchQueue.main.async(execute: completion)
-            return
-        }
-        
-        searchPanMode = .blocked
         resetHorizontalTransition()
-        delegate.addressBarTransitionWillBegin(prepareForGesture: false)
-        
-        let transitionGeneration = horizontalTransitionGeneration
-        UIView.animate(withDuration: UX.addressBarAutomaticNewTabTransitionDuration, delay: 0, options: [.curveEaseOut]) {
-            let transform = CGAffineTransform(
-                translationX: -width * UX.addressBarAutomaticNewTabTranslationRatio,
-                y: 0
-            )
-            delegate.transitionContentView.setTransitionTransform(transform)
-            self.addressBar.transform = transform
-        } completion: { _ in
-            guard transitionGeneration == self.horizontalTransitionGeneration else {
-                return
-            }
-            self.resetHorizontalTransition()
-            completion()
-        }
+        UIView.performWithoutAnimation(completion)
     }
     
     private func setupSourceContentPreview(delegate: AddressBarGestureDelegate) {

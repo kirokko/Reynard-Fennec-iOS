@@ -1,218 +1,71 @@
-//
-//  PrivateBrowsingSectionViewController.swift
-//  Reynard
-//
-//  Created by Minh Ton on 23/6/26.
-//
-
+// Fennec private homepage: dark surface, mask badge and concise explanation.
+// GPL-3.0. No normal homepage wordmark, donation panel or blur compositor.
 import UIKit
 
 final class PrivateBrowsingSectionViewController: UIViewController {
-    private enum UX {
-        static let horizontalInset: CGFloat = 2
-        static let sectionBottomSpacing: CGFloat = 24
-        static let cornerRadius: CGFloat = 17
-        static let titleFontSize: CGFloat = 22
-        static let messageFontSize: CGFloat = 15
-        static let labelSpacing: CGFloat = 10
-        static let maximumContentWidth: CGFloat = 580
-        static let narrowContentTopInset: CGFloat = 24
-        static let narrowContentHorizontalInset: CGFloat = 20
-        static let narrowContentBottomInset: CGFloat = 24
-        static let wideContentTopInset: CGFloat = 28
-        static let wideContentHorizontalInset: CGFloat = 24
-        static let wideContentBottomInset: CGFloat = 28
-        static let expandedContentTopInset: CGFloat = 32
-        static let expandedContentHorizontalInset: CGFloat = 28
-        static let expandedContentBottomInset: CGFloat = 32
-    }
-    
-    private var contentMode: HomepageContentMode = .embeddedNarrow
+    private let stack = UIStackView()
     private var isPrivateBrowsing = false
-    
-    private let cardView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerCurve = .continuous
-        view.layer.cornerRadius = UX.cornerRadius
-        view.clipsToBounds = true
-        view.backgroundColor = .clear
-        return view
-    }()
-    
-    private let backgroundView: UIVisualEffectView = {
-        let view = UIVisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterial))
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.isUserInteractionEnabled = false
-        view.layer.cornerCurve = .continuous
-        view.layer.cornerRadius = UX.cornerRadius
-        view.clipsToBounds = true
-        return view
-    }()
-    
-    private let textContainerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private let textStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = UX.labelSpacing
-        return stackView
-    }()
-    
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFontMetrics(forTextStyle: .title1).scaledFont(
-            for: .systemFont(ofSize: UX.titleFontSize, weight: .bold)
-        )
-        label.text = NSLocalizedString("Private Browsing", comment: "")
-        label.textAlignment = .center
-        label.textColor = .label
-        label.numberOfLines = 0
-        label.adjustsFontForContentSizeCategory = true
-        return label
-    }()
-    
-    private let messageLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFontMetrics(forTextStyle: .body).scaledFont(
-            for: .systemFont(ofSize: UX.messageFontSize, weight: .regular)
-        )
-        label.text = FennecTheme.text("ieynec clears private browsing history and cookies when you close private tabs. Downloads and bookmarks are kept.")
-        label.textAlignment = .center
-        label.textColor = .secondaryLabel
-        label.numberOfLines = 0
-        label.adjustsFontForContentSizeCategory = true
-        return label
-    }()
-    
-    // MARK: - Lifecycle
-    
+    private var contentMode: HomepageContentMode = .embeddedNarrow
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureView()
-        updateContentInsets()
-        updateVisibility()
-    }
-    
-    func setContentMode(_ contentMode: HomepageContentMode) {
-        guard self.contentMode != contentMode else {
-            return
-        }
-        
-        self.contentMode = contentMode
-        if isViewLoaded {
-            updateContentInsets()
-        }
-    }
-    
-    func setPrivateBrowsing(_ isPrivateBrowsing: Bool) {
-        guard self.isPrivateBrowsing != isPrivateBrowsing else {
-            return
-        }
-        
-        self.isPrivateBrowsing = isPrivateBrowsing
-        if isViewLoaded {
-            updateVisibility()
-        }
-    }
-    
-    // MARK: - Configuration
-    
-    private func configureView() {
-        configureAppearance()
-        configureHierarchy()
-        configureConstraints()
-    }
-    
-    private func configureAppearance() {
         view.backgroundColor = .clear
-        backgroundView.effect = nil
-        titleLabel.textColor = FennecTheme.ink
-    }
-    
-    private func configureHierarchy() {
-        view.addSubview(cardView)
-        cardView.addSubview(backgroundView)
-        cardView.addSubview(textContainerView)
-        textContainerView.addSubview(textStackView)
-        textStackView.addArrangedSubview(titleLabel)
-        textStackView.addArrangedSubview(messageLabel)
-    }
-    
-    private func configureConstraints() {
-        let preferredContentWidthConstraint = textContainerView.widthAnchor.constraint(
-            equalTo: cardView.layoutMarginsGuide.widthAnchor
-        )
-        preferredContentWidthConstraint.priority = .defaultHigh
-        
+        view.accessibilityIdentifier = "homepage.private"
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = 12
+        view.addSubview(stack)
+
+        let badge = UIView()
+        badge.backgroundColor = FennecTheme.accentContainer
+        badge.layer.cornerRadius = 28
+        let icon = UIImageView(image: FennecTheme.privateBrowsingImage)
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        icon.tintColor = FennecTheme.selectedOutline
+        icon.contentMode = .scaleAspectFit
+        badge.addSubview(icon)
         NSLayoutConstraint.activate([
-            cardView.topAnchor.constraint(equalTo: view.topAnchor),
-            cardView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: UX.horizontalInset),
-            cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -UX.horizontalInset),
-            cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -UX.sectionBottomSpacing),
-            
-            backgroundView.topAnchor.constraint(equalTo: cardView.topAnchor),
-            backgroundView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor),
-            backgroundView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor),
-            backgroundView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor),
-            
-            textContainerView.topAnchor.constraint(equalTo: cardView.layoutMarginsGuide.topAnchor),
-            textContainerView.bottomAnchor.constraint(equalTo: cardView.layoutMarginsGuide.bottomAnchor),
-            textContainerView.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
-            textContainerView.leadingAnchor.constraint(greaterThanOrEqualTo: cardView.layoutMarginsGuide.leadingAnchor),
-            textContainerView.trailingAnchor.constraint(lessThanOrEqualTo: cardView.layoutMarginsGuide.trailingAnchor),
-            textContainerView.widthAnchor.constraint(lessThanOrEqualToConstant: UX.maximumContentWidth),
-            preferredContentWidthConstraint,
-            
-            textStackView.topAnchor.constraint(equalTo: textContainerView.topAnchor),
-            textStackView.leadingAnchor.constraint(equalTo: textContainerView.leadingAnchor),
-            textStackView.trailingAnchor.constraint(equalTo: textContainerView.trailingAnchor),
-            textStackView.bottomAnchor.constraint(equalTo: textContainerView.bottomAnchor),
+            badge.widthAnchor.constraint(equalToConstant: 56),
+            badge.heightAnchor.constraint(equalToConstant: 56),
+            icon.centerXAnchor.constraint(equalTo: badge.centerXAnchor),
+            icon.centerYAnchor.constraint(equalTo: badge.centerYAnchor),
+            icon.widthAnchor.constraint(equalToConstant: 32),
+            icon.heightAnchor.constraint(equalToConstant: 32),
         ])
-    }
-    
-    // MARK: - Layout
-    
-    private func updateContentInsets() {
-        cardView.directionalLayoutMargins = contentInsets
-    }
-    
-    private func updateVisibility() {
+        stack.addArrangedSubview(badge)
+        let heading = UILabel()
+        heading.text = FennecTheme.text("Leave no traces on this device")
+        heading.font = UIFontMetrics(forTextStyle: .headline).scaledFont(for: .systemFont(ofSize: 20, weight: .semibold))
+        heading.textColor = FennecTheme.ink
+        let message = UILabel()
+        message.text = FennecTheme.text("ieynec clears private browsing history and cookies when you close private tabs. Downloads and bookmarks are kept.")
+        message.font = .preferredFont(forTextStyle: .subheadline)
+        message.textColor = .secondaryLabel
+        for label in [heading, message] {
+            label.numberOfLines = 0
+            label.textAlignment = .center
+            label.adjustsFontForContentSizeCategory = true
+            stack.addArrangedSubview(label)
+            label.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
+        }
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: view.topAnchor, constant: 44),
+            stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stack.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 20),
+            stack.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20),
+            stack.widthAnchor.constraint(lessThanOrEqualToConstant: 520),
+            stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -28),
+        ])
+        let preferredWidth = stack.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40)
+        preferredWidth.priority = .defaultHigh
+        preferredWidth.isActive = true
         view.isHidden = !isPrivateBrowsing
     }
-    
-    private var contentInsets: NSDirectionalEdgeInsets {
-        switch contentMode {
-        case .embeddedNarrow, .detachedNarrow:
-            return NSDirectionalEdgeInsets(
-                top: UX.narrowContentTopInset,
-                leading: UX.narrowContentHorizontalInset,
-                bottom: UX.narrowContentBottomInset,
-                trailing: UX.narrowContentHorizontalInset
-            )
-        case .embeddedWide, .detachedWide:
-            return NSDirectionalEdgeInsets(
-                top: UX.wideContentTopInset,
-                leading: UX.wideContentHorizontalInset,
-                bottom: UX.wideContentBottomInset,
-                trailing: UX.wideContentHorizontalInset
-            )
-        case .embeddedExpanded:
-            return NSDirectionalEdgeInsets(
-                top: UX.expandedContentTopInset,
-                leading: UX.expandedContentHorizontalInset,
-                bottom: UX.expandedContentBottomInset,
-                trailing: UX.expandedContentHorizontalInset
-            )
-        }
+
+    func setContentMode(_ mode: HomepageContentMode) { contentMode = mode }
+    func setPrivateBrowsing(_ value: Bool) {
+        isPrivateBrowsing = value
+        if isViewLoaded { view.isHidden = !value }
     }
 }
