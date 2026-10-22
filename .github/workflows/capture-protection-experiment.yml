@@ -1,0 +1,22 @@
+name: Isolated capture protection experiment
+run-name: Synthetic secure-canvas experiment (no IPA or Gecko)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: macos-26
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '26.6'
+      - run: bash tools/Test-CaptureProtection.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: synthetic-capture-probe
+          path: ${{ runner.temp }}/ieynec-capture-probe/screenshots
+          if-no-files-found: warn
