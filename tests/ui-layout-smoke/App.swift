@@ -61,6 +61,7 @@ final class ToolbarButton: UIButton {
     enum ButtonType { case newTab, tabOverview, library, sidebar }
     init(buttonType: ButtonType, target: AnyObject, action: Selector) {
         super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
         addTarget(target, action: action, for: .touchUpInside)
         if buttonType == .newTab { setImage(UIImage(systemName: "plus"), for: .normal) }
     }
@@ -105,9 +106,14 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
         try! image.pngData()!.write(to: url)
     }
     private func exercise() {
+        func checkpoint(_ name: String) { FileHandle.standardError.write(Data(("CHECK: " + name + "\n").utf8)) }
+        checkpoint("no-JIT")
         checkNoJITController()
+        checkpoint("fullscreen rotation and refresh")
         checkFullscreenRotationAndRefresh()
+        checkpoint("top/bottom chrome")
         screenshot(checkFennecChrome(), name: "chrome-controls")
+        checkpoint("download filters and homepage")
         checkDownloadFilters()
         checkInstantTray()
         let thumbnail = UIGraphicsImageRenderer(size: CGSize(width: 393, height: 1800)).image { context in

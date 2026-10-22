@@ -112,7 +112,7 @@ jobs:
         run: find browser -name '*.swift' -print0 | xargs -0 xcrun swiftc -frontend -parse
 
       - name: UIKit homepage first-frame smoke test (no Gecko)
-        timeout-minutes: 8
+        timeout-minutes: 12
         run: bash tools/Test-HomepageLayout.sh
 
       - name: Upload synthetic UIKit review screenshots

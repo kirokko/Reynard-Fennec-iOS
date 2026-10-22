@@ -4,7 +4,12 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 work="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/ieynec-layout-smoke"
-mkdir -p "$work"
+mkdir -p "$work/screenshots"
+# Preserve diagnostics even if an outer Actions timeout interrupts the test.
+collect_diagnostics() {
+  cp "$work/stdout.log" "$work/stderr.log" "$work/screenshots/" 2>/dev/null || true
+}
+trap collect_diagnostics EXIT
 xcrun simctl list devices available --json > "$work/devices.json"
 device=$(node - "$work/devices.json" <<'NODE'
 const fs = require('fs');
@@ -39,7 +44,7 @@ cat > "$app/Info.plist" <<'PLIST'
 </dict></plist>
 PLIST
 ui=browser/Reynard/Client/Interface
-xcrun swiftc -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" \
+xcrun swiftc -g -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" \
   tests/ui-layout-smoke/App.swift tests/ui-layout-smoke/TrayFixtures.swift \
   tests/ui-layout-smoke/ChromeFixtures.swift \
   tests/ui-layout-smoke/NoJITFixtures.swift browser/Reynard/JIT/JITController.swift \
@@ -74,8 +79,14 @@ xcrun simctl install "$device" "$app"
 container=$(xcrun simctl get_app_container "$device" local.ieynec.LayoutSmoke data)
 rm -f "$container/Documents/layout-pass.txt" "$container/Documents/"*-ready "$container/Documents/"*-captured
 mkdir -p "$work/screenshots"
-xcrun simctl launch --terminate-running-process --stdout="$work/stdout.log" --stderr="$work/stderr.log" "$device" local.ieynec.LayoutSmoke
+launch_output=$(xcrun simctl launch --terminate-running-process --stdout="$work/stdout.log" --stderr="$work/stderr.log" "$device" local.ieynec.LayoutSmoke)
+printf '%s\n' "$launch_output"
+fixture_pid=${launch_output##*: }
 for ((i=0; i<300; i++)); do
+  if [[ "$fixture_pid" =~ ^[0-9]+$ ]] && ! kill -0 "$fixture_pid" 2>/dev/null; then
+    echo '::error::UIKit fixture exited before its completion marker; inspect stderr and checkpoints.'
+    break
+  fi
   for stage in private home groups; do
     if [[ -f "$container/Documents/$stage-ready" && ! -f "$container/Documents/$stage-captured" ]]; then
       xcrun simctl io "$device" screenshot "$work/screenshots/$stage-on-screen.png"
