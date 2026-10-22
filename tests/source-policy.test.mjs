@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -206,6 +207,14 @@ test('new reference chrome has real plus buttons, a single privacy mask and no f
   assert.match(theme, /for button in \[newTabButton, tabButton, menuButton\]/);
   assert.match(theme, /widthAnchor\.constraint\(equalToConstant: 132\)/);
   assert.doesNotMatch(theme, /UIImage\(named: "private.mode.icon"\)|systemName: "theatermasks"/);
+  assert.match(theme, /UIImage\(named: "FennecPrivateMask"\)/);
+  const mask = read('browser/Reynard/Resources/Assets.xcassets/FennecPrivateMask.imageset/mask.svg');
+  assert.match(mask, /Mozilla Public/);
+  assert.match(mask, /FIREFOX-ANDROID_158_0_RELEASE/);
+  const paths = [...mask.matchAll(/ d="([^"]+)"/g)].map(m => m[1]);
+  assert.equal(paths.length, 3);
+  assert.equal(createHash('sha256').update(paths.join('\n')).digest('hex'), 'b350e2ab15e0a923b5e0496e0df89614a02381d477cfa55d7f9bd6cf6b4c5a77');
+  assert.match(read('tools/Test-HomepageLayout.sh'), /xcrun actool/);
   for (const name of ['TopToolbar', 'BottomToolbar']) {
     const toolbar = read(ui + `Chrome/Toolbar/${name}.swift`);
     assert.match(toolbar, /editing \? -8 : -140/);

@@ -70,7 +70,14 @@ xcrun swiftc -g -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" \
   browser/Reynard/Client/Shared/ContentModalNavigationController.swift \
   browser/Reynard/Client/TabManagement/TabGroupStore.swift \
   -o "$app/LayoutSmoke"
-cp browser/Reynard/Resources/Assets.xcassets/custom/taboverview/private.mode.icon.imageset/private.mode.icon.png "$app/"
+# Compile the actual pinned vector asset rather than substituting a test icon.
+assets=browser/Reynard/Resources/Assets.xcassets
+mkdir -p "$work/FixtureAssets.xcassets"
+cp "$assets/Contents.json" "$work/FixtureAssets.xcassets/"
+cp -R "$assets/FennecPrivateMask.imageset" "$work/FixtureAssets.xcassets/"
+xcrun actool --compile "$app" --platform iphonesimulator \
+  --minimum-deployment-target 17.0 --target-device iphone --target-device ipad \
+  "$work/FixtureAssets.xcassets"
 cp browser/Reynard/Resources/Assets.xcassets/ieynec-logo.imageset/logo.png "$app/ieynec-logo.png"
 codesign --force --sign - "$app"
 xcrun simctl boot "$device" 2>/dev/null || true

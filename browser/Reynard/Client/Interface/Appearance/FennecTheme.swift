@@ -27,25 +27,12 @@ enum FennecTheme {
 
     // Render these tiny immutable assets once, not on every chrome refresh.
     static let privateBrowsingImage: UIImage? = {
-        // A single eye mask, not Reynard's fox or SF Symbols' theatre masks.
-        UIGraphicsImageRenderer(size: CGSize(width: 26, height: 26)).image { context in
-            context.cgContext.translateBy(x: 0, y: -2)
-            UIColor.black.setStroke()
-            UIColor.black.setFill()
-            let mask = UIBezierPath()
-            mask.move(to: CGPoint(x: 2, y: 9))
-            mask.addCurve(to: CGPoint(x: 13, y: 12), controlPoint1: CGPoint(x: 6, y: 7), controlPoint2: CGPoint(x: 9, y: 12))
-            mask.addCurve(to: CGPoint(x: 24, y: 9), controlPoint1: CGPoint(x: 17, y: 12), controlPoint2: CGPoint(x: 20, y: 7))
-            mask.addCurve(to: CGPoint(x: 20, y: 21), controlPoint1: CGPoint(x: 25, y: 17), controlPoint2: CGPoint(x: 25, y: 21))
-            mask.addCurve(to: CGPoint(x: 13, y: 18), controlPoint1: CGPoint(x: 16, y: 21), controlPoint2: CGPoint(x: 15, y: 18))
-            mask.addCurve(to: CGPoint(x: 6, y: 21), controlPoint1: CGPoint(x: 11, y: 18), controlPoint2: CGPoint(x: 10, y: 21))
-            mask.addCurve(to: CGPoint(x: 2, y: 9), controlPoint1: CGPoint(x: 1, y: 21), controlPoint2: CGPoint(x: 1, y: 17))
-            mask.close()
-            mask.lineWidth = 1.7
-            mask.lineJoinStyle = .round
-            mask.stroke()
-            UIBezierPath(ovalIn: CGRect(x: 5, y: 13, width: 5, height: 3)).fill()
-            UIBezierPath(ovalIn: CGRect(x: 16, y: 13, width: 5, height: 3)).fill()
+        // Pinned Android reference vector, not an approximate generic mask.
+        // The asset retains its Mozilla MPL-2.0 notice and original path data.
+        guard let source = UIImage(named: "FennecPrivateMask") else { return nil }
+        let size = CGSize(width: 26, height: 26)
+        return UIGraphicsImageRenderer(size: size).image { _ in
+            source.draw(in: CGRect(origin: .zero, size: size))
         }.withRenderingMode(.alwaysTemplate)
     }()
 
