@@ -67,7 +67,11 @@ func checkFennecChrome() -> UIView {
         bottom.setEditing(true)
         canvas.layoutIfNeeded()
         precondition(controls.allSatisfy { $0.isHidden })
-        precondition(topAddress.bounds.width == width - 16 && bottomAddress.bounds.width == width - 16)
+        let expectedWidth = width - 16
+        let topWidth = topAddress.bounds.width, bottomWidth = bottomAddress.bounds.width
+        FileHandle.standardError.write(Data(("Editing width \(width): expected=\(expectedWidth), top=\(topWidth), bottom=\(bottomWidth)\n").utf8))
+        precondition(abs(topWidth - expectedWidth) < 0.5 && abs(bottomWidth - expectedWidth) < 0.5,
+                     "Editing must reclaim the controls' space within pixel rounding")
         top.setEditing(false)
         bottom.setEditing(false)
         canvas.layoutIfNeeded()
