@@ -47,6 +47,7 @@ ui=browser/Reynard/Client/Interface
 xcrun swiftc -g -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" \
   tests/ui-layout-smoke/App.swift tests/ui-layout-smoke/TrayFixtures.swift \
   tests/ui-layout-smoke/ChromeFixtures.swift tests/ui-layout-smoke/ScrollFixtures.swift \
+  tests/ui-layout-smoke/FavoritesFixtures.swift \
   tests/ui-layout-smoke/NoJITFixtures.swift browser/Reynard/JIT/JITController.swift \
   "$ui/Appearance/FennecTheme.swift" \
   "$ui/Chrome/Toolbar/TopToolbar.swift" \
@@ -59,6 +60,8 @@ xcrun swiftc -g -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" \
   "$ui/Library/Downloads/FennecDownloadFilter.swift" \
   "$ui/Library/Downloads/FennecDownloadFilterView.swift" \
   "$ui/Homepage/Sections/HomepageSection.swift" \
+  "$ui/Homepage/Sections/Favorites/FavoritesSectionViewController.swift" \
+  "$ui/Homepage/Sections/Favorites/FavoritesCollectionViewLayout.swift" \
   "$ui/Homepage/FennecHomepageSummaryView.swift" \
   "$ui/Homepage/Sections/PrivateBrowsing/PrivateBrowsingSectionViewController.swift" \
   "$ui/Homepage/HomepageRootViewController.swift" \

@@ -3,8 +3,8 @@
 // integration test. No network, user data, signing credentials or Gecko required.
 import UIKit
 
-final class BookmarkStore {}
-struct BookmarkFolderSnapshot { let title = "Folder" }
+// Bookmark boundaries/cells are doubled; shortcut controller/layout are real.
+struct BookmarkFolderSnapshot { let title = "Folder"; let guid = "fixture-folder" }
 enum TabOpenDisposition { case currentTab }
 enum HomepageContentMode {
     case embeddedNarrow, embeddedWide, embeddedExpanded, detachedNarrow, detachedWide
@@ -20,6 +20,7 @@ enum Prefs {
         static let showsRecommendations = true
         static let showsWallpaper = false
         static let showsFavorites = true
+        static let favoriteRowCount = 2
         static let showsFavoritesInPrivateBrowsing = false
         static let showsFrequentlyVisited = true
         static let showsFrequentlyVisitedInPrivateBrowsing = false
@@ -48,14 +49,6 @@ typealias UpdateAvailableViewController = MockRecommendation
 typealias DonationRecommendationViewController = MockRecommendation
 class FrequentlyVisitedSectionViewController: MockSection { weak var delegate: HomepageSectionDelegate? }
 class RecentlyClosedTabsSectionViewController: MockSection { weak var delegate: HomepageSectionDelegate? }
-protocol FavoritesSectionViewControllerDelegate: HomepageSectionDelegate {
-    func favoritesSectionViewController(_ controller: FavoritesSectionViewController, didSelectFolder folder: BookmarkFolderSnapshot)
-}
-class FavoritesSectionViewController: MockSection {
-    weak var delegate: FavoritesSectionViewControllerDelegate?
-    init(bookmarkStore: BookmarkStore, folder: BookmarkFolderSnapshot?, showsSectionTitle: Bool) { super.init() }
-    required init?(coder: NSCoder) { fatalError() }
-}
 
 struct DownloadStoreSummary { let aggregateProgress = 0.0; let activeCount = 0 }
 final class ToolbarButton: UIButton {
@@ -108,6 +101,8 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
     }
     private func exercise() {
         func checkpoint(_ name: String) { FileHandle.standardError.write(Data(("CHECK: " + name + "\n").utf8)) }
+        checkpoint("real shortcuts before More")
+        checkInitialShortcuts()
         checkpoint("no-JIT")
         checkNoJITController()
         checkpoint("fullscreen rotation and refresh")

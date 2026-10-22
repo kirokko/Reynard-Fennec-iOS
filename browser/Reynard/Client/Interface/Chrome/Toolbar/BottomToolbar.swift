@@ -110,6 +110,8 @@ final class BottomToolbar: UIView {
     }
     func setScrollTranslation(_ offset: CGFloat) {
         contentView.transform = CGAffineTransform(translationX: 0, y: offset)
+        // Do not leave an opaque home-indicator strip over the released page.
+        backgroundView.alpha = 1 - min(max(offset / max(contentHeight.constant, 1), 0), 1)
     }
     func setContentAlpha(_ alpha: CGFloat) { contentView.alpha = alpha }
     func setTabCount(_ count: Int) { controls.setTabCount(count) }

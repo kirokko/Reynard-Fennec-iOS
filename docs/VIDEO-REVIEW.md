@@ -6,6 +6,14 @@ Reviewed three owner-provided videos locally: Android screen recording (~105s), 
 
 The Android screen recording is mostly black before ~44s because private-mode capture is blocked. Do not infer an empty/black UI from it. Use the filmed private-mode demonstration instead. The iOS recording does not visibly exercise every search/keyboard path; the owner's additional report about address-bar motion is a separate input, investigated in source.
 
+## Next follow-up: reclaim the bottom page area and show shortcuts without More
+
+Five new owner-provided screenshots were inspected locally. The new requirement is for WEBPAGE text to continue through the bottom space after the row slides away, as in the Safari references; it is not a request to restore the old shrinking URL label. The ieynec images show an opaque bottom strip. The homepage image has a Shortcuts heading without its grid; the owner reports that pressing More makes it appear. The shortcut preference was already on, and shortcuts were already outside More in the source, so another preference migration would not address that layout issue.
+
+The phone chrome now keeps its existing row travel but releases both the row height and system bottom inset through the Gecko content-offset API, with zero dynamic minimum toolbar height/bottom content inset. The separate bottom background becomes transparent with collapse instead of obscuring the released area. No engine patch or SDK change. This must be checked in full Gecko on device, including fixed website footers and the system gesture area.
+
+The real favorites controller previously read its nested collection's width in the parent layout callback; that width can still be zero on the first pass, leaving the initial 1pt height until More causes a new layout. Size the grid from the already resolved SECTION width instead. New fixture coverage compiles the real favorites controller AND custom collection layout, replacing the old section double (bookmark store, cell artwork/editor/context menu remain doubles). It forces the first-pass ordering explicitly: valid section width, zero collection bounds, six items; assert two-row height before any More tap, then instantiate all six cells. Check normal widths, empty favorites and bookmark notifications. The source checks and real scroll-controller fixture also assert that the webpage recovers the extra 34pt inset and no opaque strip remains. Build results will be recorded after actual execution.
+
 ## Follow-up device feedback: icon surface, homepage and whole-row scroll
 
 Three new owner-provided pictures and two short comparison recordings (~10.91s Android / ~6.40s iOS) were inspected locally. The iOS recording shows the old shrinking/centering URL strip and early disappearance of toolbar controls; Android moves the complete row out of view, leaving only its system navigation area. No private frames, URLs or recordings are committed.

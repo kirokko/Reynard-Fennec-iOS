@@ -292,6 +292,24 @@ test('phone scroll translates the complete row without miniature URL, fade or de
   assert.match(read('tests/ui-layout-smoke/ScrollFixtures.swift'), /expect\(visible \+ 4\)/);
 });
 
+test('collapsed phone viewport releases the system inset and shortcuts size on their first parent layout', () => {
+  const toolbar = read(ui + 'Chrome/Toolbar/ToolbarController.swift');
+  assert.match(toolbar, /minHeight: canHideToolbar && chromeMode != \.phone/);
+  assert.match(toolbar, /contentBottomInset: 0/);
+  assert.match(toolbar, /bottomSafeAreaHeight \* collapseProgress/);
+  const bottom = read(ui + 'Chrome/Toolbar/BottomToolbar.swift');
+  assert.match(bottom, /backgroundView.alpha = 1 - min/);
+  const favorites = read(ui + 'Homepage/Sections/Favorites/FavoritesSectionViewController.swift');
+  assert.match(favorites, /let width = view.bounds.width/);
+  assert.doesNotMatch(favorites, /let width = collectionView.bounds.width/);
+  const fixture = read('tests/ui-layout-smoke/FavoritesFixtures.swift');
+  assert.match(fixture, /grid.bounds = \.zero/);
+  assert.match(fixture, /grid.visibleCells.count == 6/);
+  const script = read('tools/Test-HomepageLayout.sh');
+  assert.match(script, /Sections\/Favorites\/FavoritesSectionViewController.swift/);
+  assert.match(script, /Sections\/Favorites\/FavoritesCollectionViewLayout.swift/);
+});
+
 test('app icon uses a reproducible dimensional light surface instead of a white plate', () => {
   const script = read('tools/Prepare-AppIcon.sh');
   assert.match(script, /geq=r=/);

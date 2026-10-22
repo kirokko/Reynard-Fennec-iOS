@@ -6,10 +6,11 @@ func checkToolbarScrollController() {
     let root = UIView(), chrome = BrowserChrome(), content = ContentView(), tabs = TabBar()
     let controller = ToolbarController(browserChrome: chrome, tabBar: tabs, contentView: content, rootView: root)
     controller.updateLayout(chromeMode: .phone, isToolbarEnabled: true, extendsContentBehindToolbar: false)
+    precondition(content.minToolbarHeight == 0 && content.bottomInset == 0, "Web viewport must not reserve an empty home-indicator strip")
     func pump(_ duration: TimeInterval) { RunLoop.main.run(until: Date().addingTimeInterval(duration)) }
     func expect(_ offset: CGFloat) {
         precondition(abs(chrome.bottomOffset - offset) < 0.01, "Scroll offset \(chrome.bottomOffset), expected \(offset)")
-        precondition(abs(content.bottomOffset - offset) < 0.01, "Engine content must track chrome")
+        precondition(abs(content.bottomOffset - offset * 90 / 56) < 0.01, "Webpage must reclaim the row AND the 34pt system inset")
     }
     content.onScrollInteractionBegan?()
     content.onVerticalScroll?(20, 100)
@@ -107,6 +108,7 @@ func scrollChromeSample() -> UIView {
         let shifted = address.convert(address.bounds, to: band)
         precondition(shifted.size == original.size && shifted.minY == original.minY + offset)
         if offset == 56 {
+            precondition(bottom.subviews.first!.alpha == 0, "No opaque strip over the webpage at full collapse")
             for y in stride(from: CGFloat(0), to: 90, by: 4) {
                 precondition(bottom.hitTest(CGPoint(x: 40, y: y), with: nil) == nil, "Hidden row must not intercept webpage/home-indicator touches")
             }

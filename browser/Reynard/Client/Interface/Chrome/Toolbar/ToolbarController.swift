@@ -40,6 +40,7 @@ final class ToolbarController {
     private var textCenterProgress: CGFloat = 0
     private var maxToolbarOffset: CGFloat = 0
     private var maxTopToolbarOffset: CGFloat = 0
+    private var bottomSafeAreaHeight: CGFloat = 0
     private var scrollPosition: CGFloat = 0
     private var snapOrigin: CGFloat = 0
     private var targetOffset: CGFloat = 0
@@ -139,11 +140,14 @@ final class ToolbarController {
             self.maxToolbarOffset = maxToolbarOffset
             self.maxTopToolbarOffset = maxTopToolbarOffset
         }
+        bottomSafeAreaHeight = chromeMode == .phone ? minimizedHeight : 0
+        // The row still travels 56pt, but its removal releases the complete
+        // bottom viewport, INCLUDING the home-indicator area, to the webpage.
         contentView.setToolbarLimits(
             maxHeight: canHideToolbar ? offsetLimits.total : 0,
-            minHeight: canHideToolbar ? offsetLimits.total - maxToolbarOffset : 0,
+            minHeight: canHideToolbar && chromeMode != .phone ? offsetLimits.total - maxToolbarOffset : 0,
             contentTopInset: canHideToolbar ? offsetLimits.top : 0,
-            contentBottomInset: canHideToolbar && chromeMode == .phone ? minimizedHeight : 0,
+            contentBottomInset: 0,
             webContentBottomOffset: webContentBottomOffset
         )
     }
@@ -205,7 +209,7 @@ final class ToolbarController {
         tabBar.transform = CGAffineTransform(translationX: 0, y: -tabBarOffset)
         contentView.applyToolbarOffsets(
             top: topContentOffset,
-            bottom: bottomToolbarOffset,
+            bottom: bottomToolbarOffset + (chromeMode == .phone && !isBottomToolbarCollapsed ? bottomSafeAreaHeight * collapseProgress : 0),
             resizesPage: resizesPage,
             refresh: refresh
         )

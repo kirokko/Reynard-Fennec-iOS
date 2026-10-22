@@ -13,8 +13,13 @@ final class ContentView: UIView {
     var onScrollInteractionEnded: (() -> Void)?
     var onVerticalScroll: ((CGFloat, CGFloat) -> Void)?
     var bottomOffset: CGFloat = 0
+    var minToolbarHeight: CGFloat = -1
+    var bottomInset: CGFloat = -1
     func resetScrollTracking() {}
-    func setToolbarLimits(maxHeight: CGFloat, minHeight: CGFloat, contentTopInset: CGFloat, contentBottomInset: CGFloat, webContentBottomOffset: CGFloat) {}
+    func setToolbarLimits(maxHeight: CGFloat, minHeight: CGFloat, contentTopInset: CGFloat, contentBottomInset: CGFloat, webContentBottomOffset: CGFloat) {
+        minToolbarHeight = minHeight
+        bottomInset = contentBottomInset
+    }
     func applyToolbarOffsets(top: CGFloat, bottom: CGFloat, resizesPage: Bool, refresh: Bool) { bottomOffset = bottom }
     func setTransitionTransform(_ transform: CGAffineTransform) { self.transform = transform }
     func setTransitionHidden(_ hidden: Bool) { isHidden = hidden }

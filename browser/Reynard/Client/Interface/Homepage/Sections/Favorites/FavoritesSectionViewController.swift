@@ -319,7 +319,10 @@ final class FavoritesSectionViewController: UIViewController {
     }
     
     private func updateFavoriteGridLayout(itemCount: Int? = nil) {
-        let width = collectionView.bounds.width
+        // The parent stack has resolved OUR width before the nested collection
+        // receives its first bounds. Using collectionView.bounds here can see 0,
+        // keep the initial 1pt height and require a later More tap to lay out icons.
+        let width = view.bounds.width
         guard width > 0 else {
             return
         }
@@ -344,6 +347,7 @@ final class FavoritesSectionViewController: UIViewController {
         }
         
         collectionHeightConstraint?.constant = contentHeight
+        collectionView.setNeedsLayout()
         updateCollectionVerticalMask()
     }
     
