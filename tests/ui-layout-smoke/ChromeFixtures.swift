@@ -65,7 +65,12 @@ func checkFennecChrome() -> UIView {
         precondition(additions == 2, "Both plus buttons must reach real toolbar callbacks")
         top.setEditing(true)
         bottom.setEditing(true)
+        // This canvas is deliberately off-window. Explicitly flush its layout
+        // tree; unlike an on-screen hierarchy it has no scheduled frame pass.
+        canvas.setNeedsLayout()
         canvas.layoutIfNeeded()
+        top.layoutIfNeeded()
+        bottom.layoutIfNeeded()
         precondition(controls.allSatisfy { $0.isHidden })
         let expectedWidth = width - 16
         let topWidth = topAddress.bounds.width, bottomWidth = bottomAddress.bounds.width
@@ -74,7 +79,10 @@ func checkFennecChrome() -> UIView {
                      "Editing must reclaim the controls' space within pixel rounding")
         top.setEditing(false)
         bottom.setEditing(false)
+        canvas.setNeedsLayout()
         canvas.layoutIfNeeded()
+        top.layoutIfNeeded()
+        bottom.layoutIfNeeded()
         if width == 393 { captured = canvas }
     }
     return captured
