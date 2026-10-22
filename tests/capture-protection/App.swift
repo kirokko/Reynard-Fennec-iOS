@@ -61,8 +61,8 @@ import UIKit
         if interactive { button.sendActions(for: .touchUpInside) }
         let report: [String: Any] = [
             "stage": stage, "canvasFound": found, "canvasClass": host.discoveredCanvasName,
-            "contentFrame": NSStringFromCGRect(host.content.frame),
-            "targetWindowFrame": NSStringFromCGRect(target.convert(target.bounds, to: window)),
+            "contentFrame": NSCoder.string(for: host.content.frame),
+            "targetWindowFrame": NSCoder.string(for: target.convert(target.bounds, to: window)),
             "hitTestReachedButton": interactive, "tapCount": taps,
             "fieldText": field.text ?? "", "scale": UIScreen.main.scale,
             "warning": "Undocumented canvas behavior; no Gecko or device acceptance",
