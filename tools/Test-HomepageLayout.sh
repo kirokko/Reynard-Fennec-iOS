@@ -130,6 +130,9 @@ for ((i=0; i<300; i++)); do
 done
 mkdir -p "$work/screenshots"
 cp "$container/Documents/"*.png "$work/screenshots/" 2>/dev/null || true
+if [[ "$fixture_pid" =~ ^[0-9]+$ ]] && kill -0 "$fixture_pid" 2>/dev/null; then
+  sample "$fixture_pid" 3 -file "$work/screenshots/layout-host-sample.txt" || true
+fi
 echo '::error::UIKit layout host did not reach its first-frame/regression completion marker.'
 tail -100 "$work/stderr.log" || true
 tail -100 "$work/stdout.log" || true

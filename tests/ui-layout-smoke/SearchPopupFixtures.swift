@@ -2,6 +2,7 @@
 import UIKit
 
 func checkSearchPopup() -> UIView {
+    func checkpoint(_ name: String) { FileHandle.standardError.write(Data(("POPUP: " + name + "\n").utf8)) }
     let names = ["DuckDuckGo", "cn.bing.com", "DuckDuckGo (Lite)", "DuckDuckGo (HTML)"]
     let items = names.map { FennecSearchPopupItem(title: $0, image: UIImage(named: "FennecSearch-duckDuckGo"), action: {}) }
     let sections = [items,
@@ -21,13 +22,17 @@ func checkSearchPopup() -> UIView {
             precondition(frame.width < width * 0.8, "Picker must be a narrow popup, never a full-width sheet")
             precondition(frame.minX >= 8 && frame.maxX <= width - 8)
             precondition(frame.minY >= safe.top + 8 && frame.maxY <= height - safe.bottom - 8)
+            checkpoint("viewport \(width), bottom=\(bottom), create")
             let source = UIView(frame: anchor)
             let popup = FennecSearchPopup(sourceView: source, groups: sections)
             popup.loadViewIfNeeded()
+            checkpoint("loaded")
             popup.view.frame = bounds
             popup.view.backgroundColor = FennecTheme.surface // synthetic page illustration only
             popup.view.setNeedsLayout()
+            checkpoint("layout begin")
             popup.view.layoutIfNeeded()
+            checkpoint("layout end")
             let panel = descendants(popup.view).first { $0.accessibilityIdentifier == "search.providerPopup" }!
             precondition(panel.bounds.width > 0 && panel.bounds.width < width * 0.8)
             let labels = descendants(popup.view).compactMap { ($0 as? UILabel)?.text }
@@ -42,12 +47,16 @@ func checkSearchPopup() -> UIView {
     }
     // The real diagnostic must be reachable/interactive without changing a
     // browser layer or requiring JIT/remote debugging. No security PASS asserted.
+    checkpoint("diagnostic create")
     let probe = FennecCaptureProbeViewController()
     probe.loadViewIfNeeded()
     probe.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+    checkpoint("diagnostic layout begin")
     probe.view.layoutIfNeeded()
+    checkpoint("diagnostic layout end")
     let modes = descendants(probe.view).compactMap { $0 as? UISegmentedControl }.first!
     for mode in [0, 1, 2, 0] {
+        checkpoint("diagnostic mode \(mode)")
         modes.selectedSegmentIndex = mode
         modes.sendActions(for: .valueChanged)
         probe.view.layoutIfNeeded()
