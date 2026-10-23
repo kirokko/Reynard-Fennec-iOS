@@ -129,7 +129,7 @@ final class FennecSearchPopup: UIViewController {
         icon.contentMode = .scaleAspectFit
         let label = UILabel()
         label.text = item.title
-        label.font = .preferredFont(forTextStyle: .body)
+        label.font = .preferredFont(forTextStyle: .subheadline)
         label.adjustsFontForContentSizeCategory = true
         label.textColor = FennecTheme.ink
         label.numberOfLines = 0

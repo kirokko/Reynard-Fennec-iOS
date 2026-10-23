@@ -171,6 +171,8 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
         let returnButton = descendants(root.view).compactMap { $0 as? FennecClosureButton }
             .first { $0.accessibilityIdentifier == "homepage.returnToNormal" }!
         precondition(returnButton.bounds.width >= 44 && returnButton.bounds.height >= 44)
+        let returnFrame = returnButton.convert(returnButton.bounds, to: root.view)
+        precondition(returnFrame.minY >= root.view.safeAreaInsets.top, "Private mode switch must stay below status bar")
         returnButton.sendActions(for: .touchUpInside)
         precondition(returnedToNormal == 1)
         precondition(descendants(root.view).contains { $0.accessibilityIdentifier == "homepage.private" })

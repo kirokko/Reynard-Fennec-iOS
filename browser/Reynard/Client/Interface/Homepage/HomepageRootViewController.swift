@@ -128,6 +128,11 @@ final class HomepageRootViewController: UIViewController {
         configureSections()
     }
     
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        updateScrollInsets()
+    }
+
     // MARK: - Public API
     
     func setContentMode(_ contentMode: HomepageContentMode) {
@@ -195,9 +200,9 @@ final class HomepageRootViewController: UIViewController {
         let isAtTop = scrollView.contentOffset.y <= -scrollView.contentInset.top
         let effectiveVisibleContentInsets = contentMode.isDetached ? .zero : visibleContentInsets
         let contentInset = UIEdgeInsets(
-            top: effectiveVisibleContentInsets.top + (folder == nil ? UX.topInset : UX.folderTopInset),
+            top: max(effectiveVisibleContentInsets.top, view.safeAreaInsets.top) + (folder == nil ? UX.topInset : UX.folderTopInset),
             left: 0,
-            bottom: effectiveVisibleContentInsets.bottom + UX.bottomInset,
+            bottom: max(effectiveVisibleContentInsets.bottom, view.safeAreaInsets.bottom) + UX.bottomInset,
             right: 0
         )
         scrollView.contentInset = contentInset
