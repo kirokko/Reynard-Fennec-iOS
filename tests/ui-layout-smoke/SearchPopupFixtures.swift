@@ -5,6 +5,7 @@ func checkSearchPopup() -> UIView {
     func checkpoint(_ name: String) { FileHandle.standardError.write(Data(("POPUP: " + name + "\n").utf8)) }
     let names = ["DuckDuckGo", "cn.bing.com", "DuckDuckGo (Lite)", "DuckDuckGo (HTML)"]
     let icons = ["FennecSearch-duckDuckGo", "FennecSearch-bing", "FennecSearch-duckDuckGo", "FennecSearch-duckDuckGo"]
+    for icon in Set(icons) { precondition(UIImage(named: icon) != nil, "Missing provider icon: \(icon)") }
     let items = zip(names, icons).map { FennecSearchPopupItem(title: $0.0, image: UIImage(named: $0.1), action: {}) }
     let sections = [items,
         [FennecSearchPopupItem(title: "Bookmarks", image: UIImage(named: "FennecBookmarkTray"), action: {}),

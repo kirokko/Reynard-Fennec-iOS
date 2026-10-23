@@ -91,7 +91,7 @@ mkdir -p "$work/FixtureAssets.xcassets"
 cp "$assets/Contents.json" "$work/FixtureAssets.xcassets/"
 cp -R "$assets/FennecPrivateMask.imageset" "$work/FixtureAssets.xcassets/"
 cp -R "$assets/FennecProtectionShield.imageset" "$work/FixtureAssets.xcassets/"
-for asset in FennecTabOutline FennecBookmarkTray FennecTabTray FennecHistory FennecSearchSettings FennecPrivateBadge FennecPrivateTabBadge FennecSearch-duckDuckGo; do
+for asset in FennecTabOutline FennecBookmarkTray FennecTabTray FennecHistory FennecSearchSettings FennecPrivateBadge FennecPrivateTabBadge FennecSearch-duckDuckGo FennecSearch-bing; do
   cp -R "$assets/$asset.imageset" "$work/FixtureAssets.xcassets/"
 done
 xcrun actool --compile "$app" --platform iphonesimulator \
