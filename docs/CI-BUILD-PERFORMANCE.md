@@ -2,7 +2,7 @@
 
 ## 范围与审计
 
-在独立分支 `ci/sidestore-cache-optimization` 实施，基于
+在独立分支 `ci/sidestore-cache-optimization` 实施、验证后 fast-forward 合入 `fennec-ios`，基于
 `5a77612abae8722b31272a627752e6116b5a71cd`；不修改 `browser/` 应用代码、工程、
 Gecko patch、SDK 基线、动画、JIT 或扩展。没有新增 Workflow。
 
@@ -67,17 +67,24 @@ Job 耗时含该 macOS Job 的收尾；“触发→可下载”从 workflow 创�
 | [#34 / 39928853833](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39928853833) | 新 commit、测试脚本变化，完整 UIKit；兼容 CAS 命中 | 11:00 | 10:42 |
 | [#35 / 39930730750](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39930730750) | 最终 fixture 输入键首次建立，完整 UIKit；新 commit | 11:48 | 11:23 |
 | [#36 / 39934986183](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39934986183) | 最终 v2 UIKit 复用 + CAS；新文档 commit、无浏览器代码变化 | **1:48** | **1:52** |
+| [#37 / 39939533023](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39939533023) | 主分支首次预热：SDK v1 迁移，UIKit/idevice/CAS 冷缓存 | 21:07 | 20:17 |
+| [#38 / 39942155619](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39942155619) | **主分支暖缓存**，最终实现 | **2:52** | **2:54** |
+| [#31 / 39924952272](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39924952272) | 强制无 native 二进制恢复，真实全 Gecko/idevice 源码构建；最后完成 | 4:03:31 | 4:07:06 |
+
+正常值为分:秒，超过小时使用时:分:秒。原始 API 时长、commit 与各步骤状态见
+[CI-BUILD-METRICS.json](CI-BUILD-METRICS.json)。主分支暖缓存 #38 相比指定基线
+Job 减少 **87.5%**；首次预热 #37 并不具备同等提速，不回避这项成本。
 
 ### 主要步骤（秒，跳过记为 —）
 
-| 步骤 | 原 #22 | 冷 idevice/Xcode #29 | 暖、无 CAS #30 | 暖 CAS #33 |
-|---|---:|---:|---:|---:|
-| 必要检查 + UIKit | UIKit 单项 207 | 17，复用 UIKit | 13，复用 UIKit | 13，复用 UIKit |
-| 初始化子模块 | 207 | 2，仅 idevice | — | — |
-| 更新 Gecko / patch | 31 / 252 | — / — | — / — | — / — |
-| idevice 编译 | 194 | 222 | — | — |
-| App archive | 302 | 163 | 155 | **46** |
-| Create IPA | 24 | 18 | 19 | 16 |
+| 步骤 | 原 #22 | 冷 idevice/Xcode #29 | 暖、无 CAS #30 | 暖 CAS #33 | 主分支暖 #38 |
+|---|---:|---:|---:|---:|---:|
+| 必要检查 + UIKit | UIKit 单项 207 | 17，复用 UIKit | 13，复用 UIKit | 13，复用 UIKit | 12，复用 UIKit |
+| 初始化子模块 | 207 | 2，仅 idevice | — | — | — |
+| 更新 Gecko / patch | 31 / 252 | — / — | — / — | — / — | — / — |
+| idevice 编译 | 194 | 222 | — | — | — |
+| App archive | 302 | 163 | 155 | **46** | **57** |
+| Create IPA | 24 | 18 | 19 | 16 | 22 |
 
 #33 相比原基线 Job 少 89.6%，但这是**同源码、有效暖缓存**，不是任意新功能修改都
 需要 2:23。#34/#35 证明输入失效不会假装 UIKit 已测，也证明新 commit 重新打包后
@@ -107,9 +114,20 @@ Xcode archive/IPA 验证已实跑；actionlint 1.7.12 与 shell 语法检查通�
 normal IPA 是实际实测产物；其余保留模式经 actionlint/分支策略检查，本次不声称
 重新完整编译过所有 TrollStore/jailbroken 组合。
 
-强制不读 native 二进制缓存的 [#31 / 39924952272](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39924952272)
-已进入真实 Gecko 源码编译，仍在监测，**尚未计为通过**。idevice/Xcode 冷缓存与
-UIKit 失效的成功验证见上表；全 Gecko 冷编译不是 2 分钟暖缓存基准。
+强制不读 native 二进制缓存的 **#31 已完整成功**：SDK/idevice restore 两步均跳过，
+实际初始化 235 秒、更新 32 秒、patch 202 秒、Gecko 编译 **13,730 秒（3:48:50）**、
+SDK 导出 28 秒、idevice 编译 144 秒、App 101 秒、打 IPA 12 秒。下载后独立校验
+commit `d87b2a792a66899b75b27a9b8fa805ecef51533f`、106,810,901 bytes、SHA-256
+`23afbaeff0792ddbec5ed8e27c6f2f59eed77d65e539bda2a77cf1c85be58cb5`，三个 plist
+均为 `d87b2a7`。因此 SDK 真正失效时仍有可用的真实源码回退，不是旧产物顶替。
+该运行在较早的同一优化分支版本启动，native SDK/idevice 脚本与最终版相同；后续
+改动是 CAS、UIKit 调度/输入键及报告，不冒称它是在最终文档 commit 上重跑的。
+依赖下载缓存/sccache 仍允许辅助，故也不称其为绝对无任何缓存的基准。
+
+主分支 #38 也独立下载核验：commit `5406fbe282aef01e5c66ffb340ba2080cf384c59`，
+106,811,026 bytes，SHA-256
+`4cd56483f46a1c1e594f99d71b9525bc41bd45febe0151eaf9677d9f84380bee`，原主 App/
+OpenIn/Helper 标识、版本 0.18.0、最低声明 13.0 和三份构建号 `5406fbe` 保留。
 
 ## 日常 Agent 路径与缓存边界
 

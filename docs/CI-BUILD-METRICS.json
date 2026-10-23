@@ -1,0 +1,2768 @@
+[
+  {
+    "run": 39767844014,
+    "number": 22,
+    "url": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39767844014",
+    "ref": "fennec-ios",
+    "commit": "e8d99b226190e4746974e07170e7afb6511df9f0",
+    "conclusion": "success",
+    "jobSeconds": 1378,
+    "dispatchToDownloadSeconds": 1364,
+    "cacheEvidence": {
+      "geckoCompilation": "skipped",
+      "ideviceCompilation": "success",
+      "xcodeRestoreSeconds": null
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Check out repository",
+        "conclusion": "success",
+        "seconds": 4
+      },
+      {
+        "name": "Set up latest Xcode",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Source policy and localization checks",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Test local tab group persistence",
+        "conclusion": "success",
+        "seconds": 7
+      },
+      {
+        "name": "Parse Swift sources before compiling Gecko",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "UIKit homepage first-frame smoke test (no Gecko)",
+        "conclusion": "success",
+        "seconds": 207
+      },
+      {
+        "name": "Upload synthetic UIKit review screenshots",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Install build dependencies",
+        "conclusion": "success",
+        "seconds": 40
+      },
+      {
+        "name": "Initialize submodules",
+        "conclusion": "success",
+        "seconds": 207
+      },
+      {
+        "name": "Update Gecko source",
+        "conclusion": "success",
+        "seconds": 31
+      },
+      {
+        "name": "Apply Gecko patches",
+        "conclusion": "success",
+        "seconds": 252
+      },
+      {
+        "name": "Install Rust toolchain",
+        "conclusion": "success",
+        "seconds": 17
+      },
+      {
+        "name": "Hash Rust toolchain for cache",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Restore Gecko dependency cache",
+        "conclusion": "success",
+        "seconds": 24
+      },
+      {
+        "name": "Restore idevice build cache",
+        "conclusion": "success",
+        "seconds": 11
+      },
+      {
+        "name": "Set up sccache",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Restore packaged Gecko SDK",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Extract cached Gecko SDK",
+        "conclusion": "success",
+        "seconds": 6
+      },
+      {
+        "name": "Build Gecko",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Package Gecko SDK for later UI builds",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save packaged Gecko SDK",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build idevice support library",
+        "conclusion": "success",
+        "seconds": 194
+      },
+      {
+        "name": "Install packaging dependencies",
+        "conclusion": "success",
+        "seconds": 7
+      },
+      {
+        "name": "Build app",
+        "conclusion": "success",
+        "seconds": 302
+      },
+      {
+        "name": "Create IPA",
+        "conclusion": "success",
+        "seconds": 24
+      },
+      {
+        "name": "Create TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload IPA",
+        "conclusion": "success",
+        "seconds": 7
+      },
+      {
+        "name": "Upload TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Post Set up sccache",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Post Restore idevice build cache",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Post Restore Gecko dependency cache",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Post Check out repository",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success",
+        "seconds": 19
+      }
+    ]
+  },
+  {
+    "run": 39915365500,
+    "number": 26,
+    "url": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39915365500",
+    "ref": "fennec-ios",
+    "commit": "2a770d3de36a892cafe14d04c10f3af0ae278059",
+    "conclusion": "success",
+    "jobSeconds": 1265,
+    "dispatchToDownloadSeconds": 1257,
+    "cacheEvidence": {
+      "geckoCompilation": "skipped",
+      "ideviceCompilation": "success",
+      "xcodeRestoreSeconds": null
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Check out repository",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Set up latest Xcode",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Source policy and localization checks",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Test local tab group persistence",
+        "conclusion": "success",
+        "seconds": 7
+      },
+      {
+        "name": "Parse Swift sources before compiling Gecko",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "UIKit homepage first-frame smoke test (no Gecko)",
+        "conclusion": "success",
+        "seconds": 258
+      },
+      {
+        "name": "Upload synthetic UIKit review screenshots",
+        "conclusion": "success",
+        "seconds": 4
+      },
+      {
+        "name": "Install build dependencies",
+        "conclusion": "success",
+        "seconds": 50
+      },
+      {
+        "name": "Initialize submodules",
+        "conclusion": "success",
+        "seconds": 249
+      },
+      {
+        "name": "Update Gecko source",
+        "conclusion": "success",
+        "seconds": 37
+      },
+      {
+        "name": "Apply Gecko patches",
+        "conclusion": "success",
+        "seconds": 199
+      },
+      {
+        "name": "Install Rust toolchain",
+        "conclusion": "success",
+        "seconds": 14
+      },
+      {
+        "name": "Hash Rust toolchain for cache",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Restore Gecko dependency cache",
+        "conclusion": "success",
+        "seconds": 26
+      },
+      {
+        "name": "Restore idevice build cache",
+        "conclusion": "success",
+        "seconds": 12
+      },
+      {
+        "name": "Set up sccache",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Restore packaged Gecko SDK",
+        "conclusion": "success",
+        "seconds": 4
+      },
+      {
+        "name": "Extract cached Gecko SDK",
+        "conclusion": "success",
+        "seconds": 6
+      },
+      {
+        "name": "Build Gecko",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Package Gecko SDK for later UI builds",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save packaged Gecko SDK",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build idevice support library",
+        "conclusion": "success",
+        "seconds": 176
+      },
+      {
+        "name": "Install packaging dependencies",
+        "conclusion": "success",
+        "seconds": 8
+      },
+      {
+        "name": "Build app",
+        "conclusion": "success",
+        "seconds": 157
+      },
+      {
+        "name": "Create IPA",
+        "conclusion": "success",
+        "seconds": 16
+      },
+      {
+        "name": "Create TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload IPA",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Upload TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Post Set up sccache",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Post Restore idevice build cache",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Post Restore Gecko dependency cache",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Post Check out repository",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success",
+        "seconds": 22
+      }
+    ]
+  },
+  {
+    "run": 39921087887,
+    "number": 28,
+    "url": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39921087887",
+    "ref": "ci/sidestore-cache-optimization",
+    "commit": "52b870d3aca729a3049af328f27f351d66ff898b",
+    "conclusion": "failure",
+    "jobSeconds": 1113,
+    "dispatchToDownloadSeconds": null,
+    "cacheEvidence": {
+      "geckoCompilation": "skipped",
+      "ideviceCompilation": "success",
+      "xcodeRestoreSeconds": 0
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Check out repository",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Set up pinned Xcode",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Required validation (existing UIKit mechanism)",
+        "conclusion": "success",
+        "seconds": 376
+      },
+      {
+        "name": "Install pinned Rust toolchain",
+        "conclusion": "success",
+        "seconds": 30
+      },
+      {
+        "name": "Identify native and Xcode cache inputs before submodules",
+        "conclusion": "success",
+        "seconds": 16
+      },
+      {
+        "name": "Restore packaged Gecko SDK before source preparation",
+        "conclusion": "success",
+        "seconds": 10
+      },
+      {
+        "name": "Validate SDK or select source-build fallback",
+        "conclusion": "success",
+        "seconds": 15
+      },
+      {
+        "name": "Restore precompiled idevice library",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Validate idevice binary or select real build",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Install Gecko-only build dependencies",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Initialize required submodules only on native misses",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Update Gecko source",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Apply Gecko patches",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Gecko dependency cache only for source build",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Cargo downloads for idevice-only miss",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Set up sccache for real native builds",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Build Gecko on SDK miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export self-contained Gecko SDK (including source theme)",
+        "conclusion": "success",
+        "seconds": 56
+      },
+      {
+        "name": "Save complete Gecko SDK",
+        "conclusion": "success",
+        "seconds": 7
+      },
+      {
+        "name": "Build idevice support library on binary miss",
+        "conclusion": "success",
+        "seconds": 544
+      },
+      {
+        "name": "Export validated idevice binary",
+        "conclusion": "failure",
+        "seconds": 7
+      },
+      {
+        "name": "Save precompiled idevice library",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore compatible Xcode DerivedData",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore timestamps only for content-identical sources",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Install packaging dependencies for original non-SideStore modes",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build app (fresh archive, incremental compilation)",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save successful Xcode build intermediates",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Verify all newly packaged products and exact source commit",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build cache summary",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Upload build diagnostics (not an IPA)",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Post Set up sccache for real native builds",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Post Restore Cargo downloads for idevice-only miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Post Check out repository",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success",
+        "seconds": 24
+      }
+    ]
+  },
+  {
+    "run": 39923535405,
+    "number": 29,
+    "url": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39923535405",
+    "ref": "ci/sidestore-cache-optimization",
+    "commit": "d87b2a792a66899b75b27a9b8fa805ecef51533f",
+    "conclusion": "success",
+    "jobSeconds": 507,
+    "dispatchToDownloadSeconds": 500,
+    "cacheEvidence": {
+      "geckoCompilation": "skipped",
+      "ideviceCompilation": "success",
+      "xcodeRestoreSeconds": 1
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Check out repository",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Set up pinned Xcode",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Required validation (existing UIKit mechanism)",
+        "conclusion": "success",
+        "seconds": 17
+      },
+      {
+        "name": "Install pinned Rust toolchain",
+        "conclusion": "success",
+        "seconds": 13
+      },
+      {
+        "name": "Identify native and Xcode cache inputs before submodules",
+        "conclusion": "success",
+        "seconds": 4
+      },
+      {
+        "name": "Restore packaged Gecko SDK before source preparation",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Validate SDK or select source-build fallback",
+        "conclusion": "success",
+        "seconds": 7
+      },
+      {
+        "name": "Restore precompiled idevice library",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Validate idevice binary or select real build",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Install Gecko-only build dependencies",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Initialize required submodules only on native misses",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Update Gecko source",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Apply Gecko patches",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Gecko dependency cache only for source build",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Cargo downloads for idevice-only miss",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Set up sccache for real native builds",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Build Gecko on SDK miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export self-contained Gecko SDK (including source theme)",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save complete Gecko SDK",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build idevice support library on binary miss",
+        "conclusion": "success",
+        "seconds": 222
+      },
+      {
+        "name": "Export validated idevice binary",
+        "conclusion": "success",
+        "seconds": 6
+      },
+      {
+        "name": "Save precompiled idevice library",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Restore compatible Xcode DerivedData",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Restore timestamps only for content-identical sources",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Install packaging dependencies for original non-SideStore modes",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build app (fresh archive, incremental compilation)",
+        "conclusion": "success",
+        "seconds": 163
+      },
+      {
+        "name": "Save successful Xcode build intermediates",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Create IPA",
+        "conclusion": "success",
+        "seconds": 18
+      },
+      {
+        "name": "Create TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Verify all newly packaged products and exact source commit",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Upload IPA",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Upload TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build cache summary",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Upload build diagnostics (not an IPA)",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Post Set up sccache for real native builds",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Post Restore Cargo downloads for idevice-only miss",
+        "conclusion": "success",
+        "seconds": 12
+      },
+      {
+        "name": "Post Check out repository",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success",
+        "seconds": 2
+      }
+    ]
+  },
+  {
+    "run": 39924880961,
+    "number": 30,
+    "url": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39924880961",
+    "ref": "ci/sidestore-cache-optimization",
+    "commit": "d87b2a792a66899b75b27a9b8fa805ecef51533f",
+    "conclusion": "success",
+    "jobSeconds": 241,
+    "dispatchToDownloadSeconds": 245,
+    "cacheEvidence": {
+      "geckoCompilation": "skipped",
+      "ideviceCompilation": "skipped",
+      "xcodeRestoreSeconds": 3
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Check out repository",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Set up pinned Xcode",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Required validation (existing UIKit mechanism)",
+        "conclusion": "success",
+        "seconds": 13
+      },
+      {
+        "name": "Install pinned Rust toolchain",
+        "conclusion": "success",
+        "seconds": 10
+      },
+      {
+        "name": "Identify native and Xcode cache inputs before submodules",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Restore packaged Gecko SDK before source preparation",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Validate SDK or select source-build fallback",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Restore precompiled idevice library",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Validate idevice binary or select real build",
+        "conclusion": "success",
+        "seconds": 4
+      },
+      {
+        "name": "Install Gecko-only build dependencies",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Initialize required submodules only on native misses",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Update Gecko source",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Apply Gecko patches",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Gecko dependency cache only for source build",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Cargo downloads for idevice-only miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Set up sccache for real native builds",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build Gecko on SDK miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export self-contained Gecko SDK (including source theme)",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save complete Gecko SDK",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build idevice support library on binary miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export validated idevice binary",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save precompiled idevice library",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore compatible Xcode DerivedData",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Restore timestamps only for content-identical sources",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Install packaging dependencies for original non-SideStore modes",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build app (fresh archive, incremental compilation)",
+        "conclusion": "success",
+        "seconds": 155
+      },
+      {
+        "name": "Save successful Xcode build intermediates",
+        "conclusion": "success",
+        "seconds": 4
+      },
+      {
+        "name": "Create IPA",
+        "conclusion": "success",
+        "seconds": 19
+      },
+      {
+        "name": "Create TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Verify all newly packaged products and exact source commit",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Upload IPA",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Upload TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build cache summary",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Upload build diagnostics (not an IPA)",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Post Check out repository",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success",
+        "seconds": 4
+      }
+    ]
+  },
+  {
+    "run": 39924952272,
+    "number": 31,
+    "url": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39924952272",
+    "ref": "ci/sidestore-cache-optimization",
+    "commit": "d87b2a792a66899b75b27a9b8fa805ecef51533f",
+    "conclusion": "success",
+    "jobSeconds": 14611,
+    "dispatchToDownloadSeconds": 14826,
+    "cacheEvidence": {
+      "geckoCompilation": "success",
+      "ideviceCompilation": "success",
+      "xcodeRestoreSeconds": 6
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Check out repository",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Set up pinned Xcode",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Required validation (existing UIKit mechanism)",
+        "conclusion": "success",
+        "seconds": 12
+      },
+      {
+        "name": "Install pinned Rust toolchain",
+        "conclusion": "success",
+        "seconds": 11
+      },
+      {
+        "name": "Identify native and Xcode cache inputs before submodules",
+        "conclusion": "success",
+        "seconds": 4
+      },
+      {
+        "name": "Restore packaged Gecko SDK before source preparation",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Validate SDK or select source-build fallback",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Restore precompiled idevice library",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Validate idevice binary or select real build",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Install Gecko-only build dependencies",
+        "conclusion": "success",
+        "seconds": 41
+      },
+      {
+        "name": "Initialize required submodules only on native misses",
+        "conclusion": "success",
+        "seconds": 235
+      },
+      {
+        "name": "Update Gecko source",
+        "conclusion": "success",
+        "seconds": 32
+      },
+      {
+        "name": "Apply Gecko patches",
+        "conclusion": "success",
+        "seconds": 202
+      },
+      {
+        "name": "Restore Gecko dependency cache only for source build",
+        "conclusion": "success",
+        "seconds": 21
+      },
+      {
+        "name": "Restore Cargo downloads for idevice-only miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Set up sccache for real native builds",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Build Gecko on SDK miss",
+        "conclusion": "success",
+        "seconds": 13730
+      },
+      {
+        "name": "Export self-contained Gecko SDK (including source theme)",
+        "conclusion": "success",
+        "seconds": 28
+      },
+      {
+        "name": "Save complete Gecko SDK",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Build idevice support library on binary miss",
+        "conclusion": "success",
+        "seconds": 144
+      },
+      {
+        "name": "Export validated idevice binary",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Save precompiled idevice library",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Restore compatible Xcode DerivedData",
+        "conclusion": "success",
+        "seconds": 6
+      },
+      {
+        "name": "Restore timestamps only for content-identical sources",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Install packaging dependencies for original non-SideStore modes",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build app (fresh archive, incremental compilation)",
+        "conclusion": "success",
+        "seconds": 101
+      },
+      {
+        "name": "Save successful Xcode build intermediates",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Create IPA",
+        "conclusion": "success",
+        "seconds": 12
+      },
+      {
+        "name": "Create TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Verify all newly packaged products and exact source commit",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Upload IPA",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Upload TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build cache summary",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Upload build diagnostics (not an IPA)",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Post Set up sccache for real native builds",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Post Restore Gecko dependency cache only for source build",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Post Check out repository",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success",
+        "seconds": 3
+      }
+    ]
+  },
+  {
+    "run": 39926204311,
+    "number": 32,
+    "url": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39926204311",
+    "ref": "ci/sidestore-cache-optimization",
+    "commit": "de9a71d11181c18d003a8209f0881a4e34cb0fed",
+    "conclusion": "success",
+    "jobSeconds": 929,
+    "dispatchToDownloadSeconds": 905,
+    "cacheEvidence": {
+      "geckoCompilation": "skipped",
+      "ideviceCompilation": "skipped",
+      "xcodeRestoreSeconds": 0
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Check out repository",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Set up pinned Xcode",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Required validation (existing UIKit mechanism)",
+        "conclusion": "success",
+        "seconds": 520
+      },
+      {
+        "name": "Install pinned Rust toolchain",
+        "conclusion": "success",
+        "seconds": 21
+      },
+      {
+        "name": "Identify native and Xcode cache inputs before submodules",
+        "conclusion": "success",
+        "seconds": 7
+      },
+      {
+        "name": "Restore packaged Gecko SDK before source preparation",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Validate SDK or select source-build fallback",
+        "conclusion": "success",
+        "seconds": 14
+      },
+      {
+        "name": "Restore precompiled idevice library",
+        "conclusion": "success",
+        "seconds": 4
+      },
+      {
+        "name": "Validate idevice binary or select real build",
+        "conclusion": "success",
+        "seconds": 8
+      },
+      {
+        "name": "Install Gecko-only build dependencies",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Initialize required submodules only on native misses",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Update Gecko source",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Apply Gecko patches",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Gecko dependency cache only for source build",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Cargo downloads for idevice-only miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Set up sccache for real native builds",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build Gecko on SDK miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export self-contained Gecko SDK (including source theme)",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save complete Gecko SDK",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build idevice support library on binary miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export validated idevice binary",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save precompiled idevice library",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore compatible Xcode DerivedData",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Restore timestamps only for content-identical sources",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Install packaging dependencies for original non-SideStore modes",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build app (fresh archive, incremental compilation)",
+        "conclusion": "success",
+        "seconds": 259
+      },
+      {
+        "name": "Save successful Xcode build intermediates",
+        "conclusion": "success",
+        "seconds": 8
+      },
+      {
+        "name": "Create IPA",
+        "conclusion": "success",
+        "seconds": 33
+      },
+      {
+        "name": "Create TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Verify all newly packaged products and exact source commit",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Upload IPA",
+        "conclusion": "success",
+        "seconds": 10
+      },
+      {
+        "name": "Upload TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build cache summary",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Upload build diagnostics (not an IPA)",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Post Check out repository",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success",
+        "seconds": 25
+      }
+    ]
+  },
+  {
+    "run": 39928185787,
+    "number": 33,
+    "url": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39928185787",
+    "ref": "ci/sidestore-cache-optimization",
+    "commit": "de9a71d11181c18d003a8209f0881a4e34cb0fed",
+    "conclusion": "success",
+    "jobSeconds": 143,
+    "dispatchToDownloadSeconds": 147,
+    "cacheEvidence": {
+      "geckoCompilation": "skipped",
+      "ideviceCompilation": "skipped",
+      "xcodeRestoreSeconds": 9
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Check out repository",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Set up pinned Xcode",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Required validation (existing UIKit mechanism)",
+        "conclusion": "success",
+        "seconds": 13
+      },
+      {
+        "name": "Install pinned Rust toolchain",
+        "conclusion": "success",
+        "seconds": 10
+      },
+      {
+        "name": "Identify native and Xcode cache inputs before submodules",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Restore packaged Gecko SDK before source preparation",
+        "conclusion": "success",
+        "seconds": 9
+      },
+      {
+        "name": "Validate SDK or select source-build fallback",
+        "conclusion": "success",
+        "seconds": 6
+      },
+      {
+        "name": "Restore precompiled idevice library",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Validate idevice binary or select real build",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Install Gecko-only build dependencies",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Initialize required submodules only on native misses",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Update Gecko source",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Apply Gecko patches",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Gecko dependency cache only for source build",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Cargo downloads for idevice-only miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Set up sccache for real native builds",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build Gecko on SDK miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export self-contained Gecko SDK (including source theme)",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save complete Gecko SDK",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build idevice support library on binary miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export validated idevice binary",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save precompiled idevice library",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore compatible Xcode DerivedData",
+        "conclusion": "success",
+        "seconds": 9
+      },
+      {
+        "name": "Restore timestamps only for content-identical sources",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Install packaging dependencies for original non-SideStore modes",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build app (fresh archive, incremental compilation)",
+        "conclusion": "success",
+        "seconds": 46
+      },
+      {
+        "name": "Save successful Xcode build intermediates",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Create IPA",
+        "conclusion": "success",
+        "seconds": 16
+      },
+      {
+        "name": "Create TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Verify all newly packaged products and exact source commit",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Upload IPA",
+        "conclusion": "success",
+        "seconds": 6
+      },
+      {
+        "name": "Upload TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build cache summary",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Upload build diagnostics (not an IPA)",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Post Check out repository",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success",
+        "seconds": 2
+      }
+    ]
+  },
+  {
+    "run": 39928853833,
+    "number": 34,
+    "url": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39928853833",
+    "ref": "ci/sidestore-cache-optimization",
+    "commit": "ac0df454b4bf8163e54f610e41512f2cc59b5c51",
+    "conclusion": "success",
+    "jobSeconds": 660,
+    "dispatchToDownloadSeconds": 642,
+    "cacheEvidence": {
+      "geckoCompilation": "skipped",
+      "ideviceCompilation": "skipped",
+      "xcodeRestoreSeconds": 8
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Check out repository",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Set up pinned Xcode",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Required validation (existing UIKit mechanism)",
+        "conclusion": "success",
+        "seconds": 441
+      },
+      {
+        "name": "Install pinned Rust toolchain",
+        "conclusion": "success",
+        "seconds": 28
+      },
+      {
+        "name": "Identify native and Xcode cache inputs before submodules",
+        "conclusion": "success",
+        "seconds": 13
+      },
+      {
+        "name": "Restore packaged Gecko SDK before source preparation",
+        "conclusion": "success",
+        "seconds": 7
+      },
+      {
+        "name": "Validate SDK or select source-build fallback",
+        "conclusion": "success",
+        "seconds": 9
+      },
+      {
+        "name": "Restore precompiled idevice library",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Validate idevice binary or select real build",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Install Gecko-only build dependencies",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Initialize required submodules only on native misses",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Update Gecko source",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Apply Gecko patches",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Gecko dependency cache only for source build",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Cargo downloads for idevice-only miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Set up sccache for real native builds",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build Gecko on SDK miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export self-contained Gecko SDK (including source theme)",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save complete Gecko SDK",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build idevice support library on binary miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export validated idevice binary",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save precompiled idevice library",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore compatible Xcode DerivedData",
+        "conclusion": "success",
+        "seconds": 8
+      },
+      {
+        "name": "Restore timestamps only for content-identical sources",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Install packaging dependencies for original non-SideStore modes",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build app (fresh archive, incremental compilation)",
+        "conclusion": "success",
+        "seconds": 69
+      },
+      {
+        "name": "Save successful Xcode build intermediates",
+        "conclusion": "success",
+        "seconds": 8
+      },
+      {
+        "name": "Create IPA",
+        "conclusion": "success",
+        "seconds": 24
+      },
+      {
+        "name": "Create TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Verify all newly packaged products and exact source commit",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Upload IPA",
+        "conclusion": "success",
+        "seconds": 10
+      },
+      {
+        "name": "Upload TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build cache summary",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Upload build diagnostics (not an IPA)",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Post Check out repository",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success",
+        "seconds": 20
+      }
+    ]
+  },
+  {
+    "run": 39930730750,
+    "number": 35,
+    "url": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39930730750",
+    "ref": "ci/sidestore-cache-optimization",
+    "commit": "f738b71a621a403e57749c73f6f274922b5ee2db",
+    "conclusion": "success",
+    "jobSeconds": 708,
+    "dispatchToDownloadSeconds": 683,
+    "cacheEvidence": {
+      "geckoCompilation": "skipped",
+      "ideviceCompilation": "skipped",
+      "xcodeRestoreSeconds": 32
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Check out repository",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Set up pinned Xcode",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Required validation (existing UIKit mechanism)",
+        "conclusion": "success",
+        "seconds": 403
+      },
+      {
+        "name": "Install pinned Rust toolchain",
+        "conclusion": "success",
+        "seconds": 16
+      },
+      {
+        "name": "Identify native and Xcode cache inputs before submodules",
+        "conclusion": "success",
+        "seconds": 10
+      },
+      {
+        "name": "Restore packaged Gecko SDK before source preparation",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Validate SDK or select source-build fallback",
+        "conclusion": "success",
+        "seconds": 9
+      },
+      {
+        "name": "Restore precompiled idevice library",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Validate idevice binary or select real build",
+        "conclusion": "success",
+        "seconds": 6
+      },
+      {
+        "name": "Install Gecko-only build dependencies",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Initialize required submodules only on native misses",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Update Gecko source",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Apply Gecko patches",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Gecko dependency cache only for source build",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Cargo downloads for idevice-only miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Set up sccache for real native builds",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build Gecko on SDK miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export self-contained Gecko SDK (including source theme)",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save complete Gecko SDK",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build idevice support library on binary miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export validated idevice binary",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save precompiled idevice library",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore compatible Xcode DerivedData",
+        "conclusion": "success",
+        "seconds": 32
+      },
+      {
+        "name": "Restore timestamps only for content-identical sources",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Install packaging dependencies for original non-SideStore modes",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build app (fresh archive, incremental compilation)",
+        "conclusion": "success",
+        "seconds": 106
+      },
+      {
+        "name": "Save successful Xcode build intermediates",
+        "conclusion": "success",
+        "seconds": 15
+      },
+      {
+        "name": "Create IPA",
+        "conclusion": "success",
+        "seconds": 54
+      },
+      {
+        "name": "Create TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Verify all newly packaged products and exact source commit",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Upload IPA",
+        "conclusion": "success",
+        "seconds": 6
+      },
+      {
+        "name": "Upload TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build cache summary",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Upload build diagnostics (not an IPA)",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Post Check out repository",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success",
+        "seconds": 26
+      }
+    ]
+  },
+  {
+    "run": 39934986183,
+    "number": 36,
+    "url": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39934986183",
+    "ref": "ci/sidestore-cache-optimization",
+    "commit": "78892afd96791790f41f82895f457aa592a114c8",
+    "conclusion": "success",
+    "jobSeconds": 108,
+    "dispatchToDownloadSeconds": 112,
+    "cacheEvidence": {
+      "geckoCompilation": "skipped",
+      "ideviceCompilation": "skipped",
+      "xcodeRestoreSeconds": 2
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Check out repository",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Set up pinned Xcode",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Required validation (existing UIKit mechanism)",
+        "conclusion": "success",
+        "seconds": 9
+      },
+      {
+        "name": "Install pinned Rust toolchain",
+        "conclusion": "success",
+        "seconds": 8
+      },
+      {
+        "name": "Identify native and Xcode cache inputs before submodules",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Restore packaged Gecko SDK before source preparation",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Validate SDK or select source-build fallback",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Restore precompiled idevice library",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Validate idevice binary or select real build",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Install Gecko-only build dependencies",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Initialize required submodules only on native misses",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Update Gecko source",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Apply Gecko patches",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Gecko dependency cache only for source build",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Cargo downloads for idevice-only miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Set up sccache for real native builds",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build Gecko on SDK miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export self-contained Gecko SDK (including source theme)",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save complete Gecko SDK",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build idevice support library on binary miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export validated idevice binary",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save precompiled idevice library",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore compatible Xcode DerivedData",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Restore timestamps only for content-identical sources",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Install packaging dependencies for original non-SideStore modes",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build app (fresh archive, incremental compilation)",
+        "conclusion": "success",
+        "seconds": 51
+      },
+      {
+        "name": "Save successful Xcode build intermediates",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Create IPA",
+        "conclusion": "success",
+        "seconds": 13
+      },
+      {
+        "name": "Create TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Verify all newly packaged products and exact source commit",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Upload IPA",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Upload TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build cache summary",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Upload build diagnostics (not an IPA)",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Post Check out repository",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success",
+        "seconds": 1
+      }
+    ]
+  },
+  {
+    "run": 39939533023,
+    "number": 37,
+    "url": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39939533023",
+    "ref": "fennec-ios",
+    "commit": "5406fbe282aef01e5c66ffb340ba2080cf384c59",
+    "conclusion": "success",
+    "jobSeconds": 1267,
+    "dispatchToDownloadSeconds": 1217,
+    "cacheEvidence": {
+      "geckoCompilation": "skipped",
+      "ideviceCompilation": "success",
+      "xcodeRestoreSeconds": 0
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Check out repository",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Set up pinned Xcode",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Required validation (existing UIKit mechanism)",
+        "conclusion": "success",
+        "seconds": 395
+      },
+      {
+        "name": "Install pinned Rust toolchain",
+        "conclusion": "success",
+        "seconds": 14
+      },
+      {
+        "name": "Identify native and Xcode cache inputs before submodules",
+        "conclusion": "success",
+        "seconds": 7
+      },
+      {
+        "name": "Restore packaged Gecko SDK before source preparation",
+        "conclusion": "success",
+        "seconds": 10
+      },
+      {
+        "name": "Validate SDK or select source-build fallback",
+        "conclusion": "success",
+        "seconds": 10
+      },
+      {
+        "name": "Restore precompiled idevice library",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Validate idevice binary or select real build",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Install Gecko-only build dependencies",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Initialize required submodules only on native misses",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Update Gecko source",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Apply Gecko patches",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Gecko dependency cache only for source build",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Cargo downloads for idevice-only miss",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Set up sccache for real native builds",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Build Gecko on SDK miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export self-contained Gecko SDK (including source theme)",
+        "conclusion": "success",
+        "seconds": 27
+      },
+      {
+        "name": "Save complete Gecko SDK",
+        "conclusion": "success",
+        "seconds": 5
+      },
+      {
+        "name": "Build idevice support library on binary miss",
+        "conclusion": "success",
+        "seconds": 338
+      },
+      {
+        "name": "Export validated idevice binary",
+        "conclusion": "success",
+        "seconds": 9
+      },
+      {
+        "name": "Save precompiled idevice library",
+        "conclusion": "success",
+        "seconds": 10
+      },
+      {
+        "name": "Restore compatible Xcode DerivedData",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Restore timestamps only for content-identical sources",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Install packaging dependencies for original non-SideStore modes",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build app (fresh archive, incremental compilation)",
+        "conclusion": "success",
+        "seconds": 316
+      },
+      {
+        "name": "Save successful Xcode build intermediates",
+        "conclusion": "success",
+        "seconds": 8
+      },
+      {
+        "name": "Create IPA",
+        "conclusion": "success",
+        "seconds": 36
+      },
+      {
+        "name": "Create TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Verify all newly packaged products and exact source commit",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Upload IPA",
+        "conclusion": "success",
+        "seconds": 7
+      },
+      {
+        "name": "Upload TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build cache summary",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Upload build diagnostics (not an IPA)",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Post Set up sccache for real native builds",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Post Restore Cargo downloads for idevice-only miss",
+        "conclusion": "success",
+        "seconds": 33
+      },
+      {
+        "name": "Post Check out repository",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success",
+        "seconds": 21
+      }
+    ]
+  },
+  {
+    "run": 39942155619,
+    "number": 38,
+    "url": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39942155619",
+    "ref": "fennec-ios",
+    "commit": "5406fbe282aef01e5c66ffb340ba2080cf384c59",
+    "conclusion": "success",
+    "jobSeconds": 172,
+    "dispatchToDownloadSeconds": 174,
+    "cacheEvidence": {
+      "geckoCompilation": "skipped",
+      "ideviceCompilation": "skipped",
+      "xcodeRestoreSeconds": 7
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Check out repository",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Set up pinned Xcode",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Required validation (existing UIKit mechanism)",
+        "conclusion": "success",
+        "seconds": 12
+      },
+      {
+        "name": "Install pinned Rust toolchain",
+        "conclusion": "success",
+        "seconds": 11
+      },
+      {
+        "name": "Identify native and Xcode cache inputs before submodules",
+        "conclusion": "success",
+        "seconds": 4
+      },
+      {
+        "name": "Restore packaged Gecko SDK before source preparation",
+        "conclusion": "success",
+        "seconds": 8
+      },
+      {
+        "name": "Validate SDK or select source-build fallback",
+        "conclusion": "success",
+        "seconds": 9
+      },
+      {
+        "name": "Restore precompiled idevice library",
+        "conclusion": "success",
+        "seconds": 4
+      },
+      {
+        "name": "Validate idevice binary or select real build",
+        "conclusion": "success",
+        "seconds": 7
+      },
+      {
+        "name": "Install Gecko-only build dependencies",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Initialize required submodules only on native misses",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Update Gecko source",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Apply Gecko patches",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Gecko dependency cache only for source build",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore Cargo downloads for idevice-only miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Set up sccache for real native builds",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build Gecko on SDK miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export self-contained Gecko SDK (including source theme)",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save complete Gecko SDK",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build idevice support library on binary miss",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Export validated idevice binary",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Save precompiled idevice library",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Restore compatible Xcode DerivedData",
+        "conclusion": "success",
+        "seconds": 7
+      },
+      {
+        "name": "Restore timestamps only for content-identical sources",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Install packaging dependencies for original non-SideStore modes",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build app (fresh archive, incremental compilation)",
+        "conclusion": "success",
+        "seconds": 57
+      },
+      {
+        "name": "Save successful Xcode build intermediates",
+        "conclusion": "success",
+        "seconds": 8
+      },
+      {
+        "name": "Create IPA",
+        "conclusion": "success",
+        "seconds": 22
+      },
+      {
+        "name": "Create TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Create Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Verify all newly packaged products and exact source commit",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Upload IPA",
+        "conclusion": "success",
+        "seconds": 4
+      },
+      {
+        "name": "Upload TrollStore TIPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Upload Jailbroken IPA",
+        "conclusion": "skipped",
+        "seconds": 0
+      },
+      {
+        "name": "Build cache summary",
+        "conclusion": "success",
+        "seconds": 0
+      },
+      {
+        "name": "Upload build diagnostics (not an IPA)",
+        "conclusion": "success",
+        "seconds": 2
+      },
+      {
+        "name": "Post Check out repository",
+        "conclusion": "success",
+        "seconds": 1
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success",
+        "seconds": 2
+      }
+    ]
+  }
+]
