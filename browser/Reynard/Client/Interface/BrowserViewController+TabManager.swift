@@ -10,6 +10,7 @@ import UIKit
 
 extension BrowserViewController: TabManagerDelegate {
     func tabManagerDidChangeTabs(_ tabManager: TabManager) {
+        updatePrivacyShield()
         if let selectedTab = tabManager.selectedTab {
             if !contentView.isDisplaying(session: selectedTab.session) {
                 browserChrome.addressBar.clearKeyCommandHint()
@@ -54,6 +55,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
     
     func tabManager(_ tabManager: TabManager, didSelectTabAt index: Int, previousIndex: Int?) {
+        updatePrivacyShield()
         browserChrome.addressBar.clearKeyCommandHint()
         toolbarController.unlock(for: .pageNavigation)
         toolbarController.reset()

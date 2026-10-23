@@ -62,8 +62,7 @@ xcrun swiftc -g -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" \
   "$ui/Chrome/FennecSearchPopup.swift" \
   "$ui/Chrome/AddressBar/AddressBarTextField.swift" \
   "$ui/Appearance/FennecPrivacyShield.swift" \
-  "$ui/Appearance/FennecSecureCanvasExperiment.swift" \
-  "$ui/Appearance/FennecCaptureProbeViewController.swift" \
+  browser/Reynard/Client/Preferences/FennecPrivateAccessState.swift \
   tests/ui-layout-smoke/NoJITFixtures.swift browser/Reynard/JIT/JITController.swift \
   "$ui/Appearance/FennecTheme.swift" \
   "$ui/Chrome/Toolbar/TopToolbar.swift" \

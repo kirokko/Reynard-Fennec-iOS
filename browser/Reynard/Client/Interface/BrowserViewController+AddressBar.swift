@@ -47,13 +47,8 @@ extension BrowserViewController: AddressBarDelegate, AddressBarGestureDelegate {
     }
     
     func refreshAddressBarAudioButton() {
-        let selectedTab = tabManager.selectedTab
-        let playingTabs = tabsPlayingAudio
-        browserChrome.updateAddressBarAudioButton(
-            isVisible: !playingTabs.isEmpty,
-            isMuted: selectedTab?.isMuted == true ||
-            (!playingTabs.isEmpty && playingTabs.allSatisfy(\.isMuted))
-        )
+        // Playback stays with the website player; no browser speaker/debug icon.
+        browserChrome.updateAddressBarAudioButton(isVisible: false, isMuted: false)
     }
     
     private var tabsPlayingAudio: [Tab] {

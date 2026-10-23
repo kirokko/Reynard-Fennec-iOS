@@ -1,5 +1,9 @@
 # Follow-up after #22: anchored popup, private UI, capture feasibility
 
+> Historical scope: the later three-engine list, solid background, private access
+> lock and retirement of the capture diagnostic are documented in
+> [PRIVATE-ACCESS-MEDIA.md](PRIVATE-ACCESS-MEDIA.md), which takes precedence.
+
 ## Requested UI changes
 
 - Replace the reused full-width bottom menu with a narrow, transparent-outside,

@@ -19,12 +19,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         window.overrideUserInterfaceStyle = AppAppearanceController.userInterfaceStyle(for: Prefs.AppearanceSettings.appAppearance)
         window.rootViewController = browserViewController
-        window.makeKeyAndVisible()
         self.window = window
+        // Install the access gate before the first visible browser frame.
+        installPrivateAccessGates(in: browserViewController, scene: windowScene)
+        window.makeKeyAndVisible()
+        installPrivateAccessGates(in: browserViewController, scene: windowScene)
         
         handleIncomingURLContexts(connectionOptions.urlContexts)
     }
     
+    private func installPrivateAccessGates(in controller: UIViewController, scene: UIWindowScene) {
+        controller.loadViewIfNeeded()
+        if let browser = controller as? BrowserViewController {
+            browser.privacyShield.attach(to: scene)
+        }
+        // iPad sidebar hosts a child browser: gate it before its first frame too.
+        for child in controller.children { installPrivateAccessGates(in: child, scene: scene) }
+    }
+
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         handleIncomingURLContexts(URLContexts)
     }

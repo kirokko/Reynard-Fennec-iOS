@@ -10,7 +10,7 @@ enum Prefs {
 
 @main struct SearchEngineTests {
     static func main() {
-        precondition(SearchEngine.pickerEngines == [.duckDuckGo, .bingChina, .duckDuckGoLite, .duckDuckGoHTML])
+        precondition(SearchEngine.pickerEngines == [.duckDuckGo, .duckDuckGoLite, .duckDuckGoHTML])
         precondition(SearchEngine.destination(for: "cn", engine: .bingChina) == "https://cn.bing.com/search?q=cn")
         precondition(SearchEngine.destination(for: "cn", engine: .duckDuckGoLite) == "https://lite.duckduckgo.com/lite/?q=cn")
         precondition(SearchEngine.destination(for: "cn", engine: .duckDuckGoHTML) == "https://html.duckduckgo.com/html/?q=cn")

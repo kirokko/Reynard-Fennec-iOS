@@ -5,9 +5,9 @@ const root = new URL('../', import.meta.url);
 const read = p => fs.readFileSync(new URL(p, root), 'utf8');
 const ui = 'browser/Reynard/Client/Interface/';
 
-test('the requested four engines share one ordered list and real distinct endpoints', () => {
+test('the requested three engines share one ordered list and retain legacy endpoint decoding', () => {
   const engines = read('browser/Reynard/Client/Search/SearchEngines.swift');
-  assert.match(engines, /pickerEngines: \[SearchEngine\] = \[\.duckDuckGo, \.bingChina, \.duckDuckGoLite, \.duckDuckGoHTML\]/);
+  assert.match(engines, /pickerEngines: \[SearchEngine\] = \[\.duckDuckGo, \.duckDuckGoLite, \.duckDuckGoHTML\]/);
   for (const endpoint of ['https://cn.bing.com/search?q=%s', 'https://lite.duckduckgo.com/lite/?q=%s', 'https://html.duckduckgo.com/html/?q=%s']) assert.ok(engines.includes(endpoint));
   const settings = read(ui + 'Library/Settings/Sections/General/Search/SearchEngine/SearchEnginePreferencesViewController.swift');
   assert.match(settings, /SearchEngine\.pickerEngines/);
@@ -57,5 +57,5 @@ test('unsupported capture experiments are isolated from live Gecko and cannot be
   }
   const diagnostic = read(ui + 'Appearance/FennecCaptureProbeViewController.swift');
   assert.match(diagnostic, /This does not protect browser tabs/);
-  assert.match(read(ui + 'Library/Settings/Sections/Advanced/Developer/DeveloperPreferencesViewController.swift'), /pushViewController\(FennecCaptureProbeViewController\(\), animated: false\)/);
+  assert.doesNotMatch(read(ui + 'Library/Settings/Sections/Advanced/Developer/DeveloperPreferencesViewController.swift'), /captureProbe|FennecCaptureProbeViewController/);
 });

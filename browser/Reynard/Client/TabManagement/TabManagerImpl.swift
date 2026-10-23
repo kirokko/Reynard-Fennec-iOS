@@ -424,7 +424,7 @@ final class TabManagerImplementation: NSObject, TabManager {
                 createdAt: snapshot.createdAt,
                 favicon: cachedFavicon(for: snapshot.url),
                 thumbnail: snapshot.thumbnail,
-                isMuted: snapshot.isMuted,
+                isMuted: false,
                 isPrivate: false
             )
             tab.state.openerTabID = snapshot.openerTabID
@@ -452,7 +452,7 @@ final class TabManagerImplementation: NSObject, TabManager {
                 createdAt: snapshot.createdAt,
                 favicon: cachedFavicon(for: snapshot.url),
                 thumbnail: snapshot.thumbnail,
-                isMuted: snapshot.isMuted,
+                isMuted: false,
                 isPrivate: true
             )
             prepareRestoration(

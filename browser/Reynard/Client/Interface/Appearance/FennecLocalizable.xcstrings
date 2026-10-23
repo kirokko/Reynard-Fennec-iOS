@@ -1,6 +1,11 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Private tabs locked": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "隐私分页已锁定" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "隱私分頁已鎖定" } } } },
+    "Unlock your private tabs": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "请验证身份以重新浏览隐私分页" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "請驗證身分以重新瀏覽隱私分頁" } } } },
+    "Unlock private tabs": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "解锁隐私分页" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "解鎖隱私分頁" } } } },
+    "Return to normal browsing": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "返回普通浏览" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "返回一般瀏覽" } } } },
+    "Private tabs remain locked. Try again or return to normal browsing.": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "隐私分页仍处于锁定状态。请重试或返回普通浏览。" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "隱私分頁仍處於鎖定狀態。請重試或返回一般瀏覽。" } } } },
     "Capture protection experiment": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "防截录诊断（实验）" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "防截錄診斷（實驗）" } } } },
     "Tap to test interaction": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "点击测试交互" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "點擊測試互動" } } } },
     "Not verified on this device": { "localizations": { "zh-Hans": { "stringUnit": { "state": "translated", "value": "此设备尚未验证防截录成功" } }, "zh-Hant": { "stringUnit": { "state": "translated", "value": "此裝置尚未驗證防截錄成功" } } } },

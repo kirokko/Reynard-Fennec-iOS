@@ -3,8 +3,8 @@ import UIKit
 
 func checkSearchPopup() -> UIView {
     func checkpoint(_ name: String) { FileHandle.standardError.write(Data(("POPUP: " + name + "\n").utf8)) }
-    let names = ["DuckDuckGo", "cn.bing.com", "DuckDuckGo (Lite)", "DuckDuckGo (HTML)"]
-    let icons = ["FennecSearch-duckDuckGo", "FennecSearch-bing", "FennecSearch-duckDuckGo", "FennecSearch-duckDuckGo"]
+    let names = ["DuckDuckGo", "DuckDuckGo (Lite)", "DuckDuckGo (HTML)"]
+    let icons = ["FennecSearch-duckDuckGo", "FennecSearch-duckDuckGo", "FennecSearch-duckDuckGo"]
     for icon in Set(icons) { precondition(UIImage(named: icon) != nil, "Missing provider icon: \(icon)") }
     let items = zip(names, icons).map { FennecSearchPopupItem(title: $0.0, image: UIImage(named: $0.1), action: {}) }
     let sections = [items,
@@ -51,22 +51,31 @@ func checkSearchPopup() -> UIView {
     for asset in ["FennecTabOutline", "FennecPrivateTabBadge", "FennecPrivateBadge", "FennecBookmarkTray", "FennecTabTray", "FennecHistory", "FennecSearchSettings"] {
         precondition(UIImage(named: asset) != nil, "Actual actool asset missing: \(asset)")
     }
-    // The real diagnostic must be reachable/interactive without changing a
-    // browser layer or requiring JIT/remote debugging. No security PASS asserted.
-    checkpoint("diagnostic create")
-    let probe = FennecCaptureProbeViewController()
-    probe.loadViewIfNeeded()
-    probe.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
-    checkpoint("diagnostic layout begin")
-    probe.view.layoutIfNeeded()
-    checkpoint("diagnostic layout end")
-    let modes = descendants(probe.view).compactMap { $0 as? UISegmentedControl }.first!
-    for mode in [0, 1, 2, 0] {
-        checkpoint("diagnostic mode \(mode)")
-        modes.selectedSegmentIndex = mode
-        modes.sendActions(for: .valueChanged)
-        probe.view.layoutIfNeeded()
+    // Test the actual access-gate UI, not Face ID success on a synthetic device.
+    for width in [320.0, 393, 430, 844, 1024] {
+        checkpoint("private lock \(width)")
+        let lock = FennecPrivateLockViewController()
+        var unlockRequests = 0
+        var normalRequests = 0
+        lock.onUnlock = { unlockRequests += 1 }
+        lock.onRegular = { normalRequests += 1 }
+        lock.loadViewIfNeeded()
+        lock.view.frame = CGRect(x: 0, y: 0, width: width, height: width > 500 ? 393 : 852)
+        lock.view.layoutIfNeeded()
+        precondition(lock.view.accessibilityViewIsModal)
+        let buttons = descendants(lock.view).compactMap { $0 as? UIButton }
+        precondition(buttons.count == 2)
+        for button in buttons {
+            precondition(button.bounds.height >= 44)
+            precondition(lock.view.bounds.contains(button.convert(button.bounds, to: lock.view)))
+            button.sendActions(for: .touchUpInside)
+        }
+        precondition(unlockRequests == 1 && normalRequests == 1)
+        lock.showFailure()
+        lock.view.layoutIfNeeded()
+        precondition(descendants(lock.view).compactMap { ($0 as? UILabel)?.text }.contains(FennecTheme.text("Private tabs remain locked. Try again or return to normal browsing.")))
+        lock.setLocked(false)
+        lock.setLocked(true)
     }
-    precondition(descendants(probe.view).contains { $0 is FennecSecureCanvasExperiment })
     return sample
 }

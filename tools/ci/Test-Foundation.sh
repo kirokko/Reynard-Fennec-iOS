@@ -7,3 +7,5 @@ xcrun swiftc browser/Reynard/Client/TabManagement/TabGroupStore.swift tests/tab-
 "$work/tab-groups"
 xcrun swiftc browser/Reynard/Client/Search/SearchEngines.swift browser/Reynard/Client/Shared/URLUtils.swift tests/search-engines.test.swift -o "$work/search-engines"
 "$work/search-engines"
+xcrun swiftc browser/Reynard/Client/Preferences/FennecPrivateAccessState.swift browser/Reynard/Client/Preferences/FennecMediaPolicy.swift tests/private-access-media.test.swift -o "$work/private-access-media"
+"$work/private-access-media"

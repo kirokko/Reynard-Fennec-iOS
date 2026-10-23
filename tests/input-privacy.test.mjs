@@ -56,11 +56,11 @@ test('keyboard docking cancels old layer transforms and resets on lost focus', (
 
 test('background cover does not block active local use while recording', () => {
   const shield = read(ui + 'Appearance/FennecPrivacyShield.swift');
-  assert.match(shield, /UIScreen\.capturedDidChangeNotification/);
+  assert.doesNotMatch(shield, /capturedDidChangeNotification/);
   assert.match(shield, /isSensitive && isInactive/);
   assert.doesNotMatch(shield, /isSensitive && \(isInactive \|\| isCaptured\)/);
   assert.match(shield, /UIScene\.willDeactivateNotification/);
-  assert.match(shield, /UIScreen|scene\.screen\.isCaptured/);
+  assert.match(shield, /isCaptured: false/);
   assert.match(shield, /window\.windowLevel = \.alert \+ 1/);
   assert.doesNotMatch(shield, /NSClassFromString|NSSelectorFromString|isSecureTextEntry/);
   const browser = read(ui + 'BrowserViewController.swift');

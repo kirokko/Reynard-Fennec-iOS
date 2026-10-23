@@ -107,7 +107,7 @@ final class AddressBar: UIView {
         var menuWasReturned = false
     }
     
-    static let placeholderText = NSLocalizedString("Search or enter address", comment: "")
+    static let placeholderText = FennecTheme.text("Search")
     
     private weak var delegate: AddressBarDelegate?
     private weak var searchDelegate: AddressBarSearchDelegate?
@@ -155,6 +155,7 @@ final class AddressBar: UIView {
     private var secondaryTrailingButtonToBackgroundConstraint: NSLayoutConstraint!
     private var textTrailingToBackgroundConstraint: NSLayoutConstraint!
     private var leadingButtonWidthConstraint: NSLayoutConstraint!
+    private var leadingButtonLeadingConstraint: NSLayoutConstraint!
     private var labelLeadingToButtonConstraint: NSLayoutConstraint!
     private var labelLeadingToBackgroundConstraint: NSLayoutConstraint!
     private var labelTrailingToButtonConstraint: NSLayoutConstraint!
@@ -677,6 +678,7 @@ final class AddressBar: UIView {
         secondaryTrailingButtonToBackgroundConstraint = secondaryTrailingButton.trailingAnchor.constraint(equalTo: addressBarContent.trailingAnchor, constant: -UX.addressBarContentHorizontalInset)
         
         leadingButtonWidthConstraint = leadingButton.widthAnchor.constraint(equalToConstant: UX.addressBarButtonSize)
+        leadingButtonLeadingConstraint = leadingButton.leadingAnchor.constraint(equalTo: addressBarContent.leadingAnchor, constant: UX.addressBarContentHorizontalInset)
         NSLayoutConstraint.activate([
             addressBarBackground.leadingAnchor.constraint(equalTo: leadingAnchor),
             backgroundTrailingFullConstraint,
@@ -699,10 +701,10 @@ final class AddressBar: UIView {
             dismissWidthConstraint,
             dismissHeightConstraint,
             
-            leadingButton.leadingAnchor.constraint(equalTo: addressBarContent.leadingAnchor, constant: UX.addressBarContentHorizontalInset),
+            leadingButtonLeadingConstraint,
             leadingButton.centerYAnchor.constraint(equalTo: addressBarContent.centerYAnchor),
             leadingButtonWidthConstraint,
-            leadingButton.heightAnchor.constraint(equalToConstant: UX.addressBarButtonSize),
+            leadingButton.heightAnchor.constraint(equalToConstant: 36),
             
             trailingButton.trailingAnchor.constraint(equalTo: addressBarContent.trailingAnchor, constant: -UX.addressBarContentHorizontalInset),
             trailingButton.centerYAnchor.constraint(equalTo: addressBarContent.centerYAnchor),
@@ -796,7 +798,7 @@ final class AddressBar: UIView {
             content: content,
             leadingButton: resolveLeadingButtonState(for: content),
             trailingButton: trailingButton,
-            secondaryTrailingButton: audioButtonState
+            secondaryTrailingButton: .hidden
         )
     }
     
@@ -838,7 +840,8 @@ final class AddressBar: UIView {
     private func applyRenderModel(_ model: RenderModel) {
         applyContentState(model.content)
         applyLeadingButtonState(model.leadingButton)
-        leadingButtonWidthConstraint.constant = model.leadingButton == .search ? 40 : UX.addressBarButtonSize
+        leadingButtonWidthConstraint.constant = model.leadingButton == .search ? 48 : UX.addressBarButtonSize
+        leadingButtonLeadingConstraint.constant = model.leadingButton == .search ? 4 : UX.addressBarContentHorizontalInset
         applyTrailingButtonState(model.trailingButton)
         applySecondaryTrailingButtonState(model.secondaryTrailingButton)
         
@@ -917,7 +920,7 @@ final class AddressBar: UIView {
         if state == .search {
             leadingButton.tintColor = FennecTheme.ink
             leadingButton.backgroundColor = FennecTheme.card
-            leadingButton.layer.cornerRadius = 16
+            leadingButton.layer.cornerRadius = 18
             leadingButton.setImage(searchEnginePickerImage(), for: .normal)
             leadingButton.accessibilityLabel = "\(searchEngine.displayName), \(FennecTheme.text("Search engines"))"
             leadingButton.accessibilityIdentifier = "address.searchEngine"

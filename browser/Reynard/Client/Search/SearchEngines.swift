@@ -21,7 +21,7 @@ enum SearchEngine: String, CaseIterable {
     case duckDuckGoHTML
 
     // Keep old raw values decodable; only these four are offered in the UI.
-    static let pickerEngines: [SearchEngine] = [.duckDuckGo, .bingChina, .duckDuckGoLite, .duckDuckGoHTML]
+    static let pickerEngines: [SearchEngine] = [.duckDuckGo, .duckDuckGoLite, .duckDuckGoHTML]
     
     var displayName: String {
         switch self {

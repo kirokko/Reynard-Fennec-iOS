@@ -178,6 +178,17 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
             return self.tabManager.selectedTabMode == .private
                 || (self.tabOverview.isPresented && self.tabOverview.mode == .privateTabs)
         }
+        privacyShield.onReturnToRegular = { [weak self] in
+            guard let self else { return }
+            self.tabOverview.setPresented(false, animated: false)
+            if self.tabManager.regularTabs.isEmpty {
+                _ = self.tabManager.createTab(selecting: true, target: .end, mode: .regular)
+            } else {
+                let index = self.tabManager.regularTabs.firstIndex { $0.id == self.homepageReturnTabID } ?? 0
+                self.tabManager.selectTab(at: index, mode: .regular)
+            }
+            self.updatePrivacyShield()
+        }
         tabOverview.onPrivacyModeChanged = { [weak self] in self?.updatePrivacyShield() }
         observeNotifications()
         contextMenuCoordinator.configure()
@@ -227,6 +238,7 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updatePrivacyShield()
+        guard !privacyShield.blocksPrivateAccess else { return }
         performContentLifecycle {
             syncBrowserNavigationChrome(animated: false)
             browserChrome.syncSidebarButton(splitViewController: splitViewController)
@@ -931,7 +943,8 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
                 return
             }
             
-            guard homepageOverlayCoordinator.isHomepageTab(tab),
+            guard !privacyShield.blocksPrivateAccess,
+                  homepageOverlayCoordinator.isHomepageTab(tab),
                   tab.session.isInHardwareKeyboardMode() else {
                 return
             }

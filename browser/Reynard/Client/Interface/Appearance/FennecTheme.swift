@@ -52,19 +52,12 @@ enum FennecTheme {
     }
 }
 
-/// Private-homepage-only radial surface; not a global dark-theme replacement.
+/// Private-homepage-only solid surface, without a gradient or glow.
 final class FennecPrivateBackgroundView: UIView {
-    override class var layerClass: AnyClass { CAGradientLayer.self }
     override init(frame: CGRect) {
         super.init(frame: frame)
         isUserInteractionEnabled = false
-        let gradient = layer as! CAGradientLayer
-        gradient.type = .radial
-        gradient.colors = [UIColor(red: 0.37, green: 0.12, blue: 0.68, alpha: 1).cgColor,
-                           FennecTheme.privateSurface.cgColor]
-        gradient.locations = [0, 1]
-        gradient.startPoint = CGPoint(x: 0.5, y: 0.65)
-        gradient.endPoint = CGPoint(x: 1, y: 1)
+        backgroundColor = FennecTheme.privateSurface
     }
     required init?(coder: NSCoder) { fatalError() }
 }

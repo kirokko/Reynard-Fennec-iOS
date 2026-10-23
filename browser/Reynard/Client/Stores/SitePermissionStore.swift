@@ -165,6 +165,12 @@ final class SitePermissionStore {
     
     func resolvedAction(for permission: SitePermission, host: String, session: GeckoSession) -> SitePermissionAction {
         let host = URLUtils.normalizedHost(host) ?? ""
+        // Product demos are usually muted autoplay video, not GIFs. Block both
+        // audio and muted-video autoplay on Apple only; explicit player gestures,
+        // YouTube and other sites retain their existing permission behavior.
+        if permission == .autoplay && FennecMediaPolicy.blocksAutomaticMedia(on: host) {
+            return .blocked
+        }
         return stateQueue.sync {
             let resolvedAction: SitePermissionAction
             if session.isPrivateMode {
