@@ -69,4 +69,7 @@ test('cache optimization preserves build types, required validation, fresh packa
   assert.match(wrapper, /ui_checks_only:/);
   assert.match(wrapper, /strategy: full/);
   assert.match(wrapper, /default: auto/);
+  const fixture = read('tools/Test-HomepageLayout.sh');
+  assert.ok(fixture.indexOf('xcrun simctl boot "$device"') < fixture.indexOf('xcrun swiftc -g'));
+  assert.ok(fixture.indexOf('xcrun simctl bootstatus') > fixture.indexOf('xcrun swiftc -g'));
 });

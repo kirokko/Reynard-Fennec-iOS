@@ -14,7 +14,7 @@ if [[ "${1:-}" != "--skip-foundation" ]]; then
 fi
 # Preserve diagnostics even if an outer Actions timeout interrupts the test.
 collect_diagnostics() {
-  cp "$work/stdout.log" "$work/stderr.log" "$work/screenshots/" 2>/dev/null || true
+  cp "$work/stdout.log" "$work/stderr.log" "$work/boot.log" "$work/screenshots/" 2>/dev/null || true
 }
 trap collect_diagnostics EXIT
 xcrun simctl list devices available --json > "$work/devices.json"
@@ -32,6 +32,9 @@ if [[ -z "$device" ]]; then
   echo '::error::No installed iOS Simulator runtime; cannot validate UIKit regressions.'
   exit 1
 fi
+# Boot request is asynchronous. Let Simulator initialize while the independent
+# host fixture is compiled; still block on bootstatus before install/launch.
+xcrun simctl boot "$device" > "$work/boot.log" 2>&1 || true
 sdk=$(xcrun --sdk iphonesimulator --show-sdk-path)
 app="$work/LayoutSmoke.app"
 mkdir -p "$app"
@@ -102,7 +105,6 @@ xcrun actool --compile "$app" --platform iphonesimulator \
   "$work/FixtureAssets.xcassets"
 cp browser/Reynard/Resources/Assets.xcassets/ieynec-logo.imageset/logo.png "$app/ieynec-logo.png"
 codesign --force --sign - "$app"
-xcrun simctl boot "$device" 2>/dev/null || true
 xcrun simctl bootstatus "$device" -b
 xcrun simctl install "$device" "$app"
 container=$(xcrun simctl get_app_container "$device" local.ieynec.LayoutSmoke data)
