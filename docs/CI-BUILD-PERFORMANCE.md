@@ -59,12 +59,14 @@ Job 耗时含该 macOS Job 的收尾；“触发→可下载”从 workflow 创�
 | Run | 场景 | Job | 触发→IPA 上传完成 |
 |---|---|---:|---:|
 | [#22 / 39767844014](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39767844014) | 用户指定原基线，Gecko SDK 命中 | 22:58 | 22:44 |
+| [#26 / 39915365500](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39915365500) | 优化前较近基线，浏览器代码与本轮相同 | 21:05 | 20:57 |
 | [#29 / 39923535405](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39923535405) | v2 SDK 命中，idevice 二进制/Xcode 冷缓存；UIKit 复用 | 8:27 | 8:20 |
 | [#30 / 39924880961](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39924880961) | 同 commit 暖缓存，尚未启用 compiler CAS | 4:01 | 4:05 |
 | [#32 / 39926204311](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39926204311) | CAS 首次冷编译，UIKit 输入失效完整重跑 | 15:29 | 15:05 |
 | [#33 / 39928185787](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39928185787) | CAS 暖缓存，同 commit 复测 | **2:23** | **2:27** |
 | [#34 / 39928853833](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39928853833) | 新 commit、测试脚本变化，完整 UIKit；兼容 CAS 命中 | 11:00 | 10:42 |
 | [#35 / 39930730750](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39930730750) | 最终 fixture 输入键首次建立，完整 UIKit；新 commit | 11:48 | 11:23 |
+| [#36 / 39934986183](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39934986183) | 最终 v2 UIKit 复用 + CAS；新文档 commit、无浏览器代码变化 | **1:48** | **1:52** |
 
 ### 主要步骤（秒，跳过记为 —）
 
@@ -83,6 +85,12 @@ Job 耗时含该 macOS Job 的收尾；“触发→可下载”从 workflow 创�
 完整 UIKit 在这些机器上耗时 6–9 分钟，Simulator/runner 波动明显；#34/#35 仍比原
 约 23 分钟快，但不能用最短暖缓存数字掩盖该开销。
 
+#36 在新 commit `78892afd96791790f41f82895f457aa592a114c8` 再次验证最终缓存配置，
+日志有 37 条 replay hit 诊断；下载后独立核对 SHA-256
+`f03d2cebde451720a5246142e89fbe09a574ff790e505e5d199bf66d03275dbe`、106,811,031 bytes，
+主 App/两个扩展均为构建号 `78892af`。它不是复制旧 IPA；也不能推导真实 UI 源码变化
+都只需 1:48。
+
 #30 仅恢复 DerivedData，App 仍耗 155 秒。#33 的日志真实出现 Swift/Clang
 `replay cache hit`；App 降至 46 秒。并非把下载 cache 当成编译已命中。
 
@@ -98,6 +106,10 @@ Xcode archive/IPA 验证已实跑；actionlint 1.7.12 与 shell 语法检查通�
 包含身份不符、内容损坏、缺失文件与源码字节变化；这些单元夹具不是 Gecko 编译。
 normal IPA 是实际实测产物；其余保留模式经 actionlint/分支策略检查，本次不声称
 重新完整编译过所有 TrollStore/jailbroken 组合。
+
+强制不读 native 二进制缓存的 [#31 / 39924952272](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39924952272)
+已进入真实 Gecko 源码编译，仍在监测，**尚未计为通过**。idevice/Xcode 冷缓存与
+UIKit 失效的成功验证见上表；全 Gecko 冷编译不是 2 分钟暖缓存基准。
 
 ## 日常 Agent 路径与缓存边界
 
