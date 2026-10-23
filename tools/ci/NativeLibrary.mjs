@@ -11,13 +11,13 @@ if (process.argv[2] === 'restore') {
     if (process.env.CACHE_HIT !== 'true') throw Error('No exact precompiled idevice hit');
     verifyManifest(stage, process.env.IDEVICE_KEY, entries);
     const source = path.join(stage, entries[0]);
-    execFileSync('xcrun', ['lipo', '-verify_arch', 'arm64', source]);
-    if (!execFileSync('ar', ['-t', source], { encoding: 'utf8' }).trim()) throw Error('Empty archive');
+    execFileSync('xcrun', ['lipo', source, '-verify_arch', 'arm64']);
+    if (!execFileSync('ar', ['-t', source], { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 }).trim()) throw Error('Empty archive');
     execFileSync('cp', ['-p', source, target]); output('ready', 'true');
   } catch (error) { console.log(`::notice::idevice requires real build: ${error.message}`); output('ready', 'false'); }
 } else if (process.argv[2] === 'pack') {
   fs.mkdirSync(stage, { recursive: true });
   execFileSync('cp', ['-p', target, path.join(stage, entries[0])]);
-  execFileSync('xcrun', ['lipo', '-verify_arch', 'arm64', target]);
+  execFileSync('xcrun', ['lipo', target, '-verify_arch', 'arm64']);
   writeManifest(stage, process.env.IDEVICE_KEY, entries);
 } else throw Error('Expected restore or pack');
