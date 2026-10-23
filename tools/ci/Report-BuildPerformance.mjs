@@ -9,6 +9,7 @@ const seconds = (a, b) => Math.round((new Date(b) - new Date(a)) / 1000);
 const results = [];
 for (const id of ids) {
   const run = api(`actions/runs/${id}`), jobs = api(`actions/runs/${id}/jobs?per_page=100`).jobs;
+  if (run.status !== 'completed') throw Error(`Run ${id} is not complete; refusing misleading timing/product results`);
   const job = jobs.find(j => j.name.includes('Build standard engine'));
   if (!job) throw Error(`No standard build job: ${id}`);
   const steps = job.steps.map(s => ({ name: s.name, conclusion: s.conclusion, seconds: s.started_at && s.completed_at ? seconds(s.started_at, s.completed_at) : null }));

@@ -19,7 +19,9 @@ These rules do not authorize background jobs after the conversation ends.
    simply the newest successful run. Record its run ID immediately.
 4. `auto` always runs Node policies/localizations, real Foundation tests and Swift
    parsing. It reuses UIKit only for the exact same source/test/toolchain key;
-   changed browser/test inputs run the existing simulator suite automatically.
+   changed compiled-fixture/test/resource inputs run the existing simulator suite
+   automatically. Uncompiled browser routes do not force an identical host rerun;
+   their mandatory policy/parse tests and actual Xcode compilation still execute.
    Use `test_strategy=full` for forced complete revalidation. `light` deliberately
    omits Simulator checks and is only appropriate for an explicitly scoped task,
    not as a silent default for UI changes. `ui_checks_only=true` still executes

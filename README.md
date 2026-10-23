@@ -6,7 +6,7 @@
 
 ## Status / 当前状态
 
-**Latest verified package: [build #26](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39915365500)**, App revision `2a770d3de36a892cafe14d04c10f3af0ae278059` / build `2a770d3` (21m05s, cached Gecko SDK). Current local `Downloads\ieynec-项目\IPA\current\ieynec-no-jit.ipa`, 106,810,928 bytes; SHA-256 `550BE4C46C5AE4AB7AB1820364056890E222A7A2E9FE9BBF9D9B989617840D46`. All three actual plists checked. Replaces the bottom search sheet with a narrow anchored popup: DuckDuckGo → cn.bing.com → DuckDuckGo (Lite) → DuckDuckGo (HTML), plus working local-library/settings routes. Adds pinned Android tab/private vectors, private homepage gradient/mask/help link, and status-bar-safe mode switching. **Recording no longer blackens active local UI. Screenshot/recording exclusion is NOT established**: secure-canvas and layer-flag simulator probes retained the synthetic target. A clearly labeled, synthetic-only device diagnostic is available in Developer settings; it never wraps live Gecko. Private URL/title persistence is a documented unresolved audit item. Thirty-five source/localization checks, real provider/URL Foundation tests, tab groups, Swift parsing, expanded UIKit and full packaging passed; the corrected Bing-asset UI-only [#27](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39916776905) and six Windows downloader tests also passed. Screenshots are component fixtures, not full Gecko/device acceptance. No JIT, engine/SDK, identifier change or data deletion. [Details and limits](docs/SEARCH-PRIVATE-FOLLOWUP.md). #22 is hash-verified under `IPA/rollback/ieynec-no-jit-build22.ipa`; earlier rollbacks remain.
+**Current delivered feature package: [build #26](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39915365500)**, App revision `2a770d3de36a892cafe14d04c10f3af0ae278059` / build `2a770d3` (21m05s, cached Gecko SDK). Current local `Downloads\ieynec-项目\IPA\current\ieynec-no-jit.ipa`, 106,810,928 bytes; SHA-256 `550BE4C46C5AE4AB7AB1820364056890E222A7A2E9FE9BBF9D9B989617840D46`. All three actual plists checked. Replaces the bottom search sheet with a narrow anchored popup: DuckDuckGo → cn.bing.com → DuckDuckGo (Lite) → DuckDuckGo (HTML), plus working local-library/settings routes. Adds pinned Android tab/private vectors, private homepage gradient/mask/help link, and status-bar-safe mode switching. **Recording no longer blackens active local UI. Screenshot/recording exclusion is NOT established**: secure-canvas and layer-flag simulator probes retained the synthetic target. A clearly labeled, synthetic-only device diagnostic is available in Developer settings; it never wraps live Gecko. Private URL/title persistence is a documented unresolved audit item. Thirty-five source/localization checks, real provider/URL Foundation tests, tab groups, Swift parsing, expanded UIKit and full packaging passed; the corrected Bing-asset UI-only [#27](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39916776905) and six Windows downloader tests also passed. Screenshots are component fixtures, not full Gecko/device acceptance. No JIT, engine/SDK, identifier change or data deletion. [Details and limits](docs/SEARCH-PRIVATE-FOLLOWUP.md). #22 is hash-verified under `IPA/rollback/ieynec-no-jit-build22.ipa`; earlier rollbacks remain.
 
 **Previous verified package: [build #21](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39755850470)**, App revision `6ce67d68482ebf1f4e940135153fc0310deda603` / build `6ce67d6` (30m04s, cached Gecko SDK). Current local `Downloads\ieynec-项目\IPA\current\ieynec-no-jit.ipa`, 106,731,181 bytes; SHA-256 `EF9E93FD6303CBDF880DDA72FEA4577616D762CBC83C4070984F824FACFA003F`. Main App and both extension plists checked. Selected count outlines refresh at first attachment/trait/layout, without a second tap; the old Reynard private-tray intro factory/background is removed, leaving one Fennec explanation. The entire bottom plate now translates top-to-bottom as one piece, including its OS inset, with identical visual/Gecko offsets and no separate clipping/fade phase. Address display uses the pinned Android shield, URL rather than domain/title composite, and reference-sized text/controls. Twenty-five source checks, Foundation groups, Swift parsing, expanded UIKit, full App packaging and six downloader tests passed; component images inspected. **Complete Gecko/APZ motion, first-entry tray and private-tray cleanup still require actual-device acceptance.** No JIT, SDK/engine, identifiers or stored-data change. [Details](docs/VIDEO-REVIEW.md).
 
@@ -46,10 +46,12 @@ Entries with no Reynard implementation (Mozilla account/Sync, native password/ca
 
 The public repository exposes **Build SideStore IPA (manual)** under Actions. Start it manually on the branch you want to build. It invokes the adapted upstream macOS/Xcode build, which:
 
-1. Checks source policy, string catalogs and Swift syntax.
-2. Checks out the pinned engine and support-library submodules and applies Reynard patches.
-3. Compiles Gecko and the iOS app, or restores a matching, self-contained cached Gecko SDK.
-4. Uploads the standard IPA as the **Reynard-Fennec-SideStore** artifact. Inside the artifact the filename is **Reynard.ipa**.
+1. Always runs source/localization policies, real Foundation tests and Swift parsing. Default `test_strategy=auto` reuses only an exact-input passed UIKit result; `full` reruns it, while explicit `light` omits Simulator checks. `ui_checks_only=true` still executes full UIKit and produces no IPA.
+2. Validates a self-contained Gecko SDK (including the source default theme) and a precompiled idevice library. Only native misses initialize their pinned sources/build; SDK hits no longer fetch/patch Gecko.
+3. Reuses compatible Xcode Swift/Clang compiler caches, but always creates a fresh archive/IPA with the actual checked-out commit. `rebuild_native=true` is a deliberately slow source-build recovery/validation mode, not the daily default.
+4. Verifies the new IPA's ZIP, three bundle/build identities and required Gecko resources before uploading **Reynard-Fennec-SideStore**. It contains **Reynard.ipa** and **Reynard.ipa.provenance.json** (full commit, SHA-256 and plist metadata).
+
+Use this existing workflow once per ordinary Agent modification; do not additionally dispatch unrelated UI-only/experiment runs. [Audit and measured performance](docs/CI-BUILD-PERFORMANCE.md) · [Exact-commit Agent delivery rules](docs/CI-AGENT-GUIDE.md). No duplicate Fast/Full workflows were added.
 
 The first engine build can take hours. The engine SDK is cached **before** Swift app compilation, so fixing a UI compilation error should not necessarily require rebuilding Gecko. Cache availability is not guaranteed. Only standard GitHub-hosted runners are requested, not paid larger runners. Repository/account limits can still prevent jobs from starting.
 
@@ -57,21 +59,15 @@ No Apple ID, pairing record, development certificate or signing private key is n
 
 ### Download a completed build on Windows
 
-With GitHub CLI installed and authenticated, run this from the project folder:
+For a requested code change, first confirm **that exact run** succeeded and its `headSha` equals the intended commit. Set `$RunId` to that run's ID, then use GitHub CLI (installed/authenticated) from the project folder:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Download-IPA.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Download-IPA.ps1 -RunId $RunId -Destination "$env:USERPROFILE\Downloads\ieynec-latest.ipa"
 ```
 
-It selects the most recent successful manual run with an unexpired SideStore IPA artifact (skipping UI-only checks), downloads it to `Downloads\ieynec-latest.ipa` without overwriting the first-pass rollback file, checks that app extensions are present, and writes the commit/build URL/SHA-256 beside it. If no successful build exists, it fails explicitly. It does not start a build or update an installed app.
+Verify the artifact's full-commit provenance and downloaded SHA-256 before installation/promotion. UI-only runs have no IPA. Failure of a requested build must be reported with its actual logs; an older successful artifact is only a rollback, not the new result.
 
-For the current no-JIT candidate specifically (UI-only workflow runs have no IPA):
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Download-IPA.ps1 -RunId 39755850470 -Destination "$env:USERPROFILE\Downloads\ieynec-项目\IPA\current\ieynec-no-jit.ipa"
-```
-
-The default legacy filename remains compatible with existing shortcuts; the explicit destination above preserves the first-build IPA for rollback.
+Without `-RunId`, the legacy manual downloader selects the most recent successful run with an unexpired IPA, skipping UI-only runs. That generic mode must **not** be used to deliver a specific modification or conceal a newer failed build. It checks extensions and writes the source URL/commit/hash beside the IPA; it neither starts builds nor updates an installed app. Default filename remains compatible with existing shortcuts. Stage and verify new bytes before archiving/replacing `IPA/current`.
 
 For one already-started run, `tools/Watch-Build.ps1 -RunId <id>` can wait for at most seven hours and download **only that run** if it succeeds. It writes a status file in Downloads and then exits. It is not an updater, scheduled task, or build retry service; it does not monitor later releases.
 
