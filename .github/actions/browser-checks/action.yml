@@ -31,11 +31,10 @@ runs:
     - name: Identify UIKit inputs
       id: inputs
       shell: bash
-      env:
-        SOURCE_HASH: ${{ hashFiles('browser/**', 'tests/**', 'tools/Test-HomepageLayout.sh', 'tools/ci/Test-Foundation.sh', '.github/actions/browser-checks/**') }}
       run: |
         toolchain=$(xcodebuild -version | shasum -a 256 | cut -d ' ' -f1)
-        echo "key=uikit-pass-v1-${RUNNER_OS}-${RUNNER_ARCH}-${toolchain}-${SOURCE_HASH}" >> "$GITHUB_OUTPUT"
+        source_hash=$(node tools/ci/UIKitInputs.mjs)
+        echo "key=uikit-pass-v2-${RUNNER_OS}-${RUNNER_ARCH}-${toolchain}-${source_hash}" >> "$GITHUB_OUTPUT"
     - name: Restore identical UIKit success marker
       id: cached
       if: inputs.strategy == 'auto'

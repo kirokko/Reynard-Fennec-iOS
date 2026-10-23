@@ -211,10 +211,10 @@ jobs:
           LD: ld64.lld
         run: ./tools/development/build-gecko.sh ${{ matrix.build_args }}
       - name: Export self-contained Gecko SDK (including source theme)
-        if: steps.gecko_dist.outputs.cache-hit != 'true'
+        if: steps.sdk.outputs.source != 'v2'
         run: node tools/ci/NativeSDK.mjs pack
       - name: Save complete Gecko SDK
-        if: steps.gecko_dist.outputs.cache-hit != 'true'
+        if: steps.sdk.outputs.source != 'v2'
         continue-on-error: true
         uses: actions/cache/save@v4
         with:
@@ -266,6 +266,7 @@ jobs:
         if: ${{ matrix.variant == 'nojemalloc' && inputs.build_jailbroken_ipa }}
         run: ./tools/release/create-ipa.sh --jailbroken
       - name: Verify all newly packaged products and exact source commit
+        id: products
         env:
           EXPECTED_COMMIT: ${{ env.BUILD_COMMIT }}
         run: |
@@ -278,6 +279,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Reynard-Fennec-SideStore
+          compression-level: 0 # IPA is already compressed; avoid compressing twice.
           path: |
             dist/Reynard.ipa
             dist/Reynard.ipa.provenance.json
@@ -287,6 +289,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Reynard-TrollStore.tipa
+          compression-level: 0
           path: |
             dist/Reynard-TrollStore.tipa
             dist/Reynard-TrollStore.tipa.provenance.json
@@ -296,6 +299,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Reynard-Jailbroken.ipa
+          compression-level: 0
           path: |
             dist/Reynard-Jailbroken.ipa
             dist/Reynard-Jailbroken.ipa.provenance.json
@@ -307,6 +311,7 @@ jobs:
           IDEVICE_REUSED: ${{ steps.idevice.outputs.ready }}
           XCODE_MATCH: ${{ steps.xcode_cache.outputs.cache-matched-key }}
           UIKIT: ${{ steps.checks.outputs.uikit }}
+          VERIFIED: ${{ steps.products.outcome }}
         run: |
           {
             echo '## Build inputs and cache decisions'
@@ -314,7 +319,11 @@ jobs:
             echo "Gecko: $SDK_SOURCE; idevice reused: $IDEVICE_REUSED"
             echo "Xcode compatible snapshot: ${XCODE_MATCH:-miss}"
             echo "UIKit: $UIKIT"
-            echo 'IPA is newly archived/packaged and its three plist build IDs are verified before upload.'
+            if [[ "$VERIFIED" == success ]]; then
+              echo 'Newly packaged products passed commit/plist/hash verification. Download only if this run also completes successfully.'
+            else
+              echo 'NO verified new IPA: inspect the actual failure; earlier successful runs are rollbacks only.'
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Upload build diagnostics (not an IPA)
         if: always()

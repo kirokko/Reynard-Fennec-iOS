@@ -6,6 +6,7 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { writeManifest, verifyManifest } from '../tools/ci/CachePayload.mjs';
+import { fixtureInputs } from '../tools/ci/UIKitInputs.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const read = f => fs.readFileSync(path.join(root, f), 'utf8');
 
@@ -63,7 +64,10 @@ test('cache optimization preserves build types, required validation, fresh packa
   for (const setting of ['SWIFT_ENABLE_COMPILE_CACHE=YES', 'CLANG_ENABLE_COMPILE_CACHE=YES', 'COMPILATION_CACHE_CAS_PATH=']) assert.ok(app.includes(setting));
   const checks = read('.github/actions/browser-checks/action.yml');
   for (const required of ['node --test tests/*.test.mjs', 'bash tools/ci/Test-Foundation.sh', 'xcrun swiftc -frontend -parse']) assert.ok(checks.includes(required));
-  assert.match(checks, /hashFiles\('browser\/\*\*', 'tests\/\*\*'/);
+  assert.match(checks, /node tools\/ci\/UIKitInputs\.mjs/);
+  const inputs = fixtureInputs(root);
+  for (const required of ['tests/ui-layout-smoke/App.swift', 'browser/Reynard/Client/Interface/Chrome/FennecSearchPopup.swift', 'browser/Reynard/Client/Interface/Chrome/AddressBar/AddressBarTextField.swift', 'tools/Test-HomepageLayout.sh']) assert.ok(inputs.includes(required), required);
+  assert.ok(!inputs.includes('browser/Reynard/Client/Interface/BrowserViewController.swift'), 'Uncompiled browser routes must not force an identical UIKit host rerun');
   assert.doesNotMatch(checks, /restore-keys:/);
   const wrapper = read('.github/workflows/build-sidestore.yml');
   assert.match(wrapper, /ui_checks_only:/);
