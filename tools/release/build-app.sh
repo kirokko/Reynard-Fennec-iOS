@@ -45,7 +45,13 @@ run_xcodebuild() {
 	# CI may reuse compatible compiler intermediates; dist/ above is always fresh.
 	# Local callers without this variable retain Xcode's original default path.
 	if [ -n "${REYNARD_DERIVED_DATA:-}" ]; then
-		set -- -derivedDataPath "$REYNARD_DERIVED_DATA" "$@"
+		set -- -derivedDataPath "$REYNARD_DERIVED_DATA" \
+			COMPILATION_CACHE_ENABLE_CACHING=YES \
+			SWIFT_ENABLE_COMPILE_CACHE=YES CLANG_ENABLE_COMPILE_CACHE=YES \
+			SWIFT_ENABLE_EXPLICIT_MODULES=YES CLANG_ENABLE_EXPLICIT_MODULES=YES \
+			COMPILATION_CACHE_ENABLE_PLUGIN=YES \
+			"COMPILATION_CACHE_CAS_PATH=$REYNARD_DERIVED_DATA/CompilationCache.noindex" \
+			COMPILATION_CACHE_ENABLE_DIAGNOSTIC_REMARKS=YES "$@"
 	fi
 	xcodebuild archive \
 		-scheme "Reynard" \

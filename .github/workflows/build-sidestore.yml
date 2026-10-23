@@ -25,7 +25,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: sidestore-${{ github.ref }}-${{ inputs.ui_checks_only }}
+  # Native-recovery benchmarking must not queue/block an ordinary feature IPA.
+  # Runners/workspaces/artifacts are isolated; immutable caches are safe to share.
+  group: sidestore-${{ github.ref }}-${{ inputs.ui_checks_only }}-${{ inputs.rebuild_native }}
   cancel-in-progress: false
 
 jobs:

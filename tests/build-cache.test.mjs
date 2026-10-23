@@ -58,7 +58,9 @@ test('cache optimization preserves build types, required validation, fresh packa
   for (const input of ['checkout_ref', 'nightly', 'build_normal_ipa', 'build_trollstore_tipa', 'build_jailbroken_ipa']) assert.ok(workflow.includes(input + ':'));
   for (const artifact of ['Reynard-Fennec-SideStore', 'Reynard-TrollStore.tipa', 'Reynard-Jailbroken.ipa']) assert.ok(workflow.includes(artifact));
   assert.match(workflow, /Verify-IPA\.py/);
-  assert.match(read('tools/release/build-app.sh'), /rm -rf "\$DIST_DIR"/);
+  const app = read('tools/release/build-app.sh');
+  assert.match(app, /rm -rf "\$DIST_DIR"/);
+  for (const setting of ['SWIFT_ENABLE_COMPILE_CACHE=YES', 'CLANG_ENABLE_COMPILE_CACHE=YES', 'COMPILATION_CACHE_CAS_PATH=']) assert.ok(app.includes(setting));
   const checks = read('.github/actions/browser-checks/action.yml');
   for (const required of ['node --test tests/*.test.mjs', 'bash tools/ci/Test-Foundation.sh', 'xcrun swiftc -frontend -parse']) assert.ok(checks.includes(required));
   assert.match(checks, /hashFiles\('browser\/\*\*', 'tests\/\*\*'/);

@@ -18,6 +18,7 @@ research/
 
 # Build artifacts
 dist/
+.ci-derived-data/
 browser/Reynard/JIT/RPPairing/libidevice_ffi.a
 
 # Never publish device pairing/signing credentials
