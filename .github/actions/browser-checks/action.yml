@@ -1,0 +1,84 @@
+name: Required browser checks
+description: Mandatory source/Foundation checks with reusable, input-keyed UIKit regression results
+inputs:
+  strategy:
+    description: 'auto: reuse identical passed UIKit inputs; full: rerun; light: explicit no-simulator checks'
+    default: auto
+  artifact_name:
+    default: ieynec-ui-checks
+outputs:
+  uikit:
+    description: UIKit execution or reuse status
+    value: ${{ steps.result.outputs.uikit }}
+runs:
+  using: composite
+  steps:
+    - name: Validate test strategy
+      shell: bash
+      env:
+        STRATEGY: ${{ inputs.strategy }}
+      run: |
+        case "$STRATEGY" in auto|full|light) ;; *) echo '::error::Invalid test strategy'; exit 1;; esac
+    - name: Source policy and localization checks
+      shell: bash
+      run: node --test tests/*.test.mjs
+    - name: Required Foundation tests
+      shell: bash
+      run: bash tools/ci/Test-Foundation.sh
+    - name: Parse Swift sources
+      shell: bash
+      run: find browser -name '*.swift' -print0 | xargs -0 xcrun swiftc -frontend -parse
+    - name: Identify UIKit inputs
+      id: inputs
+      shell: bash
+      env:
+        SOURCE_HASH: ${{ hashFiles('browser/**', 'tests/**', 'tools/Test-HomepageLayout.sh', 'tools/ci/Test-Foundation.sh', '.github/actions/browser-checks/**') }}
+      run: |
+        toolchain=$(xcodebuild -version | shasum -a 256 | cut -d ' ' -f1)
+        echo "key=uikit-pass-v1-${RUNNER_OS}-${RUNNER_ARCH}-${toolchain}-${SOURCE_HASH}" >> "$GITHUB_OUTPUT"
+    - name: Restore identical UIKit success marker
+      id: cached
+      if: inputs.strategy == 'auto'
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ runner.temp }}/ieynec-ui-pass.json
+        key: ${{ steps.inputs.outputs.key }}
+    - name: UIKit homepage first-frame smoke test (no Gecko)
+      if: inputs.strategy != 'light' && steps.cached.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        bash tools/Test-HomepageLayout.sh --skip-foundation
+        node -e 'require("fs").writeFileSync(process.env.RUNNER_TEMP+"/ieynec-ui-pass.json",JSON.stringify({key:process.env.CHECK_KEY,commit:process.env.GITHUB_SHA,run:process.env.GITHUB_SERVER_URL+"/"+process.env.GITHUB_REPOSITORY+"/actions/runs/"+process.env.GITHUB_RUN_ID}))'
+      env:
+        CHECK_KEY: ${{ steps.inputs.outputs.key }}
+    - name: Report UIKit execution/reuse
+      id: result
+      shell: bash
+      env:
+        STRATEGY: ${{ inputs.strategy }}
+        HIT: ${{ steps.cached.outputs.cache-hit }}
+        CHECK_KEY: ${{ steps.inputs.outputs.key }}
+      run: |
+        if [[ "$STRATEGY" == light ]]; then
+          echo 'uikit=explicit-light-no-simulator' >> "$GITHUB_OUTPUT"
+          echo 'UIKit explicitly omitted; mandatory source, Swift parsing and Foundation checks passed.' >> "$GITHUB_STEP_SUMMARY"
+        else
+          node -e 'const m=JSON.parse(require("fs").readFileSync(process.env.RUNNER_TEMP+"/ieynec-ui-pass.json")); if(m.key!==process.env.CHECK_KEY)throw Error("UIKit marker identity mismatch"); console.log(m)'
+          if [[ "$HIT" == true ]]; then result=reused-identical-passed-inputs; else result=executed; fi
+          echo "uikit=$result" >> "$GITHUB_OUTPUT"
+          echo "UIKit: $result (exact toolchain/source/test key; no cross-input fallback)." >> "$GITHUB_STEP_SUMMARY"
+        fi
+    - name: Save successful UIKit marker
+      if: inputs.strategy != 'light' && steps.cached.outputs.cache-hit != 'true'
+      continue-on-error: true
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ runner.temp }}/ieynec-ui-pass.json
+        key: ${{ steps.inputs.outputs.key }}
+    - name: Upload synthetic UIKit review screenshots
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact_name }}
+        path: ${{ runner.temp }}/ieynec-layout-smoke/screenshots
+        if-no-files-found: ignore

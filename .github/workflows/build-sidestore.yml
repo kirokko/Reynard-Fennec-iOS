@@ -11,6 +11,15 @@ on:
         description: 'Run UIKit regression checks and review screenshots without rebuilding the IPA'
         type: boolean
         default: false
+      test_strategy:
+        description: 'auto: reuse identical passed UIKit inputs; full: rerun all; light: explicit no-simulator checks'
+        type: choice
+        options: [auto, full, light]
+        default: auto
+      rebuild_native:
+        description: 'Slow validation: bypass Gecko SDK and idevice binary caches, build from source'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -29,13 +38,10 @@ jobs:
       - uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '26.6'
-      - run: bash tools/Test-HomepageLayout.sh
-      - uses: actions/upload-artifact@v4
-        if: always()
+      # An explicit UI-only request still executes the simulator suite; no IPA.
+      - uses: ./.github/actions/browser-checks
         with:
-          name: ieynec-ui-checks
-          path: ${{ runner.temp }}/ieynec-layout-smoke/screenshots
-          if-no-files-found: warn
+          strategy: full
 
   build:
     if: ${{ !inputs.ui_checks_only }}
@@ -46,3 +52,5 @@ jobs:
       build_normal_ipa: true
       build_trollstore_tipa: false
       build_jailbroken_ipa: false
+      test_strategy: ${{ inputs.test_strategy }}
+      rebuild_native: ${{ inputs.rebuild_native }}

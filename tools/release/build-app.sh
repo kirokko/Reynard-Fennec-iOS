@@ -42,6 +42,11 @@ if [ "$NIGHTLY" = true ]; then
 fi
 
 run_xcodebuild() {
+	# CI may reuse compatible compiler intermediates; dist/ above is always fresh.
+	# Local callers without this variable retain Xcode's original default path.
+	if [ -n "${REYNARD_DERIVED_DATA:-}" ]; then
+		set -- -derivedDataPath "$REYNARD_DERIVED_DATA" "$@"
+	fi
 	xcodebuild archive \
 		-scheme "Reynard" \
 		-archivePath "$DIST_DIR/Reynard.xcarchive" \

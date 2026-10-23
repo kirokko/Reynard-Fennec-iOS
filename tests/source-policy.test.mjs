@@ -110,7 +110,8 @@ test('homepage first-frame layout avoids collapsed required-height stacks and wi
   const summary = read(ui + 'Homepage/FennecHomepageSummaryView.swift');
   assert.doesNotMatch(summary, /continueStack\.isHidden/);
   assert.match(summary, /if titleLabel\.text != title/);
-  assert.match(read('.github/workflows/build.yml'), /bash tools\/Test-HomepageLayout\.sh/);
+  assert.match(read('.github/workflows/build.yml'), /uses: \.\/\.github\/actions\/browser-checks/);
+  assert.match(read('.github/actions/browser-checks/action.yml'), /bash tools\/Test-HomepageLayout\.sh/);
 });
 
 test('native tab groups reference live UUIDs, exclude private tabs, and have persistence tests', () => {
@@ -123,7 +124,8 @@ test('native tab groups reference live UUIDs, exclude private tabs, and have per
   assert.match(page, /onSelect\(id\)/);
   assert.match(page, /store\.removeTab/);
   assert.doesNotMatch(page, /inactive|auto.close|Sync/i);
-  assert.match(read('.github/workflows/build.yml'), /tests\/tab-groups\.test\.swift/);
+  assert.match(read('tools/ci/Test-Foundation.sh'), /tests\/tab-groups\.test\.swift/);
+  assert.match(read('.github/actions/browser-checks/action.yml'), /bash tools\/ci\/Test-Foundation\.sh/);
 });
 
 test('motion-free policy keeps only the requested user-scroll chrome exception', () => {

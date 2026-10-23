@@ -5,10 +5,13 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 work="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/ieynec-layout-smoke"
 mkdir -p "$work/screenshots"
-xcrun swiftc browser/Reynard/Client/Search/SearchEngines.swift \
-  browser/Reynard/Client/Shared/URLUtils.swift tests/search-engines.test.swift \
-  -o "$work/test-search-engines"
-"$work/test-search-engines"
+# CI runs the mandatory Foundation suite separately; standalone usage is unchanged.
+if [[ "${1:-}" != "--skip-foundation" ]]; then
+  xcrun swiftc browser/Reynard/Client/Search/SearchEngines.swift \
+    browser/Reynard/Client/Shared/URLUtils.swift tests/search-engines.test.swift \
+    -o "$work/test-search-engines"
+  "$work/test-search-engines"
+fi
 # Preserve diagnostics even if an outer Actions timeout interrupts the test.
 collect_diagnostics() {
   cp "$work/stdout.log" "$work/stderr.log" "$work/screenshots/" 2>/dev/null || true
