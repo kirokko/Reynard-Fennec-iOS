@@ -35,6 +35,10 @@ func checkSearchPopup() -> UIView {
             checkpoint("layout end")
             let panel = descendants(popup.view).first { $0.accessibilityIdentifier == "search.providerPopup" }!
             precondition(panel.bounds.width > 0 && panel.bounds.width < width * 0.8)
+            let stableFrame = panel.frame
+            popup.view.setNeedsLayout()
+            popup.view.layoutIfNeeded()
+            precondition(panel.frame == stableFrame, "Popup must converge after wrapping labels")
             let labels = descendants(popup.view).compactMap { ($0 as? UILabel)?.text }
             precondition(names.allSatisfy { labels.contains($0) })
             let titleOrder = labels.filter { names.contains($0) }

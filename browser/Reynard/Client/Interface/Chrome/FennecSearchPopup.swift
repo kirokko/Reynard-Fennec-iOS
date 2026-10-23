@@ -106,11 +106,17 @@ final class FennecSearchPopup: UIViewController {
             ?? CGRect(x: 16, y: view.bounds.maxY - view.safeAreaInsets.bottom - 44, width: 44, height: 44)
         let estimate = CGFloat(rows) * 48 + 52 + CGFloat(max(0, groups.count - 1))
         let initial = Self.panelFrame(bounds: view.bounds, safe: view.safeAreaInsets, anchor: anchor, contentHeight: estimate)
-        panel.frame = initial
-        panel.layoutIfNeeded()
+        // Establish the measurement width only when it changes. Resetting the
+        // estimated height on EVERY pass oscillates estimate -> wrapped height
+        // forever on narrow phones (e.g. DuckDuckGo (HTML) spans two lines).
+        if panel.bounds.width != initial.width || panel.bounds.height == 0 {
+            panel.frame = initial
+            panel.layoutIfNeeded()
+        }
         let measured = stack.systemLayoutSizeFitting(CGSize(width: initial.width, height: 0),
             withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
-        panel.frame = Self.panelFrame(bounds: view.bounds, safe: view.safeAreaInsets, anchor: anchor, contentHeight: max(estimate, measured))
+        let target = Self.panelFrame(bounds: view.bounds, safe: view.safeAreaInsets, anchor: anchor, contentHeight: max(estimate, measured))
+        if panel.frame != target { panel.frame = target }
     }
 
     private func row(_ item: FennecSearchPopupItem) -> UIView {
