@@ -66,7 +66,11 @@ synthetic target remained in the protected screenshot. This is **no evidence of
 capture protection**; simulator behavior also cannot settle actual-device behavior.
 
 A follow-up additionally probes the unsupported CALayer `disableUpdateMask`
-setter, only if the selector exists. This private mechanism is not a supported
+setter, only if the selector exists. Run
+https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39797126595
+completed all four stages: normal, secure canvas, layer flag, restored. The setter
+existed, geometry/input/hit tests were stable, but the synthetic red target still
+appeared in the layer-flag system screenshot too. This is not protection success. This private mechanism is not a supported
 API, entitlement, or verified guarantee. It operates only on synthetic diagnostic
 content, never live browser layers. The standalone workflow is manually dispatched,
 outputs no IPA and uses no user websites, media or Gecko. The same diagnostic is
@@ -98,5 +102,34 @@ parity, secure erasure or anonymity as already achieved.
 New source policies, actual provider-format Foundation cases and real popup/
 private UI fixtures are added. Popup screenshots use synthetic data/actions;
 Gecko/browser routes and a physical Chinese keyboard are not automated by them.
-Production source and installed-package acceptance will be recorded only after
-successful compilation/package verification; until then #22 remains current.
+Full [#26](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39915365500)
+succeeded in 21m05s, original SDK cache hit. Production revision
+`2a770d3de36a892cafe14d04c10f3af0ae278059`, package `2a770d3`,
+106,810,928 bytes, SHA-256
+`550BE4C46C5AE4AB7AB1820364056890E222A7A2E9FE9BBF9D9B989617840D46`.
+All three actual plists retain original identifiers, 0.18.0 and minimum OS 13.0.
+#26 is now current; hash-verified #22 plus origin is retained under rollback.
+
+35 Node source/localization tests, actual SearchEngine/URLUtils Foundation cases,
+original tab groups, all Swift parsing, expanded real UIKit fixtures and full
+packaging passed. Six isolated Windows downloader tests passed. Actual private
+phone fixture, popup and chrome exports were inspected. A synthetic screenshot
+was initially missing Bing only because its reduced fixture catalog omitted that
+asset; this did not affect the production asset catalog. Fixture-only revision
+`1b59cff` adds/asserts it. The resulting UI-only
+[#27](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39916776905)
+also passed and its corrected screenshot was inspected; it does not change #26's
+browser source or create a new IPA.
+
+Earlier #23 and #24 reached a real popup layout hang, not a Gecko compile failure:
+320pt wrapped labels caused repeated estimated/fitted height changes. Checkpoints
+and a sampled host stack confirmed this. The layout now establishes width only
+when changed and assigns only changed final frames. Repeated-layout stability
+regression passed across all five widths and both anchor positions. #25 passed
+UIKit but was deliberately cancelled before packaging to include the status-bar
+safe-area fix found during screenshot review. No intermediate IPA was promoted.
+
+Browser integration, physical IME/capture and actual installed-package acceptance
+remain separate device work. Existing deprecation/fixture warnings remain. No
+engine/SDK baseline, identifiers, user-data deletion or JIT change was introduced.
+All workflows are manual; no recurring or after-conversation tasks are scheduled.

@@ -6,7 +6,42 @@ Reviewed three owner-provided videos locally: Android screen recording (~105s), 
 
 The Android screen recording is mostly black before ~44s because private-mode capture is blocked. Do not infer an empty/black UI from it. Use the filmed private-mode demonstration instead. The iOS recording does not visibly exercise every search/keyboard path; the owner's additional report about address-bar motion is a separate input, investigated in source.
 
-## Latest follow-up: search picker, private return, marked input and capture shield (#22)
+## Latest follow-up: anchored popup, four engines and private UI (#26)
+
+Six more reference images and three short clips were inspected locally. The owner
+explicitly rejects blackening the phone while recording: Android's usable private
+screen and black recording must not be confused. The bottom search sheet is also
+rejected in favor of an icon-anchored narrow popup. Requested provider order is
+DuckDuckGo → cn.bing.com → DuckDuckGo (Lite) → DuckDuckGo (HTML), followed by the
+separated local-library and search-settings groups.
+
+Full [#26](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39915365500)
+succeeded in 21m05s; original SDK cache hit, package downloaded/independently hashed
+and actual three plists inspected. #22 archived at original SHA before promotion.
+Adds the anchored popup and real endpoints, original Android curved-tab/private
+badge vectors, private mask switch/circular emblem/gradient/help link and safe
+status-bar placement. Source is `2a770d3`, SHA-256
+`550BE4C46C5AE4AB7AB1820364056890E222A7A2E9FE9BBF9D9B989617840D46`.
+
+35 source/localization checks, actual search Foundation tests, tab groups, Swift
+parsing, expanded UIKit and full packaging passed. The first narrow-phone layout
+hung due to height oscillation; host sampling found it and the stable repeated
+layout regression now passes. #25's UIKit passed but packaging was deliberately
+cancelled for the safe-area correction. Actual private-phone, tab-outline and
+popup fixture images were inspected. A fixture-only Bing asset omission was
+corrected in successful UI-only [#27](https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/39916776905);
+this is not a new App package. Six Windows downloader tests passed.
+
+**Active recording no longer blackens local private UI; capture exclusion remains
+unverified.** Two synthetic simulator experiments (secure canvas and unsupported
+layer flag) still showed the red target in captured screenshots. A labeled
+Developer diagnostic enables physical-device testing on synthetic content only,
+never live Gecko. Private titles/URLs persisting in the local tab database are
+also an unresolved privacy audit item, not fixed by UI styling. Full details,
+reference file provenance and device acceptance boundaries:
+[SEARCH-PRIVATE-FOLLOWUP.md](SEARCH-PRIVATE-FOLLOWUP.md).
+
+## Historical follow-up: search picker, private return, marked input and capture shield (#22, superseded)
 
 Three additional screenshots and six short clips were inspected locally. They
 show the Android provider-icon/chevron picker, an Android top-right return switch
