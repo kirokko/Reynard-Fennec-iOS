@@ -61,6 +61,7 @@ xcrun swiftc -g -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" \
   tests/ui-layout-smoke/InputPrivacyFixtures.swift tests/ui-layout-smoke/SearchPopupFixtures.swift \
   tests/ui-layout-smoke/AddressBarFixtures.swift \
   "$ui/Chrome/FennecSearchPopup.swift" \
+  "$ui/Chrome/ChromePosition.swift" \
   "$ui/Chrome/AddressBar/AddressBar.swift" \
   "$ui/Chrome/AddressBar/AddressBarButton.swift" \
   "$ui/Chrome/AddressBar/AddressBarDismissButton.swift" \
