@@ -4,6 +4,25 @@ This supersedes the four-engine / radial-background / capture-diagnostic UI in
 SEARCH-PRIVATE-FOLLOWUP.md. The engine, SDK, technical identifiers, no-JIT
 handshake, App Extensions, and existing user data remain unchanged.
 
+## Bottom search capsule correction after #40
+
+The subsequent Android/iOS crop comparison exposed a real missed integration:
+AddressBarButton defaults to fill alignment. The 36x28 composite provider image
+was being enlarged a second time inside the 48x36 capsule. The provider now uses
+center alignment and a full-size 48x36 canvas, with an actual 22pt logo and 6x4pt
+chevron. URL/shield states explicitly restore fill alignment. The hint has an
+explicit 16pt font and readable adaptive color instead of UIKit's pale default.
+The existing independent plus, scroll plate, safe-area behavior and input routes
+are not changed.
+
+The normal UIKit host now compiles the real AddressBar, button, dismiss button,
+field, menu, SearchEngine and URLUtils, replacing the previous AddressBar drawing
+double. Engine/store/gesture integration is still doubled. Checks cover actual
+image-view size, capsule/text spacing, font/color, three engines, return from URL
+and editing, five widths and light/dark. An additional live `simctl` compositor
+screenshot (`addressbar-on-screen.png`) shows the actual bottom toolbar and
+AddressBar; it is not a hand-drawn substitute or a whole-Gecko device test.
+
 ## Presentation
 
 - Search picker/settings: DuckDuckGo, DuckDuckGo (Lite), DuckDuckGo (HTML).

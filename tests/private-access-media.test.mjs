@@ -37,6 +37,21 @@ test('Android-style search pill and solid private background replace long prompt
   assert.match(theme, /backgroundColor = FennecTheme.privateSurface/);
 });
 
+test('real AddressBar is compiled and captured so provider art cannot inflate unnoticed', () => {
+  const script = read('tools/Test-HomepageLayout.sh');
+  for (const source of ['AddressBar.swift', 'AddressBarButton.swift', 'AddressBarDismissButton.swift', 'AddressBarMenu.swift', 'AddressBarFixtures.swift']) assert.ok(script.includes(source));
+  assert.doesNotMatch(read('tests/ui-layout-smoke/ChromeFixtures.swift'), /class AddressBar:/);
+  assert.match(script, /for stage in private home addressbar groups/);
+  const fixture = read('tests/ui-layout-smoke/AddressBarFixtures.swift');
+  assert.match(fixture, /button.imageView!.bounds.size == CGSize\(width: 48, height: 36\)/);
+  assert.match(fixture, /field.font\?\.pointSize == 16/);
+  const bar = read(ui + 'Chrome/AddressBar/AddressBar.swift');
+  assert.match(bar, /contentHorizontalAlignment = state == \.search \? \.center : \.fill/);
+  assert.match(bar, /UIGraphicsImageRenderer\(size: CGSize\(width: 48, height: 36\)\)/);
+  assert.match(bar, /CGRect\(x: 8, y: 7, width: 22, height: 22\)/);
+  assert.match(bar, /\.foregroundColor: FennecTheme.searchHint/);
+});
+
 test('audio control is hidden and restored tabs default to browser-unmuted', () => {
   assert.match(read(ui + 'Chrome/AddressBar/AddressBar.swift'), /secondaryTrailingButton: \.hidden/);
   assert.match(read(ui + 'BrowserViewController+AddressBar.swift'), /updateAddressBarAudioButton\(isVisible: false, isMuted: false\)/);

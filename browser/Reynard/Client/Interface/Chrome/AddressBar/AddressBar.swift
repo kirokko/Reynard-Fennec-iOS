@@ -240,7 +240,11 @@ final class AddressBar: UIView {
         field.borderStyle = .none
         field.backgroundColor = .clear
         field.textAlignment = .left
-        field.placeholder = AddressBar.placeholderText
+        field.font = .systemFont(ofSize: UX.addressBarTextFontSize)
+        field.attributedPlaceholder = NSAttributedString(string: AddressBar.placeholderText, attributes: [
+            .font: UIFont.systemFont(ofSize: UX.addressBarTextFontSize),
+            .foregroundColor: FennecTheme.searchHint,
+        ])
         field.keyboardType = .webSearch
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
@@ -917,6 +921,10 @@ final class AddressBar: UIView {
         
         leadingButton.isHidden = false
         leadingButton.backgroundColor = .clear
+        // AddressBarButton defaults to .fill. A smaller composite image was
+        // enlarged again to the entire capsule, inflating both logo and arrow.
+        leadingButton.contentHorizontalAlignment = state == .search ? .center : .fill
+        leadingButton.contentVerticalAlignment = state == .search ? .center : .fill
         if state == .search {
             leadingButton.tintColor = FennecTheme.ink
             leadingButton.backgroundColor = FennecTheme.card
@@ -950,10 +958,10 @@ final class AddressBar: UIView {
     
     private func searchEnginePickerImage() -> UIImage? {
         let icon = UIImage(named: searchEngine.iconAssetName) ?? UIImage(systemName: "globe")
-        return UIGraphicsImageRenderer(size: CGSize(width: 36, height: 28)).image { _ in
-            icon?.draw(in: CGRect(x: 1, y: 3, width: 22, height: 22))
+        return UIGraphicsImageRenderer(size: CGSize(width: 48, height: 36)).image { _ in
+            icon?.draw(in: CGRect(x: 8, y: 7, width: 22, height: 22))
             UIImage(systemName: "chevron.down")?.withTintColor(FennecTheme.ink, renderingMode: .alwaysOriginal)
-                .draw(in: CGRect(x: 26, y: 11, width: 8, height: 5))
+                .draw(in: CGRect(x: 35, y: 16, width: 6, height: 4))
         }.withRenderingMode(.alwaysOriginal)
     }
 

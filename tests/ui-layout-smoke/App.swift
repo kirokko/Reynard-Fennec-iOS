@@ -12,7 +12,14 @@ enum HomepageContentMode {
 }
 enum HomepageWallpaper { static var image: UIImage? { nil } }
 enum Prefs {
-    enum AppearanceSettings { static let scrollToHideToolbarEnabled = true }
+    enum AppearanceSettings {
+        static let scrollToHideToolbarEnabled = true
+        static let showsFullWebsiteAddress = false
+    }
+    enum SearchSettings {
+        static var searchEngine = SearchEngine.duckDuckGo
+        static var customSearchTemplate = "https://example.invalid/?q=%s"
+    }
     enum JITSettings { static var isJITEnabled = true }
     enum HomepageSettings {
         static var showsContinue = true
@@ -116,6 +123,7 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
         checkCountColorAndAddressDisplay()
         checkpoint("top/bottom chrome and real scroll controller")
         checkToolbarScrollController()
+        checkRealAddressBar()
         screenshot(checkFennecChrome(), name: "chrome-controls")
         screenshot(scrollChromeSample(), name: "chrome-scroll-states")
         checkpoint("download filters and homepage")
@@ -188,8 +196,15 @@ final class LayoutSmokeDelegate: UIResponder, UIApplicationDelegate {
             root.view.layoutIfNeeded()
             screenshot(window!, name: "homepage-layout")
             waitForScreenCapture("home") { [self] in
-                checkCategories()
-                checkNavigation()
+                let sample = realAddressBarScreen(bounds: window!.bounds)
+                window!.addSubview(sample)
+                window!.layoutIfNeeded()
+                sample.layoutIfNeeded()
+                waitForScreenCapture("addressbar") { [self] in
+                    sample.removeFromSuperview()
+                    checkCategories()
+                    checkNavigation()
+                }
             }
         }
     }

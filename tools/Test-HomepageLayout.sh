@@ -59,8 +59,16 @@ xcrun swiftc -g -sdk "$sdk" -target "$(uname -m)-apple-ios17.0-simulator" \
   tests/ui-layout-smoke/ChromeFixtures.swift tests/ui-layout-smoke/ScrollFixtures.swift \
   tests/ui-layout-smoke/FavoritesFixtures.swift tests/ui-layout-smoke/CountColorFixtures.swift \
   tests/ui-layout-smoke/InputPrivacyFixtures.swift tests/ui-layout-smoke/SearchPopupFixtures.swift \
+  tests/ui-layout-smoke/AddressBarFixtures.swift \
   "$ui/Chrome/FennecSearchPopup.swift" \
+  "$ui/Chrome/AddressBar/AddressBar.swift" \
+  "$ui/Chrome/AddressBar/AddressBarButton.swift" \
+  "$ui/Chrome/AddressBar/AddressBarDismissButton.swift" \
+  "$ui/Chrome/AddressBar/AddressBarMenu.swift" \
+  "$ui/Chrome/AddressBar/AddressBarSearchDelegate.swift" \
   "$ui/Chrome/AddressBar/AddressBarTextField.swift" \
+  browser/Reynard/Client/Search/SearchEngines.swift \
+  browser/Reynard/Client/Shared/URLUtils.swift \
   "$ui/Appearance/FennecPrivacyShield.swift" \
   browser/Reynard/Client/Preferences/FennecPrivateAccessState.swift \
   tests/ui-layout-smoke/NoJITFixtures.swift browser/Reynard/JIT/JITController.swift \
@@ -117,7 +125,7 @@ for ((i=0; i<300; i++)); do
     echo '::error::UIKit fixture exited before its completion marker; inspect stderr and checkpoints.'
     break
   fi
-  for stage in private home groups; do
+  for stage in private home addressbar groups; do
     if [[ -f "$container/Documents/$stage-ready" && ! -f "$container/Documents/$stage-captured" ]]; then
       xcrun simctl io "$device" screenshot "$work/screenshots/$stage-on-screen.png"
       touch "$container/Documents/$stage-captured"

@@ -12,6 +12,10 @@ enum FennecTheme {
     static let ink = UIColor { $0.userInterfaceStyle == .dark
         ? UIColor(red: 0.93, green: 0.91, blue: 0.97, alpha: 1)
         : UIColor(red: 0.11, green: 0.08, blue: 0.19, alpha: 1) }
+    // Android-like readable search hint, rather than UIKit's faint placeholder.
+    static let searchHint = UIColor { $0.userInterfaceStyle == .dark
+        ? UIColor(red: 0.78, green: 0.75, blue: 0.83, alpha: 1)
+        : UIColor(red: 0.36, green: 0.32, blue: 0.43, alpha: 1) }
     static let selectedOutline = UIColor { $0.userInterfaceStyle == .dark
         ? UIColor(red: 0.72, green: 0.58, blue: 1, alpha: 1)
         : UIColor(red: 0.48, green: 0.31, blue: 0.85, alpha: 1) }
