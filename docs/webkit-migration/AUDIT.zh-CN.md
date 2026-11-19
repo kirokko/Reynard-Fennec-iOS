@@ -92,7 +92,9 @@ WebContentView 的下拉刷新依赖 `GeckoInputHandling`、scrollableEdges、ov
 - 非全屏/失活停止采样，错误反馈避免过期 geometry 回调。
 - 原版退出恢复**进入前方向**，不是无条件竖屏；本次新要求“退出竖屏”与原代码有差别，需要在正式适配时明确改为竖屏并回归。
 
-WK 内嵌视频可配置 inline/PiP；HTML Fullscreen API 的 app-owned 内容路径可以复用上述按钮/控制器。WebKit 原生视频全屏控制器不是 app 的公开可编辑按钮树；公开 API 不提供随意替换其左下角内部按钮/全套控制栏的方法。不能用遍历私有类/selector 挂钩冒充合规实现。
+WK 内嵌视频可配置 inline/PiP。上游公开 `WKWebView.h` 提供 iOS16+ KVO `fullscreenState`，并说明元素进入 fullscreen 时 WKWebView 会移到 WebKit 的全屏 window，原位置成为 placeholder，退出后再移回。因此不能假设原 rootView 上的按钮会自然出现在 HTML 全屏内，也不能把观察状态当成控制了方向。仅真正由 app 持有的自定义内容容器才可直接复用上述按钮/控制器。
+
+WebKit 原生视频全屏控制器不是 app 的公开可编辑按钮树；公开 API 不提供随意替换其左下角内部按钮/全套控制栏的方法。`closeAllMediaPresentations` 是结束媒体 presentation 的公开入口，但不是重新设计控制栏的能力，仍需验证不同视频路径。不能用遍历私有类/selector 挂钩冒充合规实现。
 
 **本轮没有迁移视频全屏事件，没有接入方向控制，也没有复刻系统播放器。** DRM、跨域 iframe、网站专用播放器不能笼统抽取 URL 后交给 AVPlayer；这样会破坏 MSE/EME、凭据、广告逻辑和同步。优先保留 WebKit 原始解码/DRM，再评估仅可控内容的自定义容器；必须给系统全屏路径明确限制。
 

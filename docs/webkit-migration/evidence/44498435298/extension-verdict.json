@@ -1,0 +1,6 @@
+{
+  "fixturesPassed": false,
+  "sideStoreVerified": false,
+  "uBlockOriginVerified": false,
+  "note": "Probe finding only. A green workflow does not assert extension compatibility."
+}

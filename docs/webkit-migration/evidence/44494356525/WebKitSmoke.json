@@ -1,0 +1,23 @@
+{
+  "failures" : [
+    "timeout(\"stop\")"
+  ],
+  "passed" : [
+    "normal uses persistent website store",
+    "private uses nonpersistent website store",
+    "inline video configured",
+    "PiP configured",
+    "title observation",
+    "system WebKit JavaScript execution (NOT a JIT proof)",
+    "back availability",
+    "forward availability",
+    "reload creates new document",
+    "private cookie roundtrip",
+    "private cookie absent from normal store",
+    "new private profile isolated",
+    "private tabs can share one ephemeral profile",
+    "cross-profile popup rejected",
+    "unconverted Gecko URL explicitly rejected"
+  ],
+  "scope" : "real WKWebView simulator integration; not production browser or SideStore acceptance"
+}

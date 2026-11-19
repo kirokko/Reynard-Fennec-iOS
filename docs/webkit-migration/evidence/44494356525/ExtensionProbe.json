@@ -1,0 +1,15 @@
+{
+  "results" : [
+    {
+      "stage" : "parse",
+      "error" : "(\n    \"Error Domain=WKWebExtensionErrorDomain Code=6 \\\"Missing or empty `description` manifest entry.\\\" UserInfo={NSLocalizedDescription=Missing or empty `description` manifest entry.}\"\n)",
+      "manifestVersion" : 2
+    },
+    {
+      "stage" : "parse",
+      "error" : "(\n    \"Error Domain=WKWebExtensionErrorDomain Code=6 \\\"Missing or empty `description` manifest entry.\\\" UserInfo={NSLocalizedDescription=Missing or empty `description` manifest entry.}\"\n)",
+      "manifestVersion" : 3
+    }
+  ],
+  "scope" : "iOS Simulator native WebExtensions fixture; SideStore\/device\/uBlock not verified"
+}

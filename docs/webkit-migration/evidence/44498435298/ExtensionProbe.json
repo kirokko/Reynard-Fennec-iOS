@@ -1,0 +1,21 @@
+{
+  "results" : [
+    {
+      "result" : "{\"probe\":\"native-roundtrip\",\"runtime\":true}",
+      "manifestVersion" : 2,
+      "runtimeErrors" : [
+
+      ],
+      "unloaded" : true,
+      "stage" : "content-message-storage"
+    },
+    {
+      "pendingPhase" : "background",
+      "manifestVersion" : 3,
+      "unloaded" : true,
+      "error" : "native chain did not complete within 45 seconds",
+      "stage" : "native-callback-timeout"
+    }
+  ],
+  "scope" : "iOS Simulator native WebExtensions fixture; SideStore\/device\/uBlock not verified"
+}
