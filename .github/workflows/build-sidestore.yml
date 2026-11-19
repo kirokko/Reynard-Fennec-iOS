@@ -1,5 +1,5 @@
 name: Build SideStore IPA (manual)
-run-name: ${{ inputs.webkit_checks_only && 'WebKit migration feasibility (no IPA)' || inputs.ui_checks_only && 'UIKit UI checks (no IPA)' || 'Build SideStore IPA (manual)' }}
+run-name: ${{ inputs.ublock_port_checks_only && 'Full uBO WebKit port experiment (no IPA)' || inputs.webkit_checks_only && 'WebKit migration feasibility (no IPA)' || inputs.ui_checks_only && 'UIKit UI checks (no IPA)' || 'Build SideStore IPA (manual)' }}
 
 # Entry point on this fork's default branch (fennec-ios).
 # Do not spend macOS runner time on every UI edit. This builds the standard
@@ -7,6 +7,10 @@ run-name: ${{ inputs.webkit_checks_only && 'WebKit migration feasibility (no IPA
 on:
   workflow_dispatch:
     inputs:
+      ublock_port_checks_only:
+        description: 'Unofficial full-uBO source port: compiler/native DNR/background/UI experiment; no IPA'
+        type: boolean
+        default: false
       webkit_checks_only:
         description: 'Isolated WebKit engine/native extensions feasibility gate; does not build an IPA'
         type: boolean
@@ -35,8 +39,33 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  ublock_port_checks:
+    if: ${{ inputs.ublock_port_checks_only }}
+    runs-on: macos-26
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '26.6'
+      - name: Check original production baseline and policies
+        run: |
+          node tools/ci/WebKitBaseline.mjs
+          node --test tests/*.test.mjs
+      - name: Compile actual full-uBO modules and run native WebKit port experiment
+        run: bash tools/ci/Test-UBlockPort.sh
+      - name: Preserve port evidence even when unsupported
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-ubo-webkit-port
+          path: ${{ runner.temp }}/reynard-ubo-port-results
+
   webkit_checks:
-    if: ${{ inputs.webkit_checks_only }}
+    if: ${{ inputs.webkit_checks_only && !inputs.ublock_port_checks_only }}
     runs-on: macos-26
     timeout-minutes: 15
     steps:
@@ -58,7 +87,7 @@ jobs:
           path: ${{ runner.temp }}/reynard-webkit-smoke/results
 
   ui_checks:
-    if: ${{ inputs.ui_checks_only && !inputs.webkit_checks_only }}
+    if: ${{ inputs.ui_checks_only && !inputs.webkit_checks_only && !inputs.ublock_port_checks_only }}
     runs-on: macos-26
     timeout-minutes: 16
     steps:
@@ -72,7 +101,7 @@ jobs:
           strategy: full
 
   build:
-    if: ${{ !inputs.ui_checks_only && !inputs.webkit_checks_only }}
+    if: ${{ !inputs.ui_checks_only && !inputs.webkit_checks_only && !inputs.ublock_port_checks_only }}
     uses: ./.github/workflows/build.yml
     with:
       checkout_ref: ${{ github.sha }}

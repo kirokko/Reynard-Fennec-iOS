@@ -1,0 +1,11 @@
+! Synthetic CI user filters, compiled by the full Firefox uBO source.
+/port/blocked.txt
+/port/allowed.txt
+@@/port/allowed.txt
+/port/important.txt$important
+@@/port/important.txt
+/port/xhr-only.txt$xmlhttprequest
+/port/image-only.txt$image
+127.0.0.1##.port-ad
+127.0.0.1##+js(set-constant, __reynardScriptlet, true)
+127.0.0.1##^script:has-text(reynard-never-remove)
