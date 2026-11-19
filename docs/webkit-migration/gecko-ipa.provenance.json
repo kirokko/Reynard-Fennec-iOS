@@ -1,0 +1,30 @@
+{
+  "commit": "14452d327bf08c6222567adfd308701cf9e16e15",
+  "run": "https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/40082560152",
+  "file": "Reynard.ipa",
+  "bytes": 106814569,
+  "sha256": "d35fce4cb6409bb962cf35239a8d8dd7b9071712184b2589de305627beb21fe5",
+  "plists": [
+    {
+      "path": "Payload/Reynard.app/Info.plist",
+      "identifier": "com.minh-ton.Reynard",
+      "build": "14452d3",
+      "version": "0.18.0",
+      "minimumOS": "13.0"
+    },
+    {
+      "path": "Payload/Reynard.app/PlugIns/OpenIn.appex/Info.plist",
+      "identifier": "com.minh-ton.Reynard.OpenIn",
+      "build": "14452d3",
+      "version": "0.18.0",
+      "minimumOS": "13.0"
+    },
+    {
+      "path": "Payload/Reynard.app/PlugIns/Reynard Helper.appex/Info.plist",
+      "identifier": "com.minh-ton.Reynard.Helper",
+      "build": "14452d3",
+      "version": "0.18.0",
+      "minimumOS": "13.0"
+    }
+  ]
+}

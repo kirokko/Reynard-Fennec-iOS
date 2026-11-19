@@ -49,7 +49,6 @@ done
 make_app() {
   local name=$1
   mkdir -p "$work/$name.app"
-  /usr/libexec/PlistBuddy -c Clear "$work/$name.app/Info.plist" 2>/dev/null || true
   python3 - "$work/$name.app/Info.plist" "$name" <<'PY'
 import plistlib, sys
 with open(sys.argv[1], 'wb') as file:
@@ -62,7 +61,7 @@ PY
 }
 make_app WebKitSmoke
 xcrun swiftc -g -sdk "$sdk" -target "$(uname -m)-apple-ios18.4-simulator" \
-  browser/WebKitEngine/*.swift tests/webkit-smoke/App.swift -o "$work/WebKitSmoke.app/WebKitSmoke"
+  browser/WebKitEngine/*.swift tests/webkit-smoke/*.swift -o "$work/WebKitSmoke.app/WebKitSmoke"
 make_app ExtensionProbe
 for version in 2 3; do
   cp -R "tests/webkit-smoke/mv$version" "$work/ExtensionProbe.app/"
@@ -92,18 +91,18 @@ const fs = require('node:fs');
 const dir = process.argv[2];
 const core = JSON.parse(fs.readFileSync(`${dir}/WebKitSmoke.json`));
 console.log(JSON.stringify(core, null, 2));
-if (core.failures.length || core.passed.length < 18) throw new Error('WebKit integration failed');
 const ext = JSON.parse(fs.readFileSync(`${dir}/ExtensionProbe.json`));
 console.log(JSON.stringify(ext, null, 2));
 // Native incompatibility is a recorded feasibility finding, not a browser pass.
 const compatible = ext.results.every(item => {
   if (item.stage !== 'content-message-storage' || !item.unloaded) return false;
   const result = JSON.parse(item.result);
-  return result.probe === 'native-roundtrip' && result.runtime === true && item.runtimeErrors === '(\n)';
+  return result.probe === 'native-roundtrip' && result.runtime === true && Array.isArray(item.runtimeErrors) && item.runtimeErrors.length === 0;
 });
 fs.writeFileSync(`${dir}/extension-verdict.json`, JSON.stringify({
   fixturesPassed: compatible,
   sideStoreVerified: false, uBlockOriginVerified: false,
   note: 'Probe finding only. A green workflow does not assert extension compatibility.'
 }, null, 2));
+if (core.failures.length || core.passed.length < 23) throw new Error('WebKit integration failed');
 NODE

@@ -49,6 +49,7 @@ final class WebKitSmokeApp: UIResponder, UIApplicationDelegate, WebKitSessionDel
         await withCheckedContinuation { c in store.httpCookieStore.setCookie(cookie) { c.resume() } }
     }
     func run() async throws {
+        passed.append(contentsOf: try LegacyProjectionTests.run())
         let normal = WebKitBrowsingProfile(isPrivate: false)
         let privateProfile = WebKitBrowsingProfile(isPrivate: true)
         let secondPrivate = WebKitBrowsingProfile(isPrivate: true)
@@ -100,7 +101,12 @@ final class WebKitSmokeApp: UIResponder, UIApplicationDelegate, WebKitSessionDel
         } catch WebKitSession.SessionError.unsupportedURL { passed.append("unconverted Gecko URL explicitly rejected") }
         // Actual slow response: stop must cancel in-flight work rather than be an empty method.
         try session.load(URL(string: "http://127.0.0.1:8765/slow")!)
-        try await wait("loading slow response") { self.session.state.isLoading }
+        // WK sets isLoading before its asynchronous policy decision. Wait for
+        // the streamed response to COMMIT, not just that optimistic flag, so
+        // this tests an actual in-flight request rather than a scheduling race.
+        try await wait("committed slow response") {
+            self.session.state.url?.path == "/slow" && self.session.state.title == "Slow" && self.session.state.isLoading
+        }
         session.stop()
         try await wait("stop") { !self.session.state.isLoading }
         passed.append("stop cancels in-flight navigation")

@@ -3,7 +3,7 @@
 #import <WebKit/WebKit.h>
 
 @interface ExtensionProbe : UIResponder <UIApplicationDelegate, WKWebExtensionControllerDelegate, WKWebExtensionTab, WKWebExtensionWindow>
-@property UIWindow *window;
+@property (nonatomic, strong) UIWindow *window;
 @property WKWebView *webView;
 @property WKWebExtensionController *controller;
 @property WKWebExtensionContext *context;
@@ -70,9 +70,9 @@
 - (void)poll {
     [self.webView evaluateJavaScript:@"document.documentElement.getAttribute('data-extension-result')" completionHandler:^(id value, NSError *error) {
         if ([value isKindOfClass:NSString.class] && [value length]) {
-            [self finish:@{@"stage": @"content-message-storage", @"result": value, @"runtimeErrors": self.context.errors.description}];
+            [self finish:@{@"stage": @"content-message-storage", @"result": value, @"runtimeErrors": [self.context.errors valueForKey:@"description"]}];
         } else if (++self.ticks >= 150) {
-            [self finish:@{@"stage": @"timeout", @"error": error.description ?: @"no content-script response", @"runtimeErrors": self.context.errors.description}];
+            [self finish:@{@"stage": @"timeout", @"error": error.description ?: @"no content-script response", @"runtimeErrors": [self.context.errors valueForKey:@"description"]}];
         } else {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC / 5), dispatch_get_main_queue(), ^{ [self poll]; });
         }

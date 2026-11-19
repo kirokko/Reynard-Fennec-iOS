@@ -5,7 +5,18 @@ from time import sleep
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/slow':
-            sleep(8)
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/html; charset=utf-8')
+            self.send_header('Cache-Control', 'no-store')
+            self.end_headers()
+            try:
+                self.wfile.write(b'<!doctype html><html><head><title>Slow</title></head><body>')
+                self.wfile.flush()
+                sleep(12)
+                self.wfile.write(b'Complete</body></html>')
+            except (BrokenPipeError, ConnectionResetError):
+                pass
+            return
         title = 'Two' if self.path == '/two.html' else 'One'
         body = f'<!doctype html><html><head><title>{title}</title></head><body>{title}</body></html>'.encode()
         self.send_response(200)

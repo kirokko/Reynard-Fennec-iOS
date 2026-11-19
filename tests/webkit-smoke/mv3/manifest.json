@@ -2,6 +2,7 @@
   "manifest_version": 3,
   "name": "Reynard native API fixture MV3",
   "version": "1.0",
+  "description": "Synthetic localhost content, message and storage integration probe.",
   "permissions": ["storage"],
   "host_permissions": ["http://127.0.0.1/*"],
   "background": {"service_worker": "background.js"},
