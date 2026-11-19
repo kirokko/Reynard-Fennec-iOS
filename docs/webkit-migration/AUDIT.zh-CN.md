@@ -77,7 +77,7 @@ WebContentView 的下拉刷新依赖 `GeckoInputHandling`、scrollableEdges、ov
 - 目标 iOS + SideStore 的实际 provision/sign 后 controller load。模拟器不需要设备签名，不能用于推出侧载 entitlement 一定通过。
 - `browser.*` 不等于 Firefox 所有 API；Gecko-only 实现（例如特定实验 API）不能靠创建同名 JS 对象补齐。
 - `webRequest`/阻断、DNR 规则/配额、Firefox 特有过滤语法、后台生命周期、native messaging 必须做各自测试，当前无兼容承诺。
-- **完整 uBlock Origin 未执行，不标记兼容。** 后续已用官方1.76.4 Firefox XPI完成原生解析，并用独立最小 fixture 实测必要的 blocking 能力：callback触发且返回取消，但请求仍为HTTP200，见 `FULL-UBLOCK-ORIGIN.zh-CN.md`。不可将 uBO Lite 或 WKContentRuleList 说成完整 uBO 的等价替代。
+- **官方完整版XPI原样阻断不可用，不标记兼容。** 最小blocking实验收到callback并返回取消但仍HTTP200，见 `FULL-UBLOCK-ORIGIN.zh-CN.md`。后续已授权非官方源码移植：真实DNR静态拦截、原版基础外观过滤和popup已实测，但原后台初始化/scriptlet仍失败，关键UI控制未桥接，见 `UBLOCK-PORT.zh-CN.md`。不可将 Lite 或声明式后端说成完整Firefox uBO的等价替代。
 - Floorp 参考固定到 `7070ffcc950a9f5a1695610a0f881ea71ed3322b`，已阅读其 installer、部分 host/adapters 和原生扩展文档；未引入其代码，未完整审计整套实现。该版本只提供受控内置扩展，不支持任意 XPI 产品入口，且其 uBO 是 Lite，不等价于本任务。详见 `FLOORP-REFERENCE.zh-CN.md`。
 
 ## 4. 视频与方向控制

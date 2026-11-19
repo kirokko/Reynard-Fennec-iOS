@@ -1,0 +1,8 @@
+{
+  "passed": [
+    "wrong hash refused before extraction or stage creation",
+    "existing directory/data preserved without merge",
+    "explicit platform patches, unchanged-source verification, GPL and signature provenance"
+  ],
+  "count": 3
+}

@@ -1,0 +1,9 @@
+{
+  "rawReportPreserved": true,
+  "correctedOriginalBackgroundReady": false,
+  "reason": "The raw probe incorrectly treated upstream supportStats.allReadyAfter='?' as a completion timestamp. readyToFilter was set before async initializeTabs failed with missing requestIdleCallback. This is NOT completed initialization and NOT full compatibility.",
+  "unaffectedFindings": ["native DNR network fixture passed", "invalid atomic replacement retained old rules", "storage change blocked the newly added target", "original popup rendered version and hostname"],
+  "fixCommit": "3e2dc16f7fc601cc24ec76d7923481cd29c5aed7",
+  "fix": "Require a real '<integer> ms' completion value and no observed errors; add regression tests. Native context errors also disqualify readiness verdict.",
+  "fullUBlockOriginVerified": false
+}

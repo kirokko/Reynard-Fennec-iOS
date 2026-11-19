@@ -1,0 +1,190 @@
+{
+  "content" : {
+    "cosmeticDisplay" : "block",
+    "scriptletObserved" : false
+  },
+  "fullUBlockOriginVerified" : false,
+  "originalPopup" : {
+    "bodyClass" : "off needReload",
+    "errors" : [
+
+    ],
+    "hostname" : "­127.0.0.1",
+    "url" : "webkit-extension:\/\/2fd91ca9-7316-45a9-9373-783f5d88efd4\/popup-fenix.html",
+    "hasOriginalSwitch" : true,
+    "version" : "1.76.4"
+  },
+  "transaction" : {
+    "rejected" : true,
+    "oldRulesUnchanged" : true
+  },
+  "parsedVersion" : "1.76.4",
+  "scope" : "Unofficial full-uBO source port: DNR network backend, upstream startup\/content\/popup probes. Not a production browser or full compatibility acceptance.",
+  "update" : {
+    "storageChangeApplied" : true,
+    "network" : {
+      "stage" : "installed",
+      "atomicReadbackMatched" : true,
+      "installedRuleCount" : 8
+    }
+  },
+  "parsedPermissions" : [
+    "alarms",
+    "declarativeNetRequest",
+    "storage",
+    "menus",
+    "webNavigation",
+    "tabs",
+    "unlimitedStorage",
+    "webRequest"
+  ],
+  "runtimeErrors" : [
+    "Error Domain=WKWebExtensionErrorDomain Code=2 \"Unable to find \"port\/js\/wasm\/biditrie.wasm\" in the extension’s resources. It is an invalid path.\" UserInfo={NSLocalizedDescription=Unable to find \"port\/js\/wasm\/biditrie.wasm\" in the extension’s resources. It is an invalid path.}",
+    "Error Domain=WKWebExtensionErrorDomain Code=2 \"Unable to find \"port\/js\/wasm\/hntrie.wasm\" in the extension’s resources. It is an invalid path.\" UserInfo={NSLocalizedDescription=Unable to find \"port\/js\/wasm\/hntrie.wasm\" in the extension’s resources. It is an invalid path.}",
+    "Error Domain=WKWebExtensionErrorDomain Code=2 \"Unable to find \"port\/lib\/publicsuffixlist\/wasm\/publicsuffixlist.wasm\" in the extension’s resources. It is an invalid path.\" UserInfo={NSLocalizedDescription=Unable to find \"port\/lib\/publicsuffixlist\/wasm\/publicsuffixlist.wasm\" in the extension’s resources. It is an invalid path.}"
+  ],
+  "parseErrors" : [
+
+  ],
+  "unloaded" : true,
+  "updatedFetch" : {
+    "error" : "TypeError: Load failed",
+    "loaded" : false
+  },
+  "network" : {
+    "allowed" : {
+      "status" : 200,
+      "loaded" : true,
+      "body" : "REACHED_SERVER:\/port\/allowed.txt"
+    },
+    "image:image-only.txt" : {
+      "loaded" : false
+    },
+    "new-rule" : {
+      "status" : 200,
+      "loaded" : true,
+      "body" : "REACHED_SERVER:\/port\/new-rule.txt"
+    },
+    "important" : {
+      "error" : "TypeError: Load failed",
+      "loaded" : false
+    },
+    "image:control.png" : {
+      "loaded" : true
+    },
+    "blocked" : {
+      "error" : "TypeError: Load failed",
+      "loaded" : false
+    },
+    "image-only" : {
+      "status" : 200,
+      "loaded" : true,
+      "body" : "�PNG\r\n\u001a\n\u0000\u0000\u0000\rIHDR\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0001\b\u0006\u0000\u0000\u0000\u001f\u0015ĉ\u0000\u0000\u0000\rIDATx�c����\u001f\u0000\u0005\u0000\u0001���=\u001d\u0000\u0000\u0000\u0000IEND�B`�"
+    },
+    "xhr-only" : {
+      "error" : "TypeError: Load failed",
+      "loaded" : false
+    },
+    "control" : {
+      "status" : 200,
+      "loaded" : true,
+      "body" : "REACHED_SERVER:\/port\/control.txt"
+    }
+  },
+  "finalPhase" : "original-popup",
+  "port" : {
+    "errors" : [
+      "TypeError: self.requestIdleCallback is not a function. (In 'self.requestIdleCallback(\n                ( ) => updateBadge(tabId),\n                { timeout: 701 }\n            )', 'self.requestIdleCallback' is undefined)\n@webkit-extension:\/\/2fd91ca9-7316-45a9-9373-783f5d88efd4\/js\/tab.js:1101:37\n@webkit-extension:\/\/2fd91ca9-7316-45a9-9373-783f5d88efd4\/js\/tab.js:941:27\n@webkit-extension:\/\/2fd91ca9-7316-45a9-9373-783f5d88efd4\/js\/start.js:100:30"
+    ],
+    "backend" : "full-uBO-compiler-to-native-WebKit-DNR",
+    "experimental" : true,
+    "transaction" : {
+      "rejected" : true,
+      "oldRulesUnchanged" : true
+    },
+    "nativeRebuildRequests" : 1,
+    "nativeReceiver" : {
+      "directURL" : "webkit-extension:\/\/2fd91ca9-7316-45a9-9373-783f5d88efd4\/",
+      "unboundURL" : "undefined"
+    },
+    "warning" : "Prototype only. Original popup switches\/dynamic rules do NOT yet control the DNR backend. No production release.",
+    "upstream" : {
+      "stage" : "ready",
+      "readyToFilter" : true,
+      "allReadyAfter" : "?"
+    },
+    "network" : {
+      "stage" : "installed",
+      "atomicReadbackMatched" : true,
+      "installedRuleCount" : 8
+    },
+    "navigationTargets" : {
+      "limitation" : "Only known openerTabId is forwarded. Source frame attribution unavailable; frame-specific popup filtering is NOT verified\/equivalent.",
+      "source" : "native-tabs.onCreated"
+    },
+    "conversion" : {
+      "source" : "user-filters",
+      "directives" : [
+
+      ],
+      "rejected" : [
+        [
+          "Rejected filter: 127.0.0.1##^script:has-text(reynard-never-remove)"
+        ]
+      ],
+      "nativeInstallationVerified" : false,
+      "sourceLines" : 14,
+      "ruleToSourceMapping" : "Upstream merges\/splits network rules; no claim of one output rule per input line",
+      "environment" : [
+        "ublock",
+        "webext",
+        "ipaddress",
+        "mobile",
+        "safari",
+        "native_css_has"
+      ],
+      "unsupported" : [
+        "blocking webRequest return channel",
+        "response body filtering",
+        "CNAME uncloaking",
+        "dynamic firewall\/URL rules bridge",
+        "site power switch\/whitelist bridge",
+        "network log accuracy",
+        "full filter-list selection\/update bridge"
+      ],
+      "candidateRuleCount" : 8,
+      "network" : {
+        "generichideExclusions" : [
+
+        ],
+        "rejectedFilterCount" : 0,
+        "filterCount" : 8,
+        "acceptedFilterCount" : 8,
+        "generichideInclusions" : [
+
+        ]
+      },
+      "nonNetwork" : [
+        {
+          "line" : 9,
+          "disposition" : "delegated-to-original-content-engine-not-yet-verified",
+          "parseError" : false,
+          "text" : "127.0.0.1##.port-ad"
+        },
+        {
+          "line" : 10,
+          "disposition" : "scriptlet-delegated-to-original-engine-not-yet-verified",
+          "parseError" : false,
+          "text" : "127.0.0.1##+js(set-constant, __reynardScriptlet, true)"
+        },
+        {
+          "line" : 11,
+          "disposition" : "unsupported-response-body-filtering",
+          "parseError" : true,
+          "text" : "127.0.0.1##^script:has-text(reynard-never-remove)"
+        }
+      ]
+    },
+    "fullUBlockOriginVerified" : false
+  }
+}

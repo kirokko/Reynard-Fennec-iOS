@@ -1,0 +1,65 @@
+{
+  "officialInput": {
+    "name": "uBlock Origin (full Firefox build, NOT Lite)",
+    "version": "1.76.4",
+    "url": "https://github.com/gorhill/uBlock/releases/download/1.76.4/uBlock0_1.76.4.firefox.signed.xpi",
+    "sha256": "66d0e3f21ce3b32b1bc0a9399b93cb2c9aa598ef18805d92118c76f66e266c1e",
+    "scope": "Official package parsing only. Separate fixture tests native request cancellation. No full uBO execution/compatibility claim.",
+    "license": "GPL-3.0; package is downloaded from upstream during CI, not modified or checked into this repository. Renaming to .zip preserves all package bytes."
+  },
+  "unmodifiedUpstreamFiles": 660,
+  "upstreamJavaScriptPatches": {
+    "js/vapi-common.js": {
+      "before": "638ba83b6a5b1a0cf7a661c070dbeb603a8dfba6f15ab050dbc9705a0951da5e",
+      "reasons": [
+        "WebKit native API functions require their original receiver; forwarding to the real API fixes binding without synthesizing any missing capability."
+      ],
+      "after": "cec2eeabce2508d3fa53d2e82d3456369636b17442218fe4403fe9cbe4c2d391"
+    },
+    "js/vapi-background.js": {
+      "before": "c0059ef23ccd76e54b336c817fd5988df122520c8c7125b641bd624eef0bb3d3",
+      "reasons": [
+        "Use real native tab creation events when webNavigation lacks the target event. Opener frame identity is unavailable and explicitly not invented or claimed equivalent.",
+        "Map cache/rule-change notification onto real compilation and atomic native DNR replacement, not a fake webRequest method. Only user-filter rules are bridged at this milestone."
+      ],
+      "after": "5de753b454f45375607693bce85d082af2b88523a403b563bb3a4a8f4c737fa6"
+    },
+    "js/i18n.js": {
+      "before": "27c3bdfce67cf57a985269658fa7bff1479840b6daf4b9feaeb42fc86d9e0aa8",
+      "reasons": [
+        "WebKit throws on an empty message name; retain empty UI labels without suppressing real translation/API errors for nonempty names."
+      ],
+      "after": "ab475ef24cce94a7079763341521af64626244d73571a1a14919ec54175c8e50"
+    },
+    "js/vapi.js": {
+      "before": "31e664456e8d53aa89a49830f48d44afc124ba8cb81323fe3a0e876f0ba4de0f",
+      "reasons": [
+        "Cooperative timer-based idle fallback executes real scheduled work when native requestIdleCallback is absent. Not a native idle-time or performance claim."
+      ],
+      "after": "fea173f31cd686e5d19b0f0495773613648cd917ce74766b304b24cef1bc88f4"
+    },
+    "js/vapi-scripting.js": {
+      "before": "f4ef094c0d6ae8e60abe3cbf02dc296f2c1c41bb70dc7ac328c0a6f2d0179dc9",
+      "reasons": [
+        "Use the same real tab-event platform adapter in the original scriptlet engine; source-frame attribution limitations remain explicit."
+      ],
+      "after": "f5bf412d6bd274e99ab1bc4f1284d9dff27fafd97356401a21f31267690864f6"
+    }
+  },
+  "upstreamHTMLCSSPatched": false,
+  "modifiedManifestFields": [
+    "name",
+    "description",
+    "background",
+    "permissions",
+    "commands",
+    "content_scripts"
+  ],
+  "removedEmptyReservedCommands": [
+    "_execute_browser_action"
+  ],
+  "mozillaSignatureRemoved": true,
+  "licenseRetained": true,
+  "probeOnly": true,
+  "fullUBlockOriginVerified": false
+}

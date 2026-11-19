@@ -1,0 +1,62 @@
+[
+  {
+    "name": "UBlockPortProbe.json",
+    "sha256": "cfc1aaf2ab451a9feb75cd99b16c58daf45b2840129a0954c952a0bd0563ce3f"
+  },
+  {
+    "name": "boot.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "build.log",
+    "sha256": "0ad58bac483be926a96e9953b66caf452ef990848a624c2abb180b3bbb9528c3"
+  },
+  {
+    "name": "bundled-list-audit.json",
+    "sha256": "dae565cff98628a5d8de48871a4be7fc3bbb69a4d9be3e98207ae1f528326173"
+  },
+  {
+    "name": "compiler-tests.json",
+    "sha256": "1ea75986ba014cc69331d6414995fc26f62acf0ebe9b8b9bafda248df52f0e6d"
+  },
+  {
+    "name": "devices.json",
+    "sha256": "23b0697bd6ab7ecd7a44352f97cf7c63115bd4d0f965cacf2da201c8cf31158a"
+  },
+  {
+    "name": "fixture-compilation.json",
+    "sha256": "f587c0e581eecdd196658b8e4d017a2d70ba3a9f30d13cfdd49e966d516d1e16"
+  },
+  {
+    "name": "native.stderr.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "native.stdout.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "popup.png",
+    "sha256": "8380fced089971ad105c4ab0a9df94780c241676e8ce84113415b533501ab664"
+  },
+  {
+    "name": "port-verdict.json",
+    "sha256": "bb43482f8ec181941de5c06b4fc79b01ef04641da08cedd9bb1cbde7123ba49b"
+  },
+  {
+    "name": "provenance.json",
+    "sha256": "35536e11e282eeacff30f16a32d3dff25865b5e675cba78837375628fb040d1c"
+  },
+  {
+    "name": "server.log",
+    "sha256": "c92918d78352c33781967a7fdfd2aee7f874b3d06472ee2ed888bf92f26a91ab"
+  },
+  {
+    "name": "staging-tests.json",
+    "sha256": "d05cc55cc9d89f7720384df022c7eb9c6af516987ec7e868010bd0295a4bd240"
+  },
+  {
+    "name": "toolchain.txt",
+    "sha256": "d509f7e4757a27f561dd8a82781f14a86652989ac35b3a9a61fb16fce70dc1a9"
+  }
+]

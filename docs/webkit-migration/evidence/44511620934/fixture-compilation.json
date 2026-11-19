@@ -1,0 +1,133 @@
+{
+  "rules": [
+    {
+      "id": 1,
+      "priority": 10,
+      "action": {
+        "type": "block"
+      },
+      "condition": {
+        "urlFilter": "/port/blocked.txt"
+      }
+    },
+    {
+      "id": 2,
+      "priority": 10,
+      "action": {
+        "type": "block"
+      },
+      "condition": {
+        "urlFilter": "/port/allowed.txt"
+      }
+    },
+    {
+      "id": 3,
+      "priority": 10,
+      "action": {
+        "type": "block"
+      },
+      "condition": {
+        "urlFilter": "/port/image-only.txt",
+        "resourceTypes": [
+          "image"
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "priority": 10,
+      "action": {
+        "type": "block"
+      },
+      "condition": {
+        "urlFilter": "/port/xhr-only.txt",
+        "resourceTypes": [
+          "xmlhttprequest"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "priority": 30,
+      "action": {
+        "type": "allow"
+      },
+      "condition": {
+        "urlFilter": "/port/allowed.txt"
+      }
+    },
+    {
+      "id": 6,
+      "priority": 30,
+      "action": {
+        "type": "allow"
+      },
+      "condition": {
+        "urlFilter": "/port/important.txt"
+      }
+    },
+    {
+      "id": 7,
+      "priority": 40,
+      "action": {
+        "type": "block"
+      },
+      "condition": {
+        "urlFilter": "/port/important.txt"
+      }
+    }
+  ],
+  "report": {
+    "source": "user-filters",
+    "environment": [
+      "safari",
+      "native_css_has"
+    ],
+    "sourceLines": 12,
+    "network": {
+      "filterCount": 7,
+      "acceptedFilterCount": 7,
+      "rejectedFilterCount": 0,
+      "generichideExclusions": [],
+      "generichideInclusions": []
+    },
+    "candidateRuleCount": 7,
+    "rejected": [
+      [
+        "Rejected filter: 127.0.0.1##^script:has-text(reynard-never-remove)"
+      ]
+    ],
+    "nonNetwork": [
+      {
+        "line": 9,
+        "text": "127.0.0.1##.port-ad",
+        "disposition": "delegated-to-original-content-engine-not-yet-verified",
+        "parseError": false
+      },
+      {
+        "line": 10,
+        "text": "127.0.0.1##+js(set-constant, __reynardScriptlet, true)",
+        "disposition": "scriptlet-delegated-to-original-engine-not-yet-verified",
+        "parseError": false
+      },
+      {
+        "line": 11,
+        "text": "127.0.0.1##^script:has-text(reynard-never-remove)",
+        "disposition": "unsupported-response-body-filtering",
+        "parseError": true
+      }
+    ],
+    "directives": [],
+    "ruleToSourceMapping": "Upstream merges/splits network rules; no claim of one output rule per input line",
+    "nativeInstallationVerified": false,
+    "unsupported": [
+      "blocking webRequest return channel",
+      "response body filtering",
+      "CNAME uncloaking",
+      "dynamic firewall/URL rules bridge",
+      "site power switch/whitelist bridge",
+      "network log accuracy",
+      "full filter-list selection/update bridge"
+    ]
+  }
+}

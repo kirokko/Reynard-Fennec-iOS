@@ -1,0 +1,14 @@
+{
+  "passed": [
+    "full package identity / license",
+    "full compiler produces block and allow, not a hand-written ABP parser",
+    "important block keeps upstream priority above ordinary exception",
+    "resource type condition retained",
+    "domain / third-party conditions retained",
+    "incompatible redirect-rule is explicitly reported",
+    "HTML filtering never silently disappears",
+    "cosmetic and scriptlets delegated, NOT claimed as installed",
+    "empty replacement compiles to empty rule set"
+  ],
+  "count": 9
+}

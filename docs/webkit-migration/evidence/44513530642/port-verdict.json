@@ -1,0 +1,12 @@
+{
+  "staticNetworkPassed": true,
+  "atomicRejectionPassed": true,
+  "storageRuleUpdatePassed": true,
+  "originalBackgroundReady": false,
+  "originalCosmeticPassed": false,
+  "originalScriptletPassed": false,
+  "originalPopupRenderedVersion": false,
+  "fullUBlockOriginVerified": false,
+  "sideStoreVerified": false,
+  "note": "Prototype only. Passing DNR fixtures does not imply full Firefox uBO compatibility. No IPA/release."
+}

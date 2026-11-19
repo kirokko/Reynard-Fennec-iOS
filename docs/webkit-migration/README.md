@@ -7,6 +7,7 @@ preserved Gecko rollback IPA or isolated test apps for the requested final produ
 - [中文源码审计 / API 与功能边界](AUDIT.zh-CN.md)
 - [实测结果与剩余交付项](RESULTS.zh-CN.md)
 - [完整版 uBlock Origin：官方包与实际网络取消能力诊断](FULL-UBLOCK-ORIGIN.zh-CN.md)
+- [后续非官方 uBO 移植：真实DNR拦截、原版外观过滤/弹窗，以及未完成的后台/scriptlet](UBLOCK-PORT.zh-CN.md)
 - [Floorp 参考记录（未引入其代码）](FLOORP-REFERENCE.zh-CN.md)
 - [具体实机测试 / 数据保护 / 升级回滚](DEVICE-TESTS.zh-CN.md)
 - [原版 UI fixture 截图来源与范围](ui-baseline/README.md)

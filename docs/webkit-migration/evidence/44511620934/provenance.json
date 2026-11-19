@@ -1,0 +1,28 @@
+{
+  "officialInput": {
+    "name": "uBlock Origin (full Firefox build, NOT Lite)",
+    "version": "1.76.4",
+    "url": "https://github.com/gorhill/uBlock/releases/download/1.76.4/uBlock0_1.76.4.firefox.signed.xpi",
+    "sha256": "66d0e3f21ce3b32b1bc0a9399b93cb2c9aa598ef18805d92118c76f66e266c1e",
+    "scope": "Official package parsing only. Separate fixture tests native request cancellation. No full uBO execution/compatibility claim.",
+    "license": "GPL-3.0; package is downloaded from upstream during CI, not modified or checked into this repository. Renaming to .zip preserves all package bytes."
+  },
+  "unmodifiedUpstreamFiles": 665,
+  "upstreamJavaScriptPatched": false,
+  "upstreamUIFilesPatched": false,
+  "modifiedManifestFields": [
+    "name",
+    "description",
+    "background",
+    "permissions",
+    "commands",
+    "content_scripts"
+  ],
+  "removedEmptyReservedCommands": [
+    "_execute_browser_action"
+  ],
+  "mozillaSignatureRemoved": true,
+  "licenseRetained": true,
+  "probeOnly": true,
+  "fullUBlockOriginVerified": false
+}

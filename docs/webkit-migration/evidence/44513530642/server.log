@@ -1,0 +1,7 @@
+127.0.0.1 - - [19/Nov/2026 11:20:02] "GET /port/index.html HTTP/1.1" 200 -
+127.0.0.1 - - [19/Nov/2026 11:22:31] "GET /port/index.html HTTP/1.1" 200 -
+127.0.0.1 - - [19/Nov/2026 11:22:45] "GET /port/control.txt?token=1795087364947 HTTP/1.1" 200 -
+127.0.0.1 - - [19/Nov/2026 11:22:45] "GET /port/allowed.txt?token=1795087364947 HTTP/1.1" 200 -
+127.0.0.1 - - [19/Nov/2026 11:22:45] "GET /port/image-only.txt?token=1795087364947 HTTP/1.1" 200 -
+127.0.0.1 - - [19/Nov/2026 11:22:45] "GET /port/new-rule.txt?token=1795087364947 HTTP/1.1" 200 -
+127.0.0.1 - - [19/Nov/2026 11:22:45] "GET /port/control.png?image=1795087364947 HTTP/1.1" 200 -

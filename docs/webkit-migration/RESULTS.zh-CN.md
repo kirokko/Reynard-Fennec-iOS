@@ -84,7 +84,7 @@ iphoneos SDK 26.5
 | MV3 service worker 后台 → 内容脚本/消息/存储 | 未通过：background callback 超过45秒未返回；不能推及所有 MV3 或所有设备 |
 | 用户 XPI、AMO 导入/更新/卸载管理 | 尚未实现，不冒充 fixture 是安装管理系统 |
 | Firefox 专属 API、webRequest 阻断、DNR | 未完成具体兼容测试 |
-| uBlock Origin | 官方1.76.4 XPI已原生解析；独立最小 blocking 实验确认取消返回值不生效。完整扩展未执行，**不兼容验收、不发布完整版**；见 FULL-UBLOCK-ORIGIN.zh-CN.md |
+| uBlock Origin | 官方原样Firefox阻断接口失败；后续非官方完整版源码移植已实测DNR静态拦截、原版基础外观过滤及原版弹窗。后台初始化/scriptlet失败、关键UI控制未桥接，**不兼容验收、不发布完整版**；见 UBLOCK-PORT.zh-CN.md（历史原样包诊断见FULL-UBLOCK-ORIGIN.zh-CN.md） |
 | 普通/私密扩展权限/后台数据隔离 | 未完成产品实现与验收；Cookie隔离通过不等于扩展隔离通过 |
 | SideStore 重签后原生 extension load | 待实机验证 |
 
@@ -100,6 +100,16 @@ iphoneos SDK 26.5
 **这不是完整 uBO 的运行测试，而是它所依赖的必要能力失败的实测。** 不拿 Lite 代替，不发布声称完整版的第二项目/IPA。新建 fork 或 SideStore 重签不能补出该 API；若要改为保留 Gecko，须先由用户明确调整先前“完全移除 Gecko”的要求。
 
 原始证据和源码对应详见 `FULL-UBLOCK-ORIGIN.zh-CN.md` 及 `evidence/44500800485/`。这一轮核心 WK 23项和原44项检查仍通过；绿色探测流程不是兼容性验收。
+
+## 后续非官方移植原型（不是 Lite）
+
+分支 `port/full-ubo-webkit`，已测代码 `3e2dc16`，原生run <https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/44516894753>。
+
+使用固定哈希的完整版Firefox XPI源文件，以真实原版编译器转换为原生DNR；普通block/allow、important优先级、图片/Fetch类型、拒绝非法更新保留旧集，以及写入存储并触发重编译后的拦截均通过。原版内容脚本在warm受控页面将测试元素隐藏，原版popup显示版本和站点；不把这些局部结果标为完整兼容。
+
+仍有真实错误：`browser.contentScripts.register`缺失、`abp:*`订阅菜单匹配模式被拒；原后台初始化未完成，scriptlet未生效。原版电源开关/白名单/动态规则/默认订阅与DNR尚未打通，因此不能作为日用扩展或IPA交付。
+
+原44项加3项新回归共47项Node测试、3项暂存测试、9项真实完整版编译检查通过。第3轮旧探测曾把占位时间?误判就绪，原件及更正均公开，最终已改为严格判定并回归测试。详情和所有历史原始证据见 `UBLOCK-PORT.zh-CN.md`。
 
 ## 视频与性能报告
 

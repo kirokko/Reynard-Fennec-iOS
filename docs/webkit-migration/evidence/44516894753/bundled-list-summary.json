@@ -1,0 +1,19 @@
+{
+  "source": "assets/ublock/filters.min.txt",
+  "environment": [
+    "ublock",
+    "webext",
+    "ipaddress",
+    "mobile",
+    "safari",
+    "native_css_has"
+  ],
+  "sourceLines": 26454,
+  "candidateRuleCount": 3821,
+  "rejectedEntries": 2005,
+  "nonNetworkEntries": 17439,
+  "installed": false,
+  "fullAuditSHA256": "dae565cff98628a5d8de48871a4be7fc3bbb69a4d9be3e98207ae1f528326173",
+  "fullAuditArtifact": "full-ubo-webkit-port / bundled-list-audit.json",
+  "note": "Conversion audit only, not native installation or compatibility rate"
+}
