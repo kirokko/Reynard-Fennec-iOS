@@ -1,5 +1,5 @@
 name: Build SideStore IPA (manual)
-run-name: ${{ inputs.ui_checks_only && 'UIKit UI checks (no IPA)' || 'Build SideStore IPA (manual)' }}
+run-name: ${{ inputs.webkit_checks_only && 'WebKit migration feasibility (no IPA)' || inputs.ui_checks_only && 'UIKit UI checks (no IPA)' || 'Build SideStore IPA (manual)' }}
 
 # Entry point on this fork's default branch (fennec-ios).
 # Do not spend macOS runner time on every UI edit. This builds the standard
@@ -7,6 +7,10 @@ run-name: ${{ inputs.ui_checks_only && 'UIKit UI checks (no IPA)' || 'Build Side
 on:
   workflow_dispatch:
     inputs:
+      webkit_checks_only:
+        description: 'Isolated WebKit engine/native extensions feasibility gate; does not build an IPA'
+        type: boolean
+        default: false
       ui_checks_only:
         description: 'Run UIKit regression checks and review screenshots without rebuilding the IPA'
         type: boolean
@@ -31,8 +35,26 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  webkit_checks:
+    if: ${{ inputs.webkit_checks_only }}
+    runs-on: macos-26
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '26.6'
+      - name: Compile iPhone sources and run real WebKit integration probes
+        run: bash tools/ci/Test-WebKit.sh
+      - name: Preserve exact SDK and runtime findings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: webkit-feasibility
+          path: ${{ runner.temp }}/reynard-webkit-smoke/results
+
   ui_checks:
-    if: ${{ inputs.ui_checks_only }}
+    if: ${{ inputs.ui_checks_only && !inputs.webkit_checks_only }}
     runs-on: macos-26
     timeout-minutes: 16
     steps:
@@ -46,7 +68,7 @@ jobs:
           strategy: full
 
   build:
-    if: ${{ !inputs.ui_checks_only }}
+    if: ${{ !inputs.ui_checks_only && !inputs.webkit_checks_only }}
     uses: ./.github/workflows/build.yml
     with:
       checkout_ref: ${{ github.sha }}

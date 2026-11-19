@@ -1,0 +1,8 @@
+{
+  "manifest_version": 2,
+  "name": "Reynard native API fixture MV2",
+  "version": "1.0",
+  "permissions": ["storage", "http://127.0.0.1/*"],
+  "background": {"scripts": ["background.js"], "persistent": false},
+  "content_scripts": [{"matches": ["http://127.0.0.1/*"], "js": ["content.js"], "run_at": "document_idle"}]
+}

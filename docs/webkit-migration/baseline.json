@@ -1,0 +1,2666 @@
+{
+  "commit": "14452d327bf08c6222567adfd308701cf9e16e15",
+  "scope": "text normalized to LF; binary bytes exact; not runtime parity",
+  "files": [
+    {
+      "path": ".github/FUNDING.yml",
+      "sha256": "b28607d41fe07bbc15bccd6f777b089ce9a2e1a929dd73e079b20d3685133b50"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/bug_report.yml",
+      "sha256": "419c8ea789ace602c26653b63d3188b40bd7acad3e89745e5c21280285ccab63"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/config.yml",
+      "sha256": "1f103c6a9dd07cd13a9a6f17ace6b813f47747eb9cb7e00488cb2073caaf91bb"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/feature_request.yml",
+      "sha256": "e7b61e4373acb1683497a1bfbf680bb0359e807a07a743d9f8904d5dd9980216"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "sha256": "56527c798f7c09488731d2c592794a961ca976c40a7946897bf843a197938a26"
+    },
+    {
+      "path": ".github/actions/browser-checks/action.yml",
+      "sha256": "33e9d09078679912024c77adc56044f817d9792d98bb1e319a7d518d0b25f2de"
+    },
+    {
+      "path": ".github/source.json",
+      "sha256": "c680d1396327be0fa0ffc9755749eef3a4f9399f214b9f5a0cc9e54611cd2838"
+    },
+    {
+      "path": ".github/update_source.py",
+      "sha256": "4ab9bc980346da3ee621ece9b6dd08ff652411037d03d33b3cbb512d199f4a62"
+    },
+    {
+      "path": ".github/workflows/build-sidestore.yml",
+      "sha256": "4e3ad6a14624d21ffab4069b7555b01de63e50fb3802c1654370bbcd5886876b"
+    },
+    {
+      "path": ".github/workflows/build.yml",
+      "sha256": "ca06c64f8b782a2f5d60d7a9ff81e7a47a0efb8d3e09d96ba5324f58856be6ad"
+    },
+    {
+      "path": ".github/workflows/capture-protection-experiment.yml",
+      "sha256": "f1bc41a9a73e7485f995748a16e1a7dd1e9834678dde3458a214bb606f3e2634"
+    },
+    {
+      "path": "browser/Configuration/Reynard.xcconfig",
+      "sha256": "cbe751d7fbe085f18fdc80077df84cb680ca3a8415d7a2dcbe49161a39880f2d"
+    },
+    {
+      "path": "browser/Extensions/OpenIn/Info.plist",
+      "sha256": "2544535665960319022665f64f8454b86094c5a710873a1a0235e37ef27c6f7b"
+    },
+    {
+      "path": "browser/Extensions/OpenIn/OpenInViewController.swift",
+      "sha256": "33368dea271ad7343fd609e2f87464b7c519b9a4baaa4a9f89f3080694500ce8"
+    },
+    {
+      "path": "browser/GeckoView/Addons/Addon.swift",
+      "sha256": "d3bfb4ae21646bbd78d3bc539bebba09f5c52f1365fa35a422bf3e218658f577"
+    },
+    {
+      "path": "browser/GeckoView/Addons/AddonAction.swift",
+      "sha256": "c9787a963736196c89ae2084cddbd637550f32da2db19d7f824d0eb23b159ab5"
+    },
+    {
+      "path": "browser/GeckoView/Addons/AddonDelegate.swift",
+      "sha256": "67338b711f2aeeb1b1ed17a8f6085644cd1311ced1a3f94a11ddc9326410ed44"
+    },
+    {
+      "path": "browser/GeckoView/Addons/AddonEvents.swift",
+      "sha256": "73927beb1c5b3213c4e261da5d62291cc87802111989da2af080af77cae5c01a"
+    },
+    {
+      "path": "browser/GeckoView/Addons/AddonMessaging.swift",
+      "sha256": "8102f0e7d63592a5111d9ff02ecec379beba755a99e70a0bd2c746a929ed6223"
+    },
+    {
+      "path": "browser/GeckoView/Addons/AddonMetaData.swift",
+      "sha256": "0dcd4c9ac9d710f546bed4b95fe84c62b73dd2a30f460162275799367501910e"
+    },
+    {
+      "path": "browser/GeckoView/Addons/AddonPermissions.swift",
+      "sha256": "12854aca2108971ad6f2fe0c502621be591c8f8faa68ea20c617d62debd170eb"
+    },
+    {
+      "path": "browser/GeckoView/Addons/AddonRuntime.swift",
+      "sha256": "fd64d9c6bfefb965eba414e90bcd93ab189e9aec2bf62b12d1f1b9161a6825db"
+    },
+    {
+      "path": "browser/GeckoView/Addons/AddonRuntimeCommands.swift",
+      "sha256": "90122c713992485b44fe33e1ceb7ee14905b2ee93d6e472160403ed9609f9287"
+    },
+    {
+      "path": "browser/GeckoView/Addons/AddonRuntimeEvents.swift",
+      "sha256": "7d98d339ca583d3833e561eadfe893eed7303086acb23bc4db073fc6e49a7b1b"
+    },
+    {
+      "path": "browser/GeckoView/Addons/AddonRuntimeStore.swift",
+      "sha256": "5bfa1a1a30820c130f62c362d8b2d62a58cf0bd6964a56cd2cd20bad83496c3f"
+    },
+    {
+      "path": "browser/GeckoView/Addons/AddonSession.swift",
+      "sha256": "de9c111035f7ed4400b1ccfc954564ce6881fe2cf4be3e3a94949279bc29a5cf"
+    },
+    {
+      "path": "browser/GeckoView/Controllers/ContentBlockingController.swift",
+      "sha256": "25b03fb850a6e711fea461b96cc3c8723ba129a857388c2b6c81fab02562f0e7"
+    },
+    {
+      "path": "browser/GeckoView/Controllers/GeckoStorageController.swift",
+      "sha256": "4cd48b66d3d838d048b3bd7f5edff3bfa2ce599fffa26e30ea6bd5efcf3588cd"
+    },
+    {
+      "path": "browser/GeckoView/Delegates/ContentBlockingDelegate.swift",
+      "sha256": "93fab3996632d38dd9ff76dabbf38eeb0d0745804053c29deee0bce34b0613cc"
+    },
+    {
+      "path": "browser/GeckoView/Delegates/ContentDelegate.swift",
+      "sha256": "c505078240f812f1932a6a6e4ad3429c0ef1e5332c36c99355a9959272e74d31"
+    },
+    {
+      "path": "browser/GeckoView/Delegates/HistoryDelegate.swift",
+      "sha256": "755a0f859c6984481e1afea9ee7fd6af3daac2c599db727d0b6c1c863d18ce19"
+    },
+    {
+      "path": "browser/GeckoView/Delegates/MediaSessionDelegate.swift",
+      "sha256": "8c04db73f9928c79c512ebd6e2514dcaca7386f8103fd5e569c17db2f74890b3"
+    },
+    {
+      "path": "browser/GeckoView/Delegates/NavigationDelegate.swift",
+      "sha256": "c4de09993a7da32c7152822187bd6a50544cdddc067674f91276e22a08a871d3"
+    },
+    {
+      "path": "browser/GeckoView/Delegates/PermissionDelegate.swift",
+      "sha256": "daf5c229174a164d6741d0c91eaa3ae6df756088976e0d57719bb0a0fd6a2bc4"
+    },
+    {
+      "path": "browser/GeckoView/Delegates/PrintDelegate.swift",
+      "sha256": "103ef5ea7040d077382eaac2baff73e3e1a56573d6ae704ab48355414bafe6d0"
+    },
+    {
+      "path": "browser/GeckoView/Delegates/ProgressDelegate.swift",
+      "sha256": "d5df6f54e67aecb1863db950049f8b090704c406164ca2a3ed278a4e85736fc5"
+    },
+    {
+      "path": "browser/GeckoView/Delegates/PromptDelegate.swift",
+      "sha256": "a7970c060c16be3a7f70f63455b74133614700b8cb550c1067bbfd9d5492ec33"
+    },
+    {
+      "path": "browser/GeckoView/Delegates/ScrollDelegate.swift",
+      "sha256": "e1b1fc04666faec4ba0d33514339271f040a5fcb0d081fb00e8d6df2e48f7034"
+    },
+    {
+      "path": "browser/GeckoView/Delegates/SelectionActionDelegate.swift",
+      "sha256": "475e4cded7d68d13f0b81aad016430bd31ccfba4bc24e2bc664da914d3b4a03f"
+    },
+    {
+      "path": "browser/GeckoView/Events/EventDispatcher.swift",
+      "sha256": "63d17b679eb89321a10bb6e93f75996cf0f97edea02a899e008dfad92267f17e"
+    },
+    {
+      "path": "browser/GeckoView/Events/SelectionActionParser.swift",
+      "sha256": "46c8f0c7e0c8826276df5e3c7bbe430c6b9a9441fee7e8e378870cc83603ed42"
+    },
+    {
+      "path": "browser/GeckoView/Events/SelectionActionRequest.swift",
+      "sha256": "8180889f3ec98e7d0b242b20a260f848323c5fc1cdaacfcbb57d5e9e8e55a40d"
+    },
+    {
+      "path": "browser/GeckoView/Info.plist",
+      "sha256": "0a8adbf845bf9a9879dd2854691f68362db5e271b841ed768fb29a6b38583729"
+    },
+    {
+      "path": "browser/GeckoView/Prompts/PromptParser.swift",
+      "sha256": "514c3d2f0fffadbff8728c3ea505c40a0d12b065212ef18ab560aa9764a05953"
+    },
+    {
+      "path": "browser/GeckoView/Prompts/PromptRequest.swift",
+      "sha256": "5dc40a031c2c8125e426dfbb9d0bbde349cbd3e2b8cd5ced4c69a7d5ed51e3ed"
+    },
+    {
+      "path": "browser/GeckoView/Prompts/PromptRequests/AlertPromptRequest.swift",
+      "sha256": "bfa77ea6da4022c844c708e04a4aaa81361b7d6fdd3065a49a4c0f803527f1d0"
+    },
+    {
+      "path": "browser/GeckoView/Prompts/PromptRequests/AuthPromptRequest.swift",
+      "sha256": "ff64870c215b35e8edf888f3686933d5ea32da59135a48d652072ac3ec148312"
+    },
+    {
+      "path": "browser/GeckoView/Prompts/PromptRequests/ButtonPromptRequest.swift",
+      "sha256": "d6d3f9306bef17899b94dd4e99ef2965b8628254e7eac2e5edf8aa6f4d2c8bc4"
+    },
+    {
+      "path": "browser/GeckoView/Prompts/PromptRequests/ColorPromptRequest.swift",
+      "sha256": "69e3874218f4ccafc37c7ea0342343d12ffa297a043efd2357d7ab74ef114afc"
+    },
+    {
+      "path": "browser/GeckoView/Prompts/PromptRequests/DateTimePromptRequest.swift",
+      "sha256": "c78c73dbc93af054b63526983c5798c8ce004d7b7a8b7933ce89eacec995f1cd"
+    },
+    {
+      "path": "browser/GeckoView/Prompts/PromptRequests/FilePickerPromptRequest.swift",
+      "sha256": "e91557a0d0d40adea748871f1b1f30ada8954115a1a2a3e51ed8952bf330095d"
+    },
+    {
+      "path": "browser/GeckoView/Prompts/PromptRequests/FolderUploadPromptRequest.swift",
+      "sha256": "4b19d3066875a2b782a5ec015fb7c3b8a5ef680b343009312a8b151c4d0d05ac"
+    },
+    {
+      "path": "browser/GeckoView/Prompts/PromptRequests/SelectPromptRequest.swift",
+      "sha256": "b9639b3b6d5adfa02a666d254d60328cbd1e9627d7ce84da811172e312849503"
+    },
+    {
+      "path": "browser/GeckoView/Prompts/PromptRequests/SharePromptRequest.swift",
+      "sha256": "b4157dba68db6b27052c716797c2e6396a1208fdedd9788bf858785fad988958"
+    },
+    {
+      "path": "browser/GeckoView/Prompts/PromptRequests/TextPromptRequest.swift",
+      "sha256": "3f1873798405546b8dae35480b6225adc5fbd51fa3bc1596489aa9f7c8edcd05"
+    },
+    {
+      "path": "browser/GeckoView/Prompts/PromptResponse.swift",
+      "sha256": "fde1128b9c5ad9af3519626247bbf0ef845ec58d1e6ee3e8bcde788d965c3e64"
+    },
+    {
+      "path": "browser/GeckoView/Runtime/GeckoRuntime.swift",
+      "sha256": "323d00e72971ee30901bde9c63df47b2c8c902c143f897b613d270fa5c58361a"
+    },
+    {
+      "path": "browser/GeckoView/Runtime/GeckoRuntimeBridge.h",
+      "sha256": "ce26c1e128d05c324642593598c5f474cfc0890c8d7e4cc1f66b9b75624134e5"
+    },
+    {
+      "path": "browser/GeckoView/Runtime/GeckoRuntimeBridge.mm",
+      "sha256": "9625b71cf6b98a818b9af378cab6962fe7dbad4a7dadeb58b75e33ac2a41a2bb"
+    },
+    {
+      "path": "browser/GeckoView/Session/GeckoAutofillHandler.swift",
+      "sha256": "f1ae7821b61c47c0f69b98b42c22d54be0078e006548cb592a95bc2a08cf5b1d"
+    },
+    {
+      "path": "browser/GeckoView/Session/GeckoSession.swift",
+      "sha256": "5b46498426cdd0e4ff832076910906aba2bccb80dc131b45f6c59884c65cf8c7"
+    },
+    {
+      "path": "browser/GeckoView/Session/GeckoSessionHandler.swift",
+      "sha256": "8f65ca8961c2bc93c5f9b752f1cc00675f8fe86359c577d442ad271eb9d24c9f"
+    },
+    {
+      "path": "browser/GeckoView/Session/GeckoSessionSettings.swift",
+      "sha256": "604382c4c1441399793527acba8071d892eb7523c8ad3adbfdfa027870b68fd9"
+    },
+    {
+      "path": "browser/GeckoView/Session/GeckoSessionState.swift",
+      "sha256": "510a7831ceb23962627f10b313e10d83eaf4d0e4682b4d5f95614a9e9b7c6487"
+    },
+    {
+      "path": "browser/GeckoView/Support/AllowOrDeny.swift",
+      "sha256": "2d2d077aad95dafe958225171d65edafb1afb4f3af316182530c2430f1e26449"
+    },
+    {
+      "path": "browser/GeckoView/Support/ContentPermission.swift",
+      "sha256": "043835ed27b3d0e48c072dc248de718d831ecc4c6670d91d883e497db38ae678"
+    },
+    {
+      "path": "browser/GeckoView/Support/PayloadValue.swift",
+      "sha256": "499eecc6bf42d55770872547aa93e62634255d11bef6ac1549d9e8f8d5ade2a8"
+    },
+    {
+      "path": "browser/GeckoView/View/GeckoView.h",
+      "sha256": "818e3bde16c69bffa82e779771b355da2792b14bf39adf7fe871ec6510cc8cca"
+    },
+    {
+      "path": "browser/GeckoView/View/GeckoView.swift",
+      "sha256": "755d6dcc93e9781b385a77237c633f1c3c739d44ea8134765c8ae6a9f68322af"
+    },
+    {
+      "path": "browser/Helper/Entitlements/Reynard-Helper.entitlements",
+      "sha256": "800c2b9d4ba82779a76ecc850fbef4213ac9c251857128b1ad4c3e507fbc1d01"
+    },
+    {
+      "path": "browser/Helper/Entitlements/Reynard-Helper.private.entitlements",
+      "sha256": "9c6ea1fc5148c646ca22263bda8674c13697e002d0db04709eeab2d98f939aa0"
+    },
+    {
+      "path": "browser/Helper/ExtensionBridge.h",
+      "sha256": "62c7c6be6831f4f0443235d7ca9b081a89eb6241c76860e2988efbfee8766b75"
+    },
+    {
+      "path": "browser/Helper/ExtensionBridge.mm",
+      "sha256": "0afb23882e43236e10592a7c894f04a1e50bb27513472c0dd5bc47a656c38a67"
+    },
+    {
+      "path": "browser/Helper/Helper.swift",
+      "sha256": "bd4b002e168dcf40f313c0a99feecebcb214a414d4bfd6fd1945d1cfb87fd2a4"
+    },
+    {
+      "path": "browser/Helper/Info.plist",
+      "sha256": "321555a440ec9c3635356e75bff523be0468638b29dc4038594c0225e60197f2"
+    },
+    {
+      "path": "browser/Helper/main.m",
+      "sha256": "0232476b907de0ac73aecb9471fdb9cc87688bc7f671f1949460708132f4c51d"
+    },
+    {
+      "path": "browser/Reynard.xcodeproj/project.pbxproj",
+      "sha256": "cb0ce7a9ddb56a4270bbe4c32a817b0a46e3625cc91c83b1e9b04fd81b04a62a"
+    },
+    {
+      "path": "browser/Reynard.xcodeproj/xcshareddata/xcschemes/Reynard Helper.xcscheme",
+      "sha256": "b7bce2bd03c0ea23ef82b120eb8249b93bb6127dc5d80826b36e1e61b995019d"
+    },
+    {
+      "path": "browser/Reynard.xcodeproj/xcshareddata/xcschemes/Reynard.xcscheme",
+      "sha256": "bb987170d139cb8955abaf3ca04fbda5dd8830db953c48df03be221af9fb40a3"
+    },
+    {
+      "path": "browser/Reynard/AppDelegate.swift",
+      "sha256": "c21ff5b7fcb29b490e8f051d132b1820b1d90a6421bec658132913e999c8634a"
+    },
+    {
+      "path": "browser/Reynard/ApplicationMenuBuilder.swift",
+      "sha256": "7de48c087fd73f54840638a09cff97c1c261a12baaec2b8075a53d569f2571e7"
+    },
+    {
+      "path": "browser/Reynard/Bridging/Reynard-Bridging-Header.h",
+      "sha256": "d0f334d6cec13c5f0788f8151ffec18696c0065ef34472dd5f912d528c87e3f1"
+    },
+    {
+      "path": "browser/Reynard/Bridging/UIKit+Private.h",
+      "sha256": "c2aa389d8b562d77510edc4f5246c47a6a2a923bedd9e1ce3a342c9b1e6eb4ac"
+    },
+    {
+      "path": "browser/Reynard/Client/Extensions/Array+Safe.swift",
+      "sha256": "7417fa1673d4dd3ddf660658ee9cf4c1c3125721058d3283797c48cf0c1d4bf0"
+    },
+    {
+      "path": "browser/Reynard/Client/Extensions/NSLayoutConstraint+Priority.swift",
+      "sha256": "a4d51a939aa939a3baa88b0c43e985e1d3d8babcefcd0abbc7652bc6d1df1cb4"
+    },
+    {
+      "path": "browser/Reynard/Client/Extensions/Notifications.swift",
+      "sha256": "a0685477d99b7978ca0f6133338fa96236782c832b353e4ff7aac967fafcfcf1"
+    },
+    {
+      "path": "browser/Reynard/Client/Extensions/StringEncoding+IANA.swift",
+      "sha256": "4cc2a081e178a296c0046d5587a2e7daa0da41c2f2597cb19a3939ba4cee6c70"
+    },
+    {
+      "path": "browser/Reynard/Client/Extensions/UIApplication+Presentation.swift",
+      "sha256": "f074a5bc10876673e84169c9441e8bf6d93285eba23ccd7a3446200f4ba23812"
+    },
+    {
+      "path": "browser/Reynard/Client/Extensions/UIColor+Utilities.swift",
+      "sha256": "f0a4db975e7b9fd8ba933af602d4bdd115fb047b4e93c02ca3f1cebf9ea90876"
+    },
+    {
+      "path": "browser/Reynard/Client/Extensions/UIGlassEffect+Private.swift",
+      "sha256": "d217e40d0af6b21c1c5fe0194e79a8b76c45e50354992e57d473ca526aa57325"
+    },
+    {
+      "path": "browser/Reynard/Client/Extensions/UIView+CommonAncestor.swift",
+      "sha256": "b63ceccd308e20a8ddfc91bf4877c9f76664c4424135194df193411999f795e6"
+    },
+    {
+      "path": "browser/Reynard/Client/Extensions/UIView+DescendantSearch.swift",
+      "sha256": "a0d95ade2bc12976a7c046913e020e61e9f8a45db48725caf5391effc1692857"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Addons/AddonCoordinator.swift",
+      "sha256": "d4b2f9dbc836d8105b0aaa628e0c6bd00eb4673f2ddb8aa99472d666c893b4c5"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Addons/AddonErrorPresentation.swift",
+      "sha256": "6df778425f9acb112fb647e8d512e16f419be4a40edf7c35760d08898463c8ba"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Addons/AddonIconLoader.swift",
+      "sha256": "67871c152debbb2c98111573b15da77d60c9895b84b92b29a7a6bae4a0823447"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Addons/AddonLocalizable.xcstrings",
+      "sha256": "c7a3863c71cbdfb21f3cbf534d82ca02fc914114ed3512f4148cc601b806eecc"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Addons/AddonMenuItem.swift",
+      "sha256": "44852b85c3850c7624f42b7e4ad5d05f161625fdd9a885a5f530f17dd96e914f"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Addons/AddonPermissionPromptViewController.swift",
+      "sha256": "aeffb77553d2dc7cdd808f81003ac663a7c26bd70d7ed944a537adb1a04573f1"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Addons/AddonPermissionSupport.swift",
+      "sha256": "59418211921d9dc87284a9f7f14dfc6ac3920daadcd23f92c8fe4bab6e531d8b"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Addons/AddonPopupViewController.swift",
+      "sha256": "2b3a4ba9c9afb87125128f51f92a7e528c4689caff72acf42c546d88baf49ad6"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Addons/AddonUpdateCoordinator.swift",
+      "sha256": "f5c91514b7cf3973312e2b552add41366854ed7b47ea9ffc1f7367f5a113c1fb"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Appearance/AppAppearance.swift",
+      "sha256": "9479f54b1518dc355b1716bf84baf3204e7090f1d2fe3658e4af6bd73f901eee"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Appearance/AppAppearanceController.swift",
+      "sha256": "6709cf65d57bd64433bcd9c1c1e37ebca807afe780c923fc9daf7522b988382a"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Appearance/FennecCaptureProbeViewController.swift",
+      "sha256": "4de3ba4b1570016fca19fb9f110b3f048cefea86039acaf75a0d25b4003b5577"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Appearance/FennecLocalizable.xcstrings",
+      "sha256": "78772b0604de0ea08649607dd8b9e58b345e165ab505a611b7d5d53281dbb1ea"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Appearance/FennecPrivacyShield.swift",
+      "sha256": "bcd0f32a56ca477568d1892908831b4cd5785e3efd3417e09d7ec7d3cd0a3d63"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Appearance/FennecSecureCanvasExperiment.swift",
+      "sha256": "d4bf8d147180982a9ce5453c62c9d675824478b7ff27b6a29e73bc0553f26fcb"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Appearance/FennecTheme.swift",
+      "sha256": "af655514d1ec1e7dc75e1b6c6d574adcec674bcee9bc12a64b2739cf66ecd6e5"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/BrowserLayout.swift",
+      "sha256": "fb01bde81b0a8d93d1eef3e29739bdf20278209a93a0d790722ecf1153a9448a"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/BrowserViewController+Addons.swift",
+      "sha256": "cddd97b79b68fddce59db26f85580760bcde54339a765535181737dd68fd42fd"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/BrowserViewController+AddressBar.swift",
+      "sha256": "6b1944c129f58204688abef304b380e26de2d2e2e570ba207dc145554091e8f4"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/BrowserViewController+BrowserActions.swift",
+      "sha256": "7c2a2562a137757afe5fd2c08de309296ace8ed28bed58f979a8c4d3e27fe494"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/BrowserViewController+ContentOverlay.swift",
+      "sha256": "20688360226d704b6e9821720fe4ef31a49abbfb4d86c205db3eed2504da5b18"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/BrowserViewController+ContextMenu.swift",
+      "sha256": "6502b2403ce5c2a8756ed08dfdc9e6b842f1459b6a9d284f0dd41f166265e92c"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/BrowserViewController+Downloads.swift",
+      "sha256": "84cd4f17b59556871cae0123abc0e981aca5aa04bfa03f01ff8f043594b7f779"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/BrowserViewController+FennecMenu.swift",
+      "sha256": "e824b8b7f41ab19b7b9ab9395c793509916038fc30bd89ddef4c6f8dd2f92135"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/BrowserViewController+KeyCommands.swift",
+      "sha256": "36f9b68c8fae9b66c6a887783274deb7d154f2aec4414c963b01e5ff8eac2694"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/BrowserViewController+Sidebar.swift",
+      "sha256": "52cdc27b1c7fad4ee6dde2f1984c348301788c6ea974cb897044366693bcade4"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/BrowserViewController+TabManager.swift",
+      "sha256": "6900992ea471650acdc2d3d8a01c9ce55d374e8c80c589c2c611bea552fe5822"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/BrowserViewController+TabPresentation.swift",
+      "sha256": "c2f8ef7ae8bd3ad2f80c01d4c5433fb2772467a610195d21b8a56fbcc2498ee3"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/BrowserViewController.swift",
+      "sha256": "41ec36e291119b1eae02babd9bb0c9adbf61742dd7f893c313cfeae2eede90e4"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/ActionBar/ActionBar.swift",
+      "sha256": "3da1595df8ebe3f695e962078e6d9c9c2d4ab1f20415c6a9f4f48d72e835a755"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/ActionBar/FindInPage/FindInPageActionBar.swift",
+      "sha256": "b85fba0eced914aa4985d55a06d89a3996516ad4e348c5fc51e603a78b370332"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/ActionBar/FindInPage/FindInPageActivity.swift",
+      "sha256": "f7a1356672656e9e7107fe178342750b07bd0895e08642a546038e64b274acf2"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/ActionBar/FindInPage/FindInPageTextField.swift",
+      "sha256": "802e25c1b4ed756c5f5f01bd87651405c41806a586a330a5acf98c8ac18c3a48"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/ActionBar/KeyboardDismissal/KeyboardDismissalActionBar.swift",
+      "sha256": "64d0d195272e566f745b6e83b16c2c26d11c128911c0bb2cd68abc1769c5f635"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/ActionBar/PageZoom/PageZoomActionBar.swift",
+      "sha256": "2327015a0424d0f4100e63e1f51fb700ecd34906d06d8c1414d1fdd3a5e8fc77"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/AddressBar/AddressBar.swift",
+      "sha256": "7f0193f3a6acf9c276fee5b8fd98f58ebe37eee1edabf41480e8a9efed56076c"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/AddressBar/AddressBarButton.swift",
+      "sha256": "4e75a9f21697cacfdf14ae15058f93073a47e074e6d2d9ba360916f3555c59c0"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/AddressBar/AddressBarDismissButton.swift",
+      "sha256": "bc92d9f2bfe0fae098b9fb052539a7e2e3f74d48bfde05c39429e88471f783e9"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/AddressBar/AddressBarGestures.swift",
+      "sha256": "ee55b8fc86d4696ec692400791f1e35922206b8f586c37fd075f233821baf081"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/AddressBar/AddressBarMenu.swift",
+      "sha256": "37ae5e55028fded00ca311a7f95981591fdbb2d3cd66812d31a4f682260a201e"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/AddressBar/AddressBarSearchDelegate.swift",
+      "sha256": "5a60f94c4d8c3459cafd79907f0c1fd48609e3a4e26bae95f558610f1f7d2e33"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/AddressBar/AddressBarTextField.swift",
+      "sha256": "6f3671fb65cdced478247c4982a013d523bbf5f5c50e66edccc64bd38702d61c"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/AddressBar/FennecAddressDisplay.swift",
+      "sha256": "2bb994725758e41082059a769ab83d7bd27cfa26a6019570d3665877972c92c1"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/BrowserChrome.swift",
+      "sha256": "1fd0a76956114c238022fb9e0740f4aa49cc2507210f687633571148ae0f13d2"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/ChromeMode.swift",
+      "sha256": "12633a2dd5ed05e29569dd08c132a2fded2109e904c2eb59f8524650379549e6"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/ChromeOverlayContentView.swift",
+      "sha256": "664238f716ffa886a28dfe805322565443df94190bf1de73605df79b4b6e0fc3"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/ChromePosition.swift",
+      "sha256": "e7e47b2eb6b5ed0c6067370d613df9302067c0cd8d81dbbda96af8c4d2a2b330"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/FennecMenuViewController.swift",
+      "sha256": "c9da85b809a5fe1a6a5784bec77c1adc91660f04e6c64d533b0e9453f459cde7"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/FennecSearchPopup.swift",
+      "sha256": "3839374eb592c8d27a9fee31bf4749fa32da41c7adcb2993d2bbd348b651a3b8"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/Toolbar/BottomToolbar.swift",
+      "sha256": "0841ebcdc533a931afc4e2029cb77d886e6f6e1e376ae60ef05f2e507cd5bbcf"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/Toolbar/ToolBarButton.swift",
+      "sha256": "ff441f945e8eddf8b6e40939c3fc20c23b7eb18627ddfc656fddc289aa6753f5"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/Toolbar/ToolbarButtonMenus.swift",
+      "sha256": "1edad5dcae8ce0fd6f3e9925bde775d380da8467645761253e9446128f1ce239"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/Toolbar/ToolbarController.swift",
+      "sha256": "701cbea4df6db4222c08867c466d488c5af4cf45563907bbb86020022f97952d"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Chrome/Toolbar/TopToolbar.swift",
+      "sha256": "e04db0deac13d23d563c53ab3b4ef8e43b95cee75c69eddbff03bee9ed7f3319"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/ContentView.swift",
+      "sha256": "e495de720bb6fe57a0a6a358a81d6ada6615e720e191048d257a3089d4135774"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/FennecRefreshIndicator.swift",
+      "sha256": "76753c04552de8d7655126d4851cfbd081e7afc71fb9981e58482cff6c26277e"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/OverlayContentView.swift",
+      "sha256": "1a3484b64308395d8fd9f497ded3d7be5f1372784a8e6483b53647375a9d326b"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/ColorPicker/ColorPicker.swift",
+      "sha256": "9436386402a5bb1a9e07f39ddb6f251597d3c6914b493d5f256c55bd79657df8"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/DateTimePicker/DateTimePicker.swift",
+      "sha256": "757cc2e12bef74a84fd90d95892a2e675a2912703e3dfa5a0806b316c3819a79"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/DateTimePicker/DateTimePickerViewController.swift",
+      "sha256": "33768d3b97a441ca5637586d7af2d212b15531d8c78208c395a2626a9d084aee"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/FilePicker/FilePicker.swift",
+      "sha256": "292d2b64aa6811acc45ec331cfad5e362f1cc1854cb7043854dc0282905f1286"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/FilePicker/FilePickerAcceptedTypes.swift",
+      "sha256": "281e8c3bf461d5ee405009547222a56d3be45ed62b7eff6162679e43759f88c0"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/FilePicker/FilePickerDelegateCallbacks.swift",
+      "sha256": "60f15e1e312f964c6a8a1b3b5970c0eb2a78b1b798917c159576049a1fcaec22"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/FilePicker/FilePickerDocumentPicker.swift",
+      "sha256": "b7632d364977bd3ddfa88e1a1746fa0f731fc612a6bb8187baea3d23bffc28ee"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/FilePicker/FilePickerMediaPicker.swift",
+      "sha256": "0880fc3597555ecdade36a9d00d5bd27f73bf53a8aed389e00709a2af0e55596"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/FilePicker/FilePickerMenu.swift",
+      "sha256": "dc9482d3f29bff158b8406b13cb1a859409dd0be78af9af5a9b51831fe9630dc"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/FilePicker/FilePickerMenuAnchorButton.swift",
+      "sha256": "0a695623fe6aaa6f3fcf1a34efd76388d76cea493d14c1531bc24925347a7462"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/FilePicker/FilePickerStaging.swift",
+      "sha256": "e1d83f66f978c8f9d4611275374bf8d320b4f6b5dbf233d95da491284878b002"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/PermissionPrompt/PermissionPromptPresenter.swift",
+      "sha256": "ca4e060e3a2336ebcc0843616ba4f56575f26de58720bfa89bee3fd744816a89"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/PromptAlertController.swift",
+      "sha256": "d63e80ed54279f39eb7f03c03279f55ed7075be9f049f6588b487dfe2cb857d2"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/PromptPresenter.swift",
+      "sha256": "5efdcd9df2f32986a68b658e01b39aa4343a6cadab058013f31bb83a257b9d99"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/SelectPicker/MultiSelectViewController.swift",
+      "sha256": "b1cd57eff9234b6b204723298bdcd24717de95643d43f471a57c4af599be2977"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/SelectPicker/SelectPicker.swift",
+      "sha256": "f53a20c816517d97fd523723a7de112b73a7455b1eb42b10d1d72cfe34e4fd49"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/SelectPicker/SelectPickerMenuAnchorButton.swift",
+      "sha256": "ebaaaf184855bc29dbae65daeec75070c13322ae3aaff3c64f55ff752ea197b0"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/SelectionActionMenu/SelectionActionMenuHostView.swift",
+      "sha256": "6234b48b77fc4c0b74bcbc53f4a5c00c25f9b202e24ae2923f7a35aa856e6dd4"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContent/SelectionActionMenu/SelectionActionPresenter.swift",
+      "sha256": "3bc8ba243a76b092cb32f30b27164a658c4abea43ba9a8af01681fc7bcbb6da6"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContentView/WebContentView.swift",
+      "sha256": "11d28421fcb419625cceb3511289ca1d98170c2cf28bcf4c1c819eb55ab452e5"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContextMenu/ContextMenuContext.swift",
+      "sha256": "4369defbde76beea2741e6d16b12e16ccb5defbe9c683784a5812325d9fef455"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContextMenu/ContextMenuCoordinator.swift",
+      "sha256": "4a5c60ed965860953fd720cfe73b0f7be774dcb97490ecaa3e880f888b20f419"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContextMenu/ContextMenuTabActions.swift",
+      "sha256": "7c50ea050a43ff87eaaf2d64211c0ded7753c19c6f5c483495adbce8b4efd6d7"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContextMenu/ImagePreview/ImagePreviewLoader.swift",
+      "sha256": "47eff9795112eef001fcd196e7f308893a34e27393e6bbc533541add2af9cf74"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContextMenu/ImagePreview/ImagePreviewMenu.swift",
+      "sha256": "9e43ff88ecd1e6a1437f9243707ae548bef57cba1098f1b865e3e24c62ce962d"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContextMenu/ImagePreview/ImagePreviewViewController.swift",
+      "sha256": "a3ff0d85921a0654fbb68e1b4e5b4cd30fbd573afcb2de6e902eb8a697cc0ace"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContextMenu/LinkPreview/LinkPreviewMenu.swift",
+      "sha256": "292296dfc0e4e3561b81ee02b1faf06c048c1be943cb99804b83960fcab402f2"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/ContextMenu/LinkPreview/LinkPreviewViewController.swift",
+      "sha256": "0681afa7d44fa9c22f1453b1169a7e5aeddd436705376f2ee798bf6994cfb44d"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Coordinators/DownloadsCoordinator.swift",
+      "sha256": "26893c5674271bd640f5d0219f136c147261fd19312186ae9be1980522ea8628"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Coordinators/OverlayCoordinator.swift",
+      "sha256": "a623801be4cefddd79f0eeab8aa3802d13909be862c8277bdee13b68e2217e77"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/FennecFullscreenRotation.swift",
+      "sha256": "d758ab3a3c11973329cdb1d3b12da00873d48203aadfc780da040cd8027fa131"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/FennecHomepageSummaryView.swift",
+      "sha256": "6fd62c5ce2a9b8c5a7094dfd153be30d1f30cdca16a1fec4c3e0f4105c55cb0c"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/HomepageContentMode.swift",
+      "sha256": "98f9a09814747ae0376813f09ade5cc8db9258fa0736145c212109363ca20787"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/HomepageOverlayCoordinator.swift",
+      "sha256": "98202b26dfddeb7bdce8a6f60bc76d6d02c9321c425ee288807041c232122024"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/HomepageRootViewController.swift",
+      "sha256": "70625dcd95df9bde131e0d2c038da95b5aadc8f3001fd6a91a3160e83da82e4a"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/HomepageThumbnailRenderer.swift",
+      "sha256": "896bef7a21d8ebb03c71e4bbf0e5a8e418bf34e923d8d17ebaf48cd3b8e1ea85"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/HomepageViewController.swift",
+      "sha256": "4498d9cd0c2a5aee5d96e6bdf709937d8bbce1d6582a68be2dadc05723e3475c"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/HomepageWallpaper.swift",
+      "sha256": "dc2964f9b579c340b83a141e477f4b67ad19b7f486fc66bed656ecea55639ec1"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/Favorites/FavoriteFolderCollectionViewCell.swift",
+      "sha256": "c3aebc6260aa985a32087b2c06f38ab53ba1a5d4fe7faabd88f9d214c8f86d3d"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/Favorites/FavoriteSiteCollectionViewCell.swift",
+      "sha256": "651320dae1e77b53c7ac6882bc57b4e38d66fcd1426deba2db360a18d2185b62"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/Favorites/FavoriteSiteIconView.swift",
+      "sha256": "e5ae05c8e04300888f53a9b57d7dad34c77712eb64cdf5231849510b8f86776c"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/Favorites/FavoritesCollectionViewLayout.swift",
+      "sha256": "44888ff004f8521270729ed9826c75c77aab85d841a5b00debdb8a164017fe0d"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/Favorites/FavoritesItemActions.swift",
+      "sha256": "aa287c8e9742d07ecef103623274e43c09f4a18b0ad2fd543b4c593cbb28b471"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/Favorites/FavoritesSectionViewController.swift",
+      "sha256": "88e0d49432ffc070b75e977329ecfcb0ce3f33860660c7a0c5a1d3c5899ebe67"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/FrequentlyVisited/FrequentlyVisitedIconView.swift",
+      "sha256": "bc072a5efdea9c873143e11807237e00c4ee21dadfe8fc942af10f14d490c788"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/FrequentlyVisited/FrequentlyVisitedSectionViewController.swift",
+      "sha256": "10aceb55f8d477d9a4b616c1a37f68640d24e52fc17028fdadf75fe481bc8c1c"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/FrequentlyVisited/FrequentlyVisitedSiteActions.swift",
+      "sha256": "29539a272efb742845d43a903f9f48f2c1edabb34ad27f997f227bdeaeb3bb02"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/FrequentlyVisited/FrequentlyVisitedSiteCardView.swift",
+      "sha256": "4e72d6c1e40eb5c51449945955fff600aef72f8e402c5879c33a58f0f99f30b9"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/HomepageFaviconLoader.swift",
+      "sha256": "ea5bf49e5b96594b9adbf9f8744d1801f667dc2c1b8ee30a3dc342e4f91910ef"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/HomepageSection.swift",
+      "sha256": "c1b24bd8bc9d545f6924ad727b1578555b137aea084295dc0100b6583ecdb929"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/PrivateBrowsing/PrivateBrowsingSectionViewController.swift",
+      "sha256": "f16663c554c3b687967070177b4808c4b712e09c40f701365ded61013d22b751"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/RecentlyClosedTabs/RecentlyCloseTabItemActions.swift",
+      "sha256": "a00da2fc8e5a02e29405654589da5b1e7aaa40793d6913a4db77640f8a1b9c59"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/RecentlyClosedTabs/RecentlyClosedTabCollectionViewCell.swift",
+      "sha256": "d3fccc8d224f3b06d9b90adb428814af93a11035b720cd42b481ab64a3d3221d"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/RecentlyClosedTabs/RecentlyClosedTabsSectionViewController.swift",
+      "sha256": "3e3edef3239f097c2732a14cad861ddc9e4c2623baf8411474ec18d27ffe7eeb"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/Recommendations/DonationRecommendationViewController.swift",
+      "sha256": "f6858ab6503b4c8b712817e5c72077f0ca62ef0727553b15ec37638df7008afd"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/Recommendations/PerformanceRecommendationViewController.swift",
+      "sha256": "e4fe6e4da834c8b55c8a8b18a3d852158fa7568ae286eaf7ccfd1ddece2ad35c"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Homepage/Sections/UpdateAvailable/UpdateAvailableViewController.swift",
+      "sha256": "b8e6d1f76b35552a900996ad925750d2ff603d3e3a94c10b3c3ba8a7aa001980"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Bookmarks/BookmarkActivity.swift",
+      "sha256": "1acdb3f45fc0b5abde40ff84ec5bd3aff9fb5d4adb5eb2a11d61d6d91036d498"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Bookmarks/BookmarkItemCell.swift",
+      "sha256": "d10a1d28855845ee80ce7571efcd9fb9328db2a48ef69fb149e3260fcc56ec3a"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Bookmarks/BookmarkSortOrder.swift",
+      "sha256": "54497d648f0adb3e342e6b9a1517ccfd27ccb088c2fa9c074a587b52eb970d47"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Bookmarks/BookmarksViewController.swift",
+      "sha256": "1bae31621e340f2593a75db63e0da95112aac7da5b74eb9c4d118a1c20b50166"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Bookmarks/EditBookmark/BookmarkFolderRowCell.swift",
+      "sha256": "936558523b0f89dd75c613fc191567c5028b75de8020366fc0a6007da0aea13f"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Bookmarks/EditBookmark/BookmarkFolderRows.swift",
+      "sha256": "a6f684eee71e9f1908431218217afecc72f0c37ceebc5b88b4d2a5f990e90bae"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Bookmarks/EditBookmark/EditBookmarkViewController.swift",
+      "sha256": "0fdad0e52bc18e759de8b7615b36f8779e8213996c4b315e0661812130b7a6a7"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Bookmarks/EditBookmark/NewBookmarkFolderViewController.swift",
+      "sha256": "ffbfcbea873a1257fcfdfd2a941e388bb7ed901a5f6e651224a55c79b186ce26"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/ClearData/ClearDataTimeframe.swift",
+      "sha256": "0458260986b2ec602883b00dbbcb9e47e25824da295f9c1e3d5824fd17158db5"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/ClearData/ClearDownloadsViewController.swift",
+      "sha256": "7e2c4c93101e68e4a056504b1de9d6da7416dda905a5d0e71ec5cf3eec6a5191"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/ClearData/ClearHistoryViewController.swift",
+      "sha256": "35b37e218396066c9ca641c6f2cad0d4da316594ddef1269fb91b4c591d5156e"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Downloads/DownloadFileIconProvider.swift",
+      "sha256": "00c1248b24c6e92d407ee682c5cbf7957fc243502de0beb6a36ec0f4ea3ac245"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Downloads/DownloadItemCell.swift",
+      "sha256": "2bca67fca58a150fb840824c96d2f0df1c40c81bfca3e3c13e8f04e30ac61c17"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Downloads/DownloadSection.swift",
+      "sha256": "c4e165526cd518766cc6bb3cb47a85e8f8181cd15620d4ca0e646fb299a2c988"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Downloads/DownloadsViewController.swift",
+      "sha256": "41a28dddbadb2866e82aa5ca6c77054fbb55eb5dc5a02d0e5e73078b092973a8"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Downloads/FennecDownloadFilter.swift",
+      "sha256": "e96b0ddf9b34f377fc8663dc9a8910603d5567c5157aa9dea7c922d1470ce730"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Downloads/FennecDownloadFilterView.swift",
+      "sha256": "d3e147100e2aa74ad103437c397c9e94011d34cbe6cf68f91c7dd6b66de7252a"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/History/HistoryItemCell.swift",
+      "sha256": "7fe7477a4da4c87d4c2774fdbd4f5957dbf58aab26729817c4d68f866c790fa8"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/History/HistorySection.swift",
+      "sha256": "3e0546de702bfdac30df3488ee8d1c1a64b95cc8f3a8ce29bfd6853eb62c85a3"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/History/HistoryViewController.swift",
+      "sha256": "b3de97aefd1a1f1f3391316852a860af599492374382e8ecaced5219e40576a1"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/LibraryActionButton.swift",
+      "sha256": "11fc9e9f0bd844d3d3d8a9c8c0cb487479bdaa80ab559c54578510ea8736d3bd"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/LibrarySection.swift",
+      "sha256": "660df2fc37f7ad9ee4dd8e2294938f3767a05c39c738d06bf26c15fbb434cd6e"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/LibrarySharedUtils.swift",
+      "sha256": "51b6d94efbe03148980231da308fca4b44257a3050b6e97d920b9dcde631e499"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/LibraryTabBarStyle.swift",
+      "sha256": "d3b9ac4999f686fed170ac6b13918d4397a219b3e6384b95a110601c7a77fb0f"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/LibraryViewController.swift",
+      "sha256": "dec0d27a26979ea8008431d4cbea91fabdc96d183666fe70d35c1d1d97565c7f"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/About/AboutSettingsSection.swift",
+      "sha256": "8c6416edf6b4765c258892a865a9c956391d0ccc8206518fc72a0a88da0d9849"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/About/Experimental/ExperimentalFeaturesViewController.swift",
+      "sha256": "d14e667ee5b9efa8661f0d55611727b4ae908d08df2832293baa132a94be84f1"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Advanced/AdvancedSettingsSection.swift",
+      "sha256": "81c91aab46119c99d251b8222b14faca73aff986a9ca305ca020628bd6f38d59"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Advanced/Compatibility/AdvancedOptions/AdvancedOptionsPreferencesViewController.swift",
+      "sha256": "15f9ab35cc1c3e760824ea4ecff476cf8bd610fd51e9a370bee968b90d35c6fe"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Advanced/Compatibility/AdvancedOptions/AdvancedOptionsValueCell.swift",
+      "sha256": "73a24b2441d5cfb02b7e90e0fd490e9db16fbd9b292a68ce7c254a2b559f6eb1"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Advanced/Compatibility/CompatibilityPreferencesViewController.swift",
+      "sha256": "ea783ba1cabe161f3eba2646bd3e0aac47cb19234f27b1aa64cc920e87d266db"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Advanced/Compatibility/UserAgentOverrides/UserAgentOverridesPreferencesViewController.swift",
+      "sha256": "2a7b18fa5c7c878735884cec0ddc7cbb875b69326c08fc2ecb2a3527c8b54487"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Advanced/Developer/DeveloperPreferencesViewController.swift",
+      "sha256": "a3ce0d7ef4871023c31cdd5308e3f911b9da0f863e5d28db9c4dcbed2f074b33"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Advanced/Developer/RemoteDebuggingSettingController.swift",
+      "sha256": "84f39d36a4f2f55ab87ab57dc726d504c8dd7f80e779c5b0a4bd43218689b410"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Advanced/ReynardSpecificPreferencesViewController.swift",
+      "sha256": "5d9e7f1d5b5732c7925328954e0f0d89d15bf2e7700d08bd513cfd7e4420e58a"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Addons/AddonDetails/AddonDetailsPreferencesViewController.swift",
+      "sha256": "20d6f8e4876fc0176259c321735e5c18c03135d7bab81418f396e567f777a440"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Addons/AddonInformation/AddonInformationPreferencesViewController.swift",
+      "sha256": "f747a713e13557e6db1d9a0cc79be726156113e594665b526f7b298e9759b84d"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Addons/AddonPermissions/AddonPermissionsPreferencesViewController.swift",
+      "sha256": "bf0435daa80b60c1f7ec1765a7f97dc18ac28d257b19d8b84fa7e6d322d35764"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Addons/AddonsPreferencesViewController.swift",
+      "sha256": "187be17b24ee1fe6e56b826f2cd99999e437154e38920e54ee5994b57ebeef06"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Appearance/AppearancePreferencesViewController.swift",
+      "sha256": "1799c2013a5d4d66610ede5fd032e30668bfaefacd3f4145dea2099a26ba0643"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Appearance/Sections/AddressBarPosition/AddressBarPositionOptionControl.swift",
+      "sha256": "59b1fd0b6ac2874dc4e726a530a2789e9f921b4b690543fadc5fe5cf83c1ca06"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Appearance/Sections/AddressBarPosition/AddressBarPositionPickerCell.swift",
+      "sha256": "601900a717a8077414145dc92ef399a361ffb7b367cbe6bdcbb29a6d1b78513d"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Appearance/Sections/AppAppearance/AppAppearanceOptionControl.swift",
+      "sha256": "827cd2c13b4e9ec98494a469f40282e6f5f052ee1e56ef7faa271bddca184c66"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Appearance/Sections/AppAppearance/AppAppearancePickerCell.swift",
+      "sha256": "b9b74f89aa662f72ecdad40115978c6f493b0ad375f0486ef9132d33d94ae171"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Browsing/BrowsingPreferencesViewController.swift",
+      "sha256": "2f244ade084a41149c369e77b6fb57f42700aa0aa16dd8c9dd9d38c102552ef2"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Browsing/Sections/Links/OpenLinksInNewTabsBehavior.swift",
+      "sha256": "934cc5d304f096b34874306e057789ce8b9768dadc7cf56d726ca5809e08d5ba"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Browsing/Sections/Links/OpenLinksInNewTabsPreferencesViewController.swift",
+      "sha256": "c19676c98f9a6c1e0aab2726bad1a55abdf06bf8407822410c4f8e6f803238f8"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Browsing/Sections/PageZoom/PageZoomLevelPreferencesViewController.swift",
+      "sha256": "c6928d1bbbb3594d0528f230223ce911581586e99fed10af3bd258e9c79b730f"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Browsing/Sections/PageZoom/PageZoomPreferencesViewController.swift",
+      "sha256": "094be3a42362da4072720917cabc02202388a1f25fb7f052d9a4b52c9c05d6fc"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Browsing/Sections/Reader/ReaderPreferencesViewController.swift",
+      "sha256": "33424c2312e3e5485a657c69976fdd959c813658aa3b9f1bc795d45c156cbe45"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Browsing/Sections/RequestDesktopWebsite/RequestDesktopWebsitePreferencesViewController.swift",
+      "sha256": "7908497389b129bb464bf6c79bb842cc6459cff59db6872da93389cbb91bdaa0"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/GeneralSettingsSection.swift",
+      "sha256": "47d45cbdc8ad66d2dbba07500994a57f6fe9189215b07f3e76b7c72d83f1dda1"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Homepage/HomepageOpeningScreen/HomepageOpeningScreen.swift",
+      "sha256": "e220be4fc64bdc57d0456bf425f42a902f3ce1ec2bdf431f1ff1c270d9a21703"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Homepage/HomepagePreferencesViewController.swift",
+      "sha256": "758295b733199c7db40feac6ada15dfbc10fe41840c340a4c49a2998dce806cc"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Homepage/HomepageSection/HomepageSectionItemCount/HomepageSectionItemCountPreferencesViewController.swift",
+      "sha256": "854619ba3c3f4aaf7345f0b611068cbe6da5f5d56d62033dc854a273a4d95c12"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Homepage/HomepageSection/HomepageSectionPreferencesViewController.swift",
+      "sha256": "a031e0f4d83f0c2d9726e08d8d967e1c530a83ebf8797d314affe75dee62e091"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Languages/LanguagesPreferencesViewController.swift",
+      "sha256": "72019cfc3d3d53a835a305eb6dd558f73b796312cf3778c7e1f389437552850e"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Languages/Sections/WebsiteLanguage/AddWebsiteLanguageCell.swift",
+      "sha256": "ca0f4b30fcccd6ae7f211677261b8303c2a41d0183dc7a17e0e012d49a0ab140"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Languages/Sections/WebsiteLanguage/AddWebsiteLanguageViewController.swift",
+      "sha256": "07dce76afe559f403b54ee59694588d2686e6b36d20873aad5e5067ad1b6398b"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/NewTab/Cells/CustomNewTabURL/CustomNewTabURLCell.swift",
+      "sha256": "d814fedc500bdb9cb9bf750d98e13b7c11990235ebdfa04cd555a94bb2d917d9"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/NewTab/NewTabDisplayOption.swift",
+      "sha256": "a83e1983e1917c15ef3eb07378d3d3c97843285c20c871084cc83f08bd9c5338"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/NewTab/NewTabPreferencesViewController.swift",
+      "sha256": "b6cd6d6e25814be58279d9cdd6fac22fd5c3593c67826dcbb6928d054ad51bba"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Search/SearchEngine/Cells/CustomSearchTemplate/CustomSearchTemplateCell.swift",
+      "sha256": "cc11da465b2e73f35fc3f794a62566d2911188a784a38aefc21199b7a2a24f0c"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Search/SearchEngine/SearchEnginePreferencesViewController.swift",
+      "sha256": "92ea7ea7b273329dd66e4d6b0404cbaccc31f146b346fa9c5538168e4306eb64"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Search/SearchPreferencesViewController.swift",
+      "sha256": "d55bfae9b217086386f997e000dbe8a5145c3fe3504e5ffef93d837b8332cb7f"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/General/Search/SearchSuggestionProvider/SearchSuggestionProviderPreferencesViewController.swift",
+      "sha256": "ff0641898d9df2e4badc867c5a5e958011dc49652f96d437a29e1dba2774ee60"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/JIT/JITSettingsSection.swift",
+      "sha256": "3420f4f915c9c30707ceba35d421a0f06c3bde9013f2287377b84994992fa958"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/ClearBrowsingData/ClearBrowsingDataViewController.swift",
+      "sha256": "5df9e52bd93adba494537326b689aae026080f584836652af762ea0c0238bf60"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/DNSOverHTTPS/DNSOverHTTPSPolicyController.swift",
+      "sha256": "38326134462da08e3e6dc309580e9ebd5b524db2c3022b9d1471c3af6441313e"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/DNSOverHTTPS/DNSOverHTTPSPreferencesViewController.swift",
+      "sha256": "b6f8844ad9ead4deb4914cfa2a258c85df8852f9df3aa5a8efaeafca02a98cbb"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/DNSOverHTTPS/DNSOverHTTPSSettings.swift",
+      "sha256": "60e3c1dd9add769354aa13ab0355ecb1cab3072dd6b4818522ca0ccd2853bf6a"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/HTTPSOnlyMode/HTTPSOnlyModePolicyController.swift",
+      "sha256": "81d504334a193c253a67abbf044337d498ef1e1625b138e0a1fa919f873aa082"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/HTTPSOnlyMode/HTTPSOnlyModePreferencesViewController.swift",
+      "sha256": "da7029fa67ce617e8c5285b462038624a9a58416c7693e431698300e4105f760"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/HTTPSOnlyMode/HTTPSOnlyModeSettings.swift",
+      "sha256": "dca71cdcb51fc5b430775b9ab4b2deeb3aa53ca3b2d600542205ebaeadfd9690"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/PrivacySettingsSection.swift",
+      "sha256": "bb0cd2b5ecf9ac25bb8a5c62ae9a61a33c0d8ff50ebaf3846a7e652771bdc95f"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/SitePermissions/SitePermissionDetails/SitePermissionDetailsViewController.swift",
+      "sha256": "de3603478229fef1f1f825d431c95878a2749757a6326f8530ce06a1035f4e34"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/SitePermissions/SitePermissionsViewController.swift",
+      "sha256": "269673141706ca82a3c95a1d8364e63c58b836bd3485f367a20b095e710b196f"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/TrackingProtection/CustomTrackingProtectionOptionViewController.swift",
+      "sha256": "5e1a6405a4c4dbaee435255d4c449b3157b43cd99f8a2bd9013020c1e4ae64f2"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/TrackingProtection/TrackingProtectionDetailsViewController.swift",
+      "sha256": "6e8e55b866836f3773858874b56fcb76bd759f4b4f6ba1d98a245de983f53692"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/TrackingProtection/TrackingProtectionPolicy.swift",
+      "sha256": "18ada4348d18729d1e7162f5995874041dc66f604cc85eed0002c4f7b23e1114"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/TrackingProtection/TrackingProtectionPolicyController.swift",
+      "sha256": "1631e7484d074ba518f7c91d8cbda7dc832af7a95f6f95ca53d6a29ce0d134d7"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/TrackingProtection/TrackingProtectionPreferencesViewController.swift",
+      "sha256": "ab18099767dfd274865ca99173b0c849805e76323cbac3ac6ce1959e9b3305a6"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Privacy/TrackingProtection/TrackingProtectionSettings.swift",
+      "sha256": "d6eddd6e26b590a529c7bfa354ca41366a7ffb886145658a4c9f4f9abd5825cd"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Updates/UpdateReleaseNotesCell.swift",
+      "sha256": "e2f8802bc6494f18287380ae71b66b9d1e006a1e0766a369e3bcbc9c1243f8e1"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/Sections/Updates/UpdatesSettingsSection.swift",
+      "sha256": "ec1dececb6bee19967196fc12ae6dd1921b8c39593fe8a9b6386f492792a8c74"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/SettingsLocalizable.xcstrings",
+      "sha256": "83e06a1d15cb3ec37461ad51107bf13ca812f433e018d72e294a1a4fb8c7710d"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/SettingsTableViewCell.swift",
+      "sha256": "e14d7d72120fbf93f6c01b22401cf9aeee14d0e852a1f218bc98e3b303305aa7"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/SettingsTableViewController.swift",
+      "sha256": "089728189e65f5331d6ca92945c63882cf71c2261518384ea43e5fcff1bbd5fd"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/SettingsViewController.swift",
+      "sha256": "a46a6d17f7110fe2b1c6a7dcad133147f7f28fa223c847cd27627e77b11de4df"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Library/Settings/SettingsViewUtils.swift",
+      "sha256": "933937fbf229a821df0a462e8d93f239ff9e7341b28253922b37d7f2b892e9a6"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Printing/PagePrintActivity.swift",
+      "sha256": "4bab766ab5e7b8badecb406cfd78a974b20b90c6e9228a5af106e12e7d01793a"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Printing/PagePrintCoordinator.swift",
+      "sha256": "7b585f6e1e8130433865a706ffc8c8a86475e015131e002e51fd620de76ae879"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Printing/PagePrintPreparationAlert.swift",
+      "sha256": "8adaa7cbacd5a664d6a612e75939354cd5da3ae6f54e0e6fa9b6173910460f00"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Printing/PagePrintPresenter.swift",
+      "sha256": "cf17796767f313e42cf43f63d50fef658a617f57edf33473d3d23c8e6ba8dacb"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Reader/ReaderSettingsViewController.swift",
+      "sha256": "8429ab96def541247fb83b1c026dbc2c0d6aaa5c6532771f501cdc4a9bb154a2"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Search/SearchContentMode.swift",
+      "sha256": "86480bf95aa0b41dd0be2989b471fec1684bcd4908752e1bb4f4307e43e4600f"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Search/SearchOverlayCoordinator.swift",
+      "sha256": "8de45c23f53f891e8c2d885b2cd811e6960e20882ddee2a8e726a74f16dcefbc"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Search/SearchSuggestionCell.swift",
+      "sha256": "40e5b7481cc8be95a1554fa191912a1c17ff2eefb1326f4b379fad84b7cd6967"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Search/SearchViewController.swift",
+      "sha256": "0334dd18a9e933d7045e97d63c0ee596ece07cdf4a06866f8ba2d2f9197874b3"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Search/SearchViewModel.swift",
+      "sha256": "3b5a7a59402e68c91e33a93eb3ed4ca72ce74a74ae31a4baf73b36707b34390d"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Search/UserDataSuggestionCell.swift",
+      "sha256": "07051663876b5f78d4d6ffec9e4872d23984478544e3d1c8b07294dd1f4c2d09"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Sidebar/SidebarActionCell.swift",
+      "sha256": "a8fb5eea7701231c7628b1fa0e9488c06faffd2ba3ae5fafce2e419062c78b89"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Sidebar/SidebarCoordinator.swift",
+      "sha256": "20f4af5262bf3a5d4a8e5773508edfcebf5ea09035363eec4905077db4c8ef69"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Sidebar/SidebarDetailViewController.swift",
+      "sha256": "0af3865ec1500f5b8d13e5b0b89da8f759cd7ae1332042eb92fbeb2558699423"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Sidebar/SidebarEmptyBackgroundView.swift",
+      "sha256": "55b568182775c6ed6a1877095dd20d821bb49d63bb7e38a71c0f464fb84f1446"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Sidebar/SidebarMenuViewController.swift",
+      "sha256": "3282fb50cd380b507d9863bd61f5262750e3130d5ba697aa83df2e4016a76643"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Sidebar/SidebarNavigationContainerViewController.swift",
+      "sha256": "652e66484771a3ec033740546560911aac6c4961a0663567252e685135699093"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/Sidebar/SidebarViewController.swift",
+      "sha256": "81d0fc5dfc33f844abdd1e0ad2fa33fbfc093ac010f35a155ea19d98e055cc9d"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/SiteSettings/BlockedTrackersViewController.swift",
+      "sha256": "579a254661f49e5bd7fdeab1a17e16a220378ab3942866f45eb1fc8ff785b491"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/SiteSettings/ContentPermissionPresentation.swift",
+      "sha256": "9854c37ce5cecf19e9b2d124aaa4e7edb9c0929a59bc02f3d26f5947eaca7a25"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/SiteSettings/SitePermissionOptionsViewController.swift",
+      "sha256": "f74472b07cbb24439641062afe08b5371d375bdb0abd4bb92c626b2cfc5210a3"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/SiteSettings/SiteSettingsUtils.swift",
+      "sha256": "c30d70df349faa987289f5ac3f63541377b4cd3574f63690f607ba48fd229869"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/SiteSettings/SiteSettingsViewController.swift",
+      "sha256": "f1766b9b74e9514dc169da8f3d4c19aeffec2ee0f0849ab4cb4e41ae04c11b40"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabBar/TabBar.swift",
+      "sha256": "adec15b7447e4706eb14dcfaa7d152f458383e910e982c7bfdec01933cbde426"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabBar/TabBarCell.swift",
+      "sha256": "f83765859c6307d7c5bd03a1c84b7503c329e6448a0dbc71f8aba0e06cd6adac"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabBar/TabBarCollection.swift",
+      "sha256": "bab47a05c510f8c181ffc82cbec2c24c9dd77c1199593906c47f4ede4e13d6f5"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabBar/TabBarPresentation.swift",
+      "sha256": "5d0bd43b2b85af2f47f59b865ca92a60acc47dff1bfc26a2773fff9a88669cd6"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabBar/TabBarSeparatorView.swift",
+      "sha256": "110f22385276d0f459882c9849a0dae032e2fe4660e00369e03013539808fb92"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabOverview/FennecTabGroupsViewController.swift",
+      "sha256": "4f6071d78866eb10fae6cb58642034cfcf15474fecadfb3d0c4a9649e7b29cca"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabOverview/TabOverview.swift",
+      "sha256": "581bffbde0436adff4f9f965d4977056b75adaaec635b2e3c7d9121952e8db0a"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabOverview/TabOverviewCard.swift",
+      "sha256": "d2a30389142a713ef0a4b2be8eadf2afe8b7fbe55ed03e5b8eb817a19fb7578a"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabOverview/TabOverviewCardCloseTabButton.swift",
+      "sha256": "4d354f5b96718dc7c87829bb07478353e12ebe172ff80045bbbdd18fb8699a4a"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabOverview/TabOverviewClearTabsMenu.swift",
+      "sha256": "fb55c2990cc5b39d09dad9051669c7512f662f0d92d433c5a95581b9a4491870"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabOverview/TabOverviewCollection+UICollectionView.swift",
+      "sha256": "6d8bfab6a6044062ef68b356e271c8367e643bce7693c3cb77c05c9409296829"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabOverview/TabOverviewCollection.swift",
+      "sha256": "09d11d8d192b42b4c2d3aab801176f3d3ef4dda662cdfda388ec1b624184df3c"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabOverview/TabOverviewCollectionLayout.swift",
+      "sha256": "af37ce2e34d2e1c2e3ce9688b2d69453b2bed37a2a97dfcbeb24b68aeb132fbd"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabOverview/TabOverviewPresentation.swift",
+      "sha256": "b608d85e77701c18115319145506baca48276a3fad24fd9ab76c9f282d10152d"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabOverview/TabOverviewToolbar/TabOverviewBottomToolbar.swift",
+      "sha256": "5868a04e0733c13f01d529fb5eeb68e84b91f4e9ebf5bcbe60398b357983c2fc"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabOverview/TabOverviewToolbar/TabOverviewToolbarButton.swift",
+      "sha256": "b2cf8ae4674601e97ab48d2a4d9e1cd89b906eddb916172b76ff7eb64ee3d195"
+    },
+    {
+      "path": "browser/Reynard/Client/Interface/TabOverview/TabOverviewToolbar/TabOverviewTopToolbar.swift",
+      "sha256": "a07c9264895c4e4a711f0308592eb3d97720780647991a68e4b20ae2a9426bf3"
+    },
+    {
+      "path": "browser/Reynard/Client/Preferences/BrowserPreferences.swift",
+      "sha256": "0c4fcb23219cc23b1944b663c2dc34b332049fd26370f1bdbdc42b4e23ef22e0"
+    },
+    {
+      "path": "browser/Reynard/Client/Preferences/FennecMediaPolicy.swift",
+      "sha256": "1c3aa2e1444a3241f54a954d2314afeb302dcd85ca7ba307525b9d1712a2815e"
+    },
+    {
+      "path": "browser/Reynard/Client/Preferences/FennecPrivateAccessState.swift",
+      "sha256": "846fb9ea85aa981e05e5400796117d285cdcb7b12c2ecbaf069f745d9d626832"
+    },
+    {
+      "path": "browser/Reynard/Client/Preferences/RuntimePreferences.swift",
+      "sha256": "845693a9006802921757c45dc926881325ffd649aa801af37c19e6cac66240c4"
+    },
+    {
+      "path": "browser/Reynard/Client/Search/SearchCompletion.swift",
+      "sha256": "80868a8aa03362627045261b60a78789680f65a230e49d29eedaa155b961adb8"
+    },
+    {
+      "path": "browser/Reynard/Client/Search/SearchEngines.swift",
+      "sha256": "bb211952e4c927f0060bafebf235efb8a90b4ad1ca6aa023411ecb194da41fea"
+    },
+    {
+      "path": "browser/Reynard/Client/Search/SearchRanking.swift",
+      "sha256": "cd43f2e2809598ccfd745059f6054cda4f8981d27b6d363c42508e632e04321a"
+    },
+    {
+      "path": "browser/Reynard/Client/Search/TopDomainCompletion.swift",
+      "sha256": "90e178645b52fd8c3cad1361d3f85da0a6510186473d9d218fc64b85ae208977"
+    },
+    {
+      "path": "browser/Reynard/Client/Search/TopDomains.plist",
+      "sha256": "99f30a2cf332c060fcd59c3c89b177c150d72256e3fec201511bfc559a54037b"
+    },
+    {
+      "path": "browser/Reynard/Client/Search/UserDataSearch.swift",
+      "sha256": "55082793fa32479a379c5da02e4a612328271bea2b0daf9a764485658399418f"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Coordinators/PermissionCoordinator.swift",
+      "sha256": "e4122364d553cd7b23825c5081ae59d3855cda94fd9431402f3f95e26edf6004"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Coordinators/PromptCoordinator.swift",
+      "sha256": "d6b2627a15e39d8c2c2addaef308cdd346ca138f7a405b19ae17ba2a2d82ca55"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Coordinators/SelectionActionCoordinator.swift",
+      "sha256": "6f5df3c6559e7ab7f4b6bf546aa68740229203b71ca79800114b029f84cb85cf"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Media/SystemMediaSession.swift",
+      "sha256": "f5e2e9101c39731ed0ee220ef0b1fac7757708da47d06d9109552f51d12882c2"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Navigation/NavigationHistory.swift",
+      "sha256": "c2ba861c655327c39fa03f8cee3e433eb964f02707cf9fe43dd98edd50c12649"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Navigation/NavigationState.swift",
+      "sha256": "d84b2c0cc69d1aa841e672ed5968a0e49d056ed4e6f0710dc1c25ea16c259783"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Navigation/UniversalLinkManager.swift",
+      "sha256": "7cc086424e31c8b969e8e1344eea9bef89503c0260e99e8c444f841db879cbdc"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/ReaderMode/ReaderModeController.swift",
+      "sha256": "e06dfa7a8bf30f120997c8359f37a60de1fd44e58da5ba9801fe6f3d5be9a457"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/SessionConfiguration.swift",
+      "sha256": "17d030e02dabd965d49ef528dc513f0ccdf1caece55a4cbcb45b211c103a8325"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/SessionManager.swift",
+      "sha256": "ec0729e413def023b047f4115f1125455143f0f296c4f7d44b91998ec44261a9"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Settings/DomainMatcher.swift",
+      "sha256": "943461b7b79ab5547cd066d8eed050af4a6df0a0b4b6d498a1b678360e25d6f7"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Settings/Language/LanguageSettingManager.swift",
+      "sha256": "39731c386db8ff0c3263ff0e49d4e2e318955a4bd76009f1ae343fc50dab656f"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Settings/PageZoom/PageZoomSettingManager.swift",
+      "sha256": "4e16b15beacb6798a47909cc49d9d590b3c91ed8326fe14aeca2999ee21bf042"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Settings/SessionSettingsManager.swift",
+      "sha256": "cb6ce58cfe544254f41b755c430d83f21d6ac0879970138dcbc50e96a423553f"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Settings/TrackingProtection/TrackingProtectionManager.swift",
+      "sha256": "6559df1f353fc1c7529d8473816465f0baaefc8dbee97950ba4c395ea28a884f"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Settings/WebsiteMode/UserAgentPolicy.swift",
+      "sha256": "db3d4477f73a44d1b9a7db25cdbeeb0e69fed96c64e8c4727005ec4c7a68cd7c"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Settings/WebsiteMode/WebsiteModePolicy.swift",
+      "sha256": "d4765e14a793d350cbb61aed4dade1b510aeb18154c4a151e42d8caa95a96ff3"
+    },
+    {
+      "path": "browser/Reynard/Client/SessionManagement/Settings/WebsiteMode/WebsiteModeSettingManager.swift",
+      "sha256": "4fa84a609c44519f10f071afe653f7520a8842d0956554cd5c60bc70048fb804"
+    },
+    {
+      "path": "browser/Reynard/Client/Shared/AlertPresenter.swift",
+      "sha256": "0a17ab8254c71cb48881f782702cc56103bf8161e642954a4b9b1b60a73c8c9c"
+    },
+    {
+      "path": "browser/Reynard/Client/Shared/ContentModalNavigationController.swift",
+      "sha256": "b6036364175e61471c459dddf9c25703635ae77fd1cf34ea0c1033344a73c768"
+    },
+    {
+      "path": "browser/Reynard/Client/Shared/Haptics.swift",
+      "sha256": "427241f1a7ec1e35c0b319b3a61a4288d4cf0c1001e16a19730610641a10d2f2"
+    },
+    {
+      "path": "browser/Reynard/Client/Shared/ImageUtils.swift",
+      "sha256": "908d167d148edff37c7a2e94bbd401dafe94f222981bc7304e51f9c150f4ac04"
+    },
+    {
+      "path": "browser/Reynard/Client/Shared/PageZoomLevels.swift",
+      "sha256": "5ce9e33646036196d51a67c973ad99d11e02183ad10633f16ac8649f70d0cf4f"
+    },
+    {
+      "path": "browser/Reynard/Client/Shared/URLUtils.swift",
+      "sha256": "064dc4b73dedbb96ec83a19cdfceda2d7e431b7b90671f28bd0f04a68f28a640"
+    },
+    {
+      "path": "browser/Reynard/Client/Shared/WebsiteLanguageCatalog.swift",
+      "sha256": "be03acfb07e71792bd18b7a2ec2a0979e22dd1f513ad06b9318183aef6c309bf"
+    },
+    {
+      "path": "browser/Reynard/Client/Startup/BrowserUpdates.swift",
+      "sha256": "1933c70e1439b08028c0a81a710b9eb732277e3662b511e761962a1a10de1d26"
+    },
+    {
+      "path": "browser/Reynard/Client/Stores/BookmarkStore.swift",
+      "sha256": "d2bd7fc28d7e2fb284d84350095603cf58750a7b3e392de24b28073347354d14"
+    },
+    {
+      "path": "browser/Reynard/Client/Stores/DownloadStore.swift",
+      "sha256": "7de0fdf99f7e5bb9f55621fa100eac240cf34a65aaedb14e6005b1d7b3a6e390"
+    },
+    {
+      "path": "browser/Reynard/Client/Stores/FaviconStore.swift",
+      "sha256": "2d22a0730eaf5fda8c4507e3db286bbba7d537c85fa77cec7c8ea7cad31f4bb4"
+    },
+    {
+      "path": "browser/Reynard/Client/Stores/HistoryStore.swift",
+      "sha256": "c40c093cd132fec48ce89e033992a2fca768f7d39f912d7309391729fc417740"
+    },
+    {
+      "path": "browser/Reynard/Client/Stores/NavigationHistoryStore.swift",
+      "sha256": "1b4a2ecc3d7b87cb9d809c54b61b14fe3a7f70fba1cc22b2abbf695f9f0e4b05"
+    },
+    {
+      "path": "browser/Reynard/Client/Stores/SiteMetadataStore.swift",
+      "sha256": "8904b8b8ff9e7cdd54b5f1bb10acfd8b54462bc4830c2e13f40d596992dadeb9"
+    },
+    {
+      "path": "browser/Reynard/Client/Stores/SitePermissionStore.swift",
+      "sha256": "0dad5b6d34e4bcdb1a6324e184aaad6f3213e51b8c306b40a8133b6316884ad0"
+    },
+    {
+      "path": "browser/Reynard/Client/Stores/SiteSettingsStore.swift",
+      "sha256": "0964ca1c970c16e6c1d456d1269ba5d622201214826a13ed759678c2f389fadf"
+    },
+    {
+      "path": "browser/Reynard/Client/Stores/TabManagementStore.swift",
+      "sha256": "a5112712251c159e1a0538525363b85d1902eadfd368b98c137546f055e9abc7"
+    },
+    {
+      "path": "browser/Reynard/Client/TabManagement/Tab.swift",
+      "sha256": "8b821af60819bfcfb926974e5590921df90c84239b41446ace964b5c2c472fc3"
+    },
+    {
+      "path": "browser/Reynard/Client/TabManagement/TabActions.swift",
+      "sha256": "609b79a51cdb8f20372d4ab5a2186aa708862042dc3bee507c037f485278e0c8"
+    },
+    {
+      "path": "browser/Reynard/Client/TabManagement/TabGroupStore.swift",
+      "sha256": "348fd38b277e1d930f5d9d23109707a9ba76d19379deb68c9f0fdd068a89df92"
+    },
+    {
+      "path": "browser/Reynard/Client/TabManagement/TabManager.swift",
+      "sha256": "eca82b2339311427a2e04e4dc538e38f2a36cdc0c3e955ba0863b0cad9517ce3"
+    },
+    {
+      "path": "browser/Reynard/Client/TabManagement/TabManagerImpl.swift",
+      "sha256": "2f341ab42a5d0543ea14ca635cb2b8ab6436abb6ea0db02bbb93b5291b7e2414"
+    },
+    {
+      "path": "browser/Reynard/Client/TabManagement/TabState.swift",
+      "sha256": "ae0c4b077d9edb678cfef213d5b9486d8225a3c4c8f57c68ecc574eddbb69728"
+    },
+    {
+      "path": "browser/Reynard/Client/Utilities/LocalizationBundle.swift",
+      "sha256": "5d4ab0036512ee35c2646c5e2e3c8175c4fadca91b66ad5893951ed6fdf1908b"
+    },
+    {
+      "path": "browser/Reynard/Client/Utilities/SVGIconRenderer.swift",
+      "sha256": "f7032d5867c49e1a7945518b3c5273e91bf0d0e5046c944f94475c3a6104ca8b"
+    },
+    {
+      "path": "browser/Reynard/Client/Utilities/ZipArchiveReader.swift",
+      "sha256": "6ad3d91618043cdd3eb5e2eb0a1e80d5428f7cbcf903ac446b83677f3902d827"
+    },
+    {
+      "path": "browser/Reynard/Entitlements/Reynard.entitlements",
+      "sha256": "fe45de3b84db1108ba8c9a24d29669020f65f940e1cfe85c2395f07965df4815"
+    },
+    {
+      "path": "browser/Reynard/Entitlements/Reynard.private.entitlements",
+      "sha256": "f8411213bdd9bb1431d0f1fd6dd55d02318f0ebec5a87138d6927627ac626fd3"
+    },
+    {
+      "path": "browser/Reynard/JIT/Interface/JITFailure.swift",
+      "sha256": "e3e8521384019682bbee1f036be57aa29fb27e77de5a5ebd7cd62fe215b2116d"
+    },
+    {
+      "path": "browser/Reynard/JIT/JITController.swift",
+      "sha256": "9110b91746e74ef4b420e1c69d2e3eb8d471233af62e174139017abc69f2d7d6"
+    },
+    {
+      "path": "browser/Reynard/JIT/JITEnabler.h",
+      "sha256": "4e0f10973d7b12b3e2c507bf9f50232546fef7369a2e6ee790e0a5e668e5af0c"
+    },
+    {
+      "path": "browser/Reynard/JIT/JITEnabler.m",
+      "sha256": "f4f80bb7910b4ab159e850cb5e4eefb950a6d70a3d3125444b17b7d20dc3de0a"
+    },
+    {
+      "path": "browser/Reynard/JIT/JITErrors.h",
+      "sha256": "ba449e53aef441742e98f29b2da8a6deda8ca10d884ecba48a2664e330bd69f3"
+    },
+    {
+      "path": "browser/Reynard/JIT/JITErrors.m",
+      "sha256": "3f97b60b66e47d12cef005461e99d39e1faa17c91c954266ce56458d8ade65e9"
+    },
+    {
+      "path": "browser/Reynard/JIT/RPPairing/DDIManager.swift",
+      "sha256": "e5d468467e19c56443270b2bba3e77fba2266b702d243ced641c62f69c834c5f"
+    },
+    {
+      "path": "browser/Reynard/JIT/RPPairing/IdeviceFFI.h",
+      "sha256": "65cff9cef017bfee55484cd967d34896805683e4afaa4daf13bac0765c6f7ec4"
+    },
+    {
+      "path": "browser/Reynard/JIT/RPPairing/JITSupport.h",
+      "sha256": "d0c5a2c6fae1eab237a1a239afc9e2cd9949e9e21a8c3002acf481522acef043"
+    },
+    {
+      "path": "browser/Reynard/JIT/RPPairing/JITSupport.m",
+      "sha256": "7c12661722ef2047d3b647c5af532ad07f0c608be2b132ab134d12b6de0bb939"
+    },
+    {
+      "path": "browser/Reynard/JIT/RPPairing/JITUtils.h",
+      "sha256": "46955809b9d95f99352509248e1c44e02538c1bfdd791cbbd0198bd54e08275e"
+    },
+    {
+      "path": "browser/Reynard/JIT/RPPairing/JITUtils.m",
+      "sha256": "304c813c2c17c231f24f49794c701ffc3440a55a265c4046754f34c05a278e50"
+    },
+    {
+      "path": "browser/Reynard/JIT/Services/BackgroundAudioManager.swift",
+      "sha256": "1366504f75e5756468aa49c7bc0a0671f40ec759d6dacc91e88d70b190b7cc7e"
+    },
+    {
+      "path": "browser/Reynard/JIT/Unsandboxed/ptrace_jit.c",
+      "sha256": "f3d9988eee8c214c8afede6b204146ffcf6bd4e4b6ceaf55808cbade73db35b7"
+    },
+    {
+      "path": "browser/Reynard/JIT/Unsandboxed/ptrace_jit.entitlements",
+      "sha256": "e182bfa7c9517c88c618d5eb168aa905a1e1fb27bdbf988feccdb98ea1ad7adc"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/AccentColor.colorset/Contents.json",
+      "sha256": "9af65086fa30b49252fae1a1225731691de794f7775af74d71befeb507d12b7c"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "sha256": "672a36281deb526cd4d4f90d09869f1beb165039eb18886579d1c1c7c4fccba5"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/AppIcon.appiconset/icon.png",
+      "sha256": "038a8a791cfe745629ebcb84e210685b4b74d3287851bdd3de378d93f80e567c"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecBookmarkTray.imageset/Contents.json",
+      "sha256": "bf314d9e7a0eb2ef3e08f730e0ef90eb12bf8d2d2bb5603e6b8460f9cabfa8a2"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecBookmarkTray.imageset/icon.svg",
+      "sha256": "02458cdb4eb0e163f794d0b0faa6cfea2276edc648739aa5a71cd575148bbb53"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecHistory.imageset/Contents.json",
+      "sha256": "bf314d9e7a0eb2ef3e08f730e0ef90eb12bf8d2d2bb5603e6b8460f9cabfa8a2"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecHistory.imageset/icon.svg",
+      "sha256": "adcae37e65b2bb18f555baa37ecd91c8e6c25668650c21339e12999d0d96cf3a"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecPrivateBadge.imageset/Contents.json",
+      "sha256": "92a370d5a2f0f5ce22c3d47c15cd00fc24b34edbaaca1476e36d7bd455e3842c"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecPrivateBadge.imageset/icon.svg",
+      "sha256": "9a88a63a7f33dc031f2d4e3e0fb331840543f100f03f5250d117269db4d2c9e9"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecPrivateMask.imageset/Contents.json",
+      "sha256": "5bd44f9a3c058c8fee85d37c950ac50c813b5434657aacef230b97e7d59c1047"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecPrivateMask.imageset/mask.svg",
+      "sha256": "9bea387915b1074b450100f105e7d8c8493905dc72f04a53fa0c0302bb977e7a"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecPrivateTabBadge.imageset/Contents.json",
+      "sha256": "92a370d5a2f0f5ce22c3d47c15cd00fc24b34edbaaca1476e36d7bd455e3842c"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecPrivateTabBadge.imageset/icon.svg",
+      "sha256": "ae7a376c9ce9797f47bd228d3ae0288b21487f33890eaaabfa8a1b5959d79c84"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecProtectionShield.imageset/Contents.json",
+      "sha256": "e2dd2e580005a07f52ecd1452ccca5c0b09cb22e92ac3153b4d55ac01562c799"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecProtectionShield.imageset/shield.svg",
+      "sha256": "89b6f28e19d97b0bd14df35266355d2c65f48bf7de64931e9e6d7a430840e84b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearch-bing.imageset/Contents.json",
+      "sha256": "dc39dcbffc2e4dccfd6d0842aa8625ad7dc6bee7ce11f075c1a497cac4b953cb"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearch-bing.imageset/icon.png",
+      "sha256": "907efa3b15f861305f30cc05927627b191d0a396a8393a4c8bfca40e91efed34"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearch-brave.imageset/Contents.json",
+      "sha256": "dc39dcbffc2e4dccfd6d0842aa8625ad7dc6bee7ce11f075c1a497cac4b953cb"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearch-brave.imageset/icon.png",
+      "sha256": "3cc21c6c260e028395915f60fe7e2d115b6f336da0fe3cdfe190aedbdb1b2108"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearch-duckDuckGo.imageset/Contents.json",
+      "sha256": "dc39dcbffc2e4dccfd6d0842aa8625ad7dc6bee7ce11f075c1a497cac4b953cb"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearch-duckDuckGo.imageset/icon.png",
+      "sha256": "9536df7c46efb54df1309ae1b2deba9bd11635bdc886f67904a4549480cd5562"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearch-ecosia.imageset/Contents.json",
+      "sha256": "dc39dcbffc2e4dccfd6d0842aa8625ad7dc6bee7ce11f075c1a497cac4b953cb"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearch-ecosia.imageset/icon.png",
+      "sha256": "8c5f9e69fd18932acfa882aa82c3e692607022627b01af7988268280bfeae633"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearch-startpage.imageset/Contents.json",
+      "sha256": "dc39dcbffc2e4dccfd6d0842aa8625ad7dc6bee7ce11f075c1a497cac4b953cb"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearch-startpage.imageset/icon.png",
+      "sha256": "b95a35b320370022f1eb0e5caea083c9ae04f81f3d81e1d1bf616f9b25060f83"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearch-yahoo.imageset/Contents.json",
+      "sha256": "dc39dcbffc2e4dccfd6d0842aa8625ad7dc6bee7ce11f075c1a497cac4b953cb"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearch-yahoo.imageset/icon.png",
+      "sha256": "c0e001b08dd77baba1f31b430b084ca5e68ddeba4cd9132ca2a1800d5d6b96a3"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearchSettings.imageset/Contents.json",
+      "sha256": "bf314d9e7a0eb2ef3e08f730e0ef90eb12bf8d2d2bb5603e6b8460f9cabfa8a2"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecSearchSettings.imageset/icon.svg",
+      "sha256": "709ec7aa40d719cf35b0ea927c93ffbb8dccf4bcf69c83c80b932bdbbcef6416"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecTabOutline.imageset/Contents.json",
+      "sha256": "bf314d9e7a0eb2ef3e08f730e0ef90eb12bf8d2d2bb5603e6b8460f9cabfa8a2"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecTabOutline.imageset/icon.svg",
+      "sha256": "197bd9d78102dc3909402a2de001515784c7f8407a1de36a1069945eed2d8dfa"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecTabTray.imageset/Contents.json",
+      "sha256": "bf314d9e7a0eb2ef3e08f730e0ef90eb12bf8d2d2bb5603e6b8460f9cabfa8a2"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/FennecTabTray.imageset/icon.svg",
+      "sha256": "ccd2fa7e60978eb0377a7b81a1014909f4e427455003a713dfff61329b236618"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/LaunchBackground.colorset/Contents.json",
+      "sha256": "796705718c4e79781d7c313a7a2de3a46e0f0c1ebae37a3914e86e6d11ad0a15"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/custom/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/custom/taboverview/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/custom/taboverview/private.mode.icon.imageset/Contents.json",
+      "sha256": "a5a35e0381df7e29a5ba227805fe4dd11fe3eb6c41c2d451b4ed3ba9d73d25a9"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/custom/taboverview/private.mode.icon.imageset/private.mode.icon.png",
+      "sha256": "d4fffd85d648c018d3c949021d9a762f76e4abf70bb6d0d95158270eb78f0ff0"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/amazon.com.imageset/Contents.json",
+      "sha256": "4089bde74f10a0f8c59565e033b7dc547c3ef40bd8362b2c7f52aa94484cec18"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/amazon.com.imageset/amazon.com.jpg",
+      "sha256": "0803f9938816a9c046c22afb6c4126056bde2ccb6f95d16efb2fe4c8ededc450"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/apple.com.imageset/Contents.json",
+      "sha256": "92c54b8330a0a0a4f5084a6eccf22fd1cd2e28ac1b23ca55aab19d06b092de85"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/apple.com.imageset/apple.com.png",
+      "sha256": "5632d96aa4610d69778c5090d99e5c7fdc8964a95bde7bdcb3165aa821dd5d3d"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/chatgpt.com.imageset/Contents.json",
+      "sha256": "d9c41f838d162bdce3e7896a405d2e5c2a54abd34b991f4c28801680f2564eb8"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/chatgpt.com.imageset/chatgpt.com.png",
+      "sha256": "f33812d07536e8cfe3afa0698a045a969a9a0d45e12af6e442630f8cd4a734f8"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/facebook.com.imageset/Contents.json",
+      "sha256": "f5eba18ec88bdacefaa92e57bcc738b8dc77b1312b7e5aeb3c43f4d1c26cd8b1"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/facebook.com.imageset/facebook.com.png",
+      "sha256": "019dd8276c78d15d9ead664292f2421b6d0fe2fba96437cf9b14d1528e297621"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/github.com.imageset/Contents.json",
+      "sha256": "caeeb3da672848570d35d751557540c692a472a44d967950d535de065e8feed9"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/github.com.imageset/github.com.png",
+      "sha256": "c2b2960543cbaa5c7ed19beb56d4f5d5b5e52075de08a888150cbd00f27fbf40"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/google.com.imageset/Contents.json",
+      "sha256": "54cf82f355a9bcfe2dd063e2feff5f7a07394908b78821d162534ca98d331a79"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/google.com.imageset/google.com.png",
+      "sha256": "6e40c01f4dd7d467327a4f8958985be8aea2c6c1303eb8c5d2571803cf4d4837"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/reddit.com.imageset/Contents.json",
+      "sha256": "dfd2ca7b51ccd3341752fbf8d138dce39f98aab067cca002cfb9694d80726157"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/reddit.com.imageset/reddit.com.png",
+      "sha256": "929e77aec62c707fbc55cbd78715f05b2b51d91bbdd25c048d56c3a4d0b90357"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/wikipedia.org.imageset/Contents.json",
+      "sha256": "8d243312b510215329c4d841a3925e4f35fc8867b07b0a428cf831d6ffc33529"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/wikipedia.org.imageset/wikipedia.org.png",
+      "sha256": "4c8bf96d667fa2e9f072bdd8e9f25c8ba6ba2ad55df1af7d9ea0dd575c12abee"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/x.com.imageset/Contents.json",
+      "sha256": "7944f852c8710f217b9f02ce286b2cd8b3db6ceee65d6a81fa5e902b0aa1d9ee"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/x.com.imageset/x.com.png",
+      "sha256": "6386fca88de84fa49c9e7061c2b5101365316946459df05052061c2753d978f5"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/youtube.com.imageset/Contents.json",
+      "sha256": "d5a98056cb5f509b57ca91cf94fc2f798d4bac0072ee8727783624964b866109"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/favicons/youtube.com.imageset/youtube.com.png",
+      "sha256": "638de5a3452b60fdc7258a3a9b178197b1887f136a77dda713b3c11f4a3edd1d"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/ieynec-logo.imageset/Contents.json",
+      "sha256": "0daee46af25a9a6b967ec1d9b40aeb42ab2f8a4707b291190941de113d9a174f"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/ieynec-logo.imageset/logo.png",
+      "sha256": "6d410fcfa498ae227ff0963ad16931b4d99483193717a97e5e6366684a8c2e34"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/images/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/images/bmc.imageset/Contents.json",
+      "sha256": "520b1e321beba0ac9377d2fbdf25c9418911e8c45c8086971c511394fabbb3d1"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/images/bmc.imageset/bmc.png",
+      "sha256": "c11ee93e42be8d964b50178caa74e3ebb7c43484a56259e1c60b6b814256ebe2"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addon/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addon/reynard.puzzlepiece.extension.symbolset/Contents.json",
+      "sha256": "861fff66dc9345c8ed57e22256f67dd0a89f0fc70bde0f4e6756f65178f4f92f"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addon/reynard.puzzlepiece.extension.symbolset/puzzlepiece.extension.svg",
+      "sha256": "6500508443d1d0153ab50428f8fc3af7a1c2c752cd8ead1a030f812d08f5a3f7"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.arrow.clockwise.symbolset/Contents.json",
+      "sha256": "4c2efeca9a6f6b815e8ff8f95f2c545992dd34c61816b8255c28b9e2fcb307d0"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.arrow.clockwise.symbolset/arrow.clockwise.svg",
+      "sha256": "89414b1159dc2c38625bac7fc91dfb9dedd9b45d4285dea2a49d25e6f0b0670e"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.arrow.up.left.and.arrow.down.right.symbolset/Contents.json",
+      "sha256": "819b6721c75b3927198cb57e8f04c2665798fa27dadf308cac7f64cee524a386"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.arrow.up.left.and.arrow.down.right.symbolset/reynard.arrow.up.left.and.arrow.down.right.svg",
+      "sha256": "3cadd81ee4d5d1d64cb2c943bd09e9bb6ad32bb78d5be8e7238d3494d0095428"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.desktopcomputer.symbolset/Contents.json",
+      "sha256": "c5bbbf413a70489e35983746c3f31aa5bb2ff66b9437fe43bcf55669e486ddbf"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.desktopcomputer.symbolset/desktopcomputer.svg",
+      "sha256": "213e90946f0dfec746ad6d4a89cace354c7c27b02b6184b03b0e48797ff22c63"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.document.on.clipboard.symbolset/Contents.json",
+      "sha256": "89cba01e0a82fb9eec063d677b351498aa4de6981b368a862fb3aad7bdc8875d"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.document.on.clipboard.symbolset/reynard.document.on.clipboard.svg",
+      "sha256": "ad03d962a9d9953485639dadaa42fbbe083c643d73dcd6d81b653ff7f48d8940"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.keyboard.symbolset/Contents.json",
+      "sha256": "6e7846f919c6933466eae85a55661ca1005efafaed446bbadbac0e57df4503e2"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.keyboard.symbolset/reynard.keyboard.svg",
+      "sha256": "d7767d6c934894cc948f3f752c27f0c3745bd1b5cdadbbfdc80f6ccec0775790"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.list.bullet.below.rectangle.symbolset/Contents.json",
+      "sha256": "2188d30f5cbf87ba4bb1f1a20fe5d989b1d3b13954a5f8b2d507c30d51e28182"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.list.bullet.below.rectangle.symbolset/list.bullet.below.rectangle.svg",
+      "sha256": "5ff09bbc1b2e19d10456bcd422b261af777b24ae683e64ca7e66d77f5b872546"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.magnifyingglass.symbolset/Contents.json",
+      "sha256": "ab41819e3f32ed4761d91538dd7738611e1bf0aa599a48a17877164bff2051d3"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.magnifyingglass.symbolset/magnifyingglass.svg",
+      "sha256": "c4603edaed3bf9b6674dc279fcb0972fe601cebd51cce26efe6a0b08374c6d7b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.smartphone.symbolset/Contents.json",
+      "sha256": "176e9a46cd322710b7480786d79c4b940b78ce9b3479e82077c58a184acbaabc"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.smartphone.symbolset/smartphone.svg",
+      "sha256": "c1ece5c93134603e7251facba55e0044c73a3139cab137ace33f89aae88c3fa0"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.text.page.badge.magnifyingglass.symbolset/Contents.json",
+      "sha256": "bb24e3bacca0eb12b1d50488f038a0ff4d23ba3b612482e100317618f0fd5f36"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.text.page.badge.magnifyingglass.symbolset/reynard.text.page.badge.magnifyingglass.svg",
+      "sha256": "b2c466d1b2c8e439c585c21f54139676ddca9ebec11cbb995d586f6065a3437f"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.text.page.symbolset/Contents.json",
+      "sha256": "0a77901fd8a86b8c44f1ce60a4aa4aa0ae06fffb2e70e1b8df6f7298d9ff0224"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.text.page.symbolset/reynard.text.page.svg",
+      "sha256": "0493256df15e80e315777766a5e0c38017781b3ba1f0b36438db097434813fe7"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.textformat.size.symbolset/Contents.json",
+      "sha256": "adb2131849b340d17d4a3d2382a543236b4ec2780df72417bd4634b2b470e519"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/addressbar/reynard.textformat.size.symbolset/reynard.textformat.size.svg",
+      "sha256": "6a523b0027f93c19d01c79a7b207cab9086a6e278c7af5f17282ce38c184012c"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.arrow.up.arrow.down.symbolset/Contents.json",
+      "sha256": "4910d960f9a872926798752521ea61046ed3e3a53cc3e087d2e2e8f9419cd9cc"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.arrow.up.arrow.down.symbolset/arrow.up.arrow.down.svg",
+      "sha256": "4bc5d7caf26c1b8cf1e85d49d699b8baf65c9e35fe4a3ef2e4d21914bfde1714"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.book.fill.symbolset/Contents.json",
+      "sha256": "3a958c6d373103bf0a12823e5324298b6eef8e66743f0664844133711536fc03"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.book.fill.symbolset/book.fill.svg",
+      "sha256": "5ad4db13b3e72fd6462612338de1de71dc4ed1bbfbeb6c957056afa3f9445abb"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.book.symbolset/Contents.json",
+      "sha256": "9a93dd4c7e87ed92b7d8de457ba714e3127cd1393620e7d3ab0b6d1807fd87fc"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.book.symbolset/book.svg",
+      "sha256": "98e1b48685f21b49fe2efaa23fbfa88601eb5eddf3c11d2e6373232f0695cdcd"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.folder.badge.plus.symbolset/Contents.json",
+      "sha256": "6f565ee189697c2c65bf00e78a15aace1efbe669fa91ba4f7e3fd49fec84b372"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.folder.badge.plus.symbolset/folder.badge.plus.svg",
+      "sha256": "09a64702b8429fb8148cf25477252506ed157a1cdcecacb835c7e0b8dacb532f"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.folder.symbolset/Contents.json",
+      "sha256": "55985ed76503bfe213c5420f7a4d4706dddbe150e887077f95ca4ff9f673c2b2"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.folder.symbolset/folder.svg",
+      "sha256": "5889468cc066f61de4bce731350550d5a794da8790d1e8550c27214589f7f041"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.globe.symbolset/Contents.json",
+      "sha256": "9f16014e6552758eed08924c7183d6ecfef31846f7beff8c65b18c8b9493e3b6"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.globe.symbolset/globe.svg",
+      "sha256": "6401dc11ce9d0d89aece3ebc7c15f6673730a13e510ffebb9deff839adcc0b14"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.pencil.symbolset/Contents.json",
+      "sha256": "d02bdb130d8afef866eb9bbab75d2958b72969256e88e976d76d1b339b37e8fd"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.pencil.symbolset/pencil.svg",
+      "sha256": "35fbd097dc349ccdd81af45612905250f67004205e6b1b97f0a8a6a2b26ca2e8"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.star.symbolset/Contents.json",
+      "sha256": "9d9fa37212ed1f01bf73613330de52305628d55caa254c44291a82cf8323432a"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.star.symbolset/star.svg",
+      "sha256": "f8cd4aa23e668d52305d0f862022425335cf108bc5baf9a2e1df059ec20a6625"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.text.below.folder.symbolset/Contents.json",
+      "sha256": "663c6c879bb898768d57ff55242c785f85df9328900a9ef776498945c063caca"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/bookmarks/reynard.text.below.folder.symbolset/text.below.folder.svg",
+      "sha256": "f31de4aa91a7596e67f06e4f9954a1d59070c929afb5a8f8b967536a438a3678"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/downloads/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/downloads/reynard.arrow.down.circle.badge.xmark.symbolset/Contents.json",
+      "sha256": "9daadf27ca036cf7cd468e82a0a3c96b0766fbacbd9f2c765c1c49b67b433d9f"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/downloads/reynard.arrow.down.circle.badge.xmark.symbolset/arrow.down.circle.badge.xmark.svg",
+      "sha256": "2814a65c35f8d5ca4a3fcbed21effd9ed377e940fa608c9564d31837dfb538b7"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/downloads/reynard.arrow.down.circle.fill.symbolset/Contents.json",
+      "sha256": "b63375ba327c9a8e98691fbcc665ba6076350e6c65401ae63a895d7dfff469b0"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/downloads/reynard.arrow.down.circle.fill.symbolset/arrow.down.circle.fill.svg",
+      "sha256": "179235802839e9d54492774730c8aa45e66e1c34c51b1ce7db41b569a42cba71"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/downloads/reynard.arrow.down.circle.symbolset/Contents.json",
+      "sha256": "217d8f7ac0ecb5f3d0c57d495b1fff87a95f4325f6a1ab23aa67a19c349f60c5"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/downloads/reynard.arrow.down.circle.symbolset/arrow.down.circle.svg",
+      "sha256": "dde3e992b2f8f2be778fde57bc6ba4887304505c8e2506e39638b92ebe46a904"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/filepicker/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/filepicker/reynard.camera.symbolset/Contents.json",
+      "sha256": "a8b5bf9fe7c6753a49f67f8eabb0684c02a1f5a8b2aa1659158b7c4f3fc95148"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/filepicker/reynard.camera.symbolset/camera.svg",
+      "sha256": "4992bfa406e9e763ddc6fd24e403da6d14d9cc6a1d361719df2bf261831e3725"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/filepicker/reynard.document.symbolset/Contents.json",
+      "sha256": "2d593d8877388695347aa5f2d3afd3de3ffb613d761144c1f8a9992cc0fdcfe5"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/filepicker/reynard.document.symbolset/document.svg",
+      "sha256": "4201df97b4b97237cda8966b4d60256584dbd1077db9cf23894ce02db3c48353"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/filepicker/reynard.photo.on.rectangle.symbolset/Contents.json",
+      "sha256": "187ccfa34281966778c37f324e7154183b3384c70faf84baa3886b940ac1113d"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/filepicker/reynard.photo.on.rectangle.symbolset/photo.on.rectangle.svg",
+      "sha256": "6ffff20aaf6f361363714e87d84936cb53a4bb81ff73dda5a37ad26a0293bdb0"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/history/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/history/reynard.clock.badge.xmark.symbolset/Contents.json",
+      "sha256": "a25a383748f9ae1a455e0a17c0d110757e8bf19202d65b7b5f25c28f60626d7e"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/history/reynard.clock.badge.xmark.symbolset/clock.badge.xmark.svg",
+      "sha256": "00da4cabba8ca9186a6d467a8da8c7f0b04a159fe923dd0b45e488211843e4e4"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/history/reynard.clock.fill.symbolset/Contents.json",
+      "sha256": "01e58bbcfa8d4bbfa95c1ca8480dc836526c086b1bd833a67159eac9c5efe1f9"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/history/reynard.clock.fill.symbolset/clock.fill.svg",
+      "sha256": "d7d9e8f7f5b68f75e7b22471e41002e591918d9b80bfb745c8098883c4863ecc"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/history/reynard.clock.symbolset/Contents.json",
+      "sha256": "3d0e744c208b230daf8b4cedfdd13f09006ffe16224e87f36b6f4be7b67d745a"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/history/reynard.clock.symbolset/clock.svg",
+      "sha256": "404e4ae1b67d5cd164bc104a525e1d7f51625fa491be91d446e2dfc6b1bfc7ea"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/jit/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/jit/reynard.bolt.slash.symbolset/Contents.json",
+      "sha256": "03406f8f60a576bf5ce89df45d350c13131a8da87ff3d15222ef73a33c1c9f84"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/jit/reynard.bolt.slash.symbolset/bolt.slash.svg",
+      "sha256": "a25b61a518c221aefe01025804ac2100fee1eeab7eff2ab345cda28eb6edf574"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/jit/reynard.bolt.symbolset/Contents.json",
+      "sha256": "43c1f63af155c35f733c58906305161f5efa6cab5f5360d88f6ab821b5235c03"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/jit/reynard.bolt.symbolset/reynard.bolt.svg",
+      "sha256": "66794afd12c9a8c832be40efe97a0b658e44ad4fea60a208807f8a04ec240566"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.arrow.up.right.symbolset/Contents.json",
+      "sha256": "8ee8f3b3d884e12b17af745432b331bbc8404a7c6e112676be9e56f724252b77"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.arrow.up.right.symbolset/reynard.arrow.up.right.svg",
+      "sha256": "f1cb24ffe376e7dfd4c650dc6387b363f8cc312eee1f98e2dc251095b74e2792"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.ellipsis.symbolset/Contents.json",
+      "sha256": "5be63f03fac66366f393ec67c0a0b37a65e32f98334ededc58d7538802e1c2e0"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.ellipsis.symbolset/ellipsis.svg",
+      "sha256": "6fa8ef0173dec3d439a58aff7e15999083ead9541bbe20f61a680edeb80e1749"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.lightbulb.max.fill.symbolset/Contents.json",
+      "sha256": "9f0b158885624aa6bacc52ffeab8a48f7d65598f08a494236b40be82fc0bae63"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.lightbulb.max.fill.symbolset/reynard.lightbulb.max.fill.svg",
+      "sha256": "a78c4de3184a853f7b4eb44016d775641af5a4d56ab7e46ad117c867fb5318f4"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.minus.circle.symbolset/Contents.json",
+      "sha256": "f959c1f5452600a2902477190f267392a50778bd846b757a160bf1afe91bc819"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.minus.circle.symbolset/reynard.minus.circle.svg",
+      "sha256": "738d9106b0d3339c6f392b58a732ac7102aa1e40571cbcc9c4106fb99811aefd"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.minus.symbolset/Contents.json",
+      "sha256": "c4c486aa0c206e32b5a5b5c2610792975efcc06c0dd0180fe918d7e9a629a8ee"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.minus.symbolset/reynard.minus.svg",
+      "sha256": "d0812611d71fd700f75ec156080d335148942908bae4bd2e75371c667ecac889"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.printer.symbolset/Contents.json",
+      "sha256": "636ecf151ce532940202830700f6d9ff4451873d3a5a2214ee1d399142dd01b7"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.printer.symbolset/reynard.printer.svg",
+      "sha256": "e189484ae91034e414cbf8e894804aa1a2eb959c82d7e884d6134ed9eef714d0"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.speaker.slash.fill.symbolset/Contents.json",
+      "sha256": "6dab94e38469d7b3e615523737d9542be1eb36ea63fa2139d3bd426fb51ea86d"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.speaker.slash.fill.symbolset/reynard.speaker.slash.fill.svg",
+      "sha256": "9011b72da75a6b45685aac2926f2526f86218a57d6872c1f6056b95dcb9210f1"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.speaker.wave.2.fill.symbolset/Contents.json",
+      "sha256": "b3f47ee6edb2f64ab24ac817db2d4b02ec1286dc02aceefc6d405f6a3e838abb"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.speaker.wave.2.fill.symbolset/reynard.speaker.wave.2.fill.svg",
+      "sha256": "9ba3a7cbf36846185b3ccbb2459e4c126bac89013ce96f18db5f32d13207c3e9"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.sun.max.fill.symbolset/Contents.json",
+      "sha256": "e84f45edf54285272f87a5ec1b894881f7b7b24b378f47b8298870cffe7d502a"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.sun.max.fill.symbolset/reynard.sun.max.fill.svg",
+      "sha256": "dc67ee9b40207ab6c92ae2a6626dbf11220299fc85ccfb167f51582769a56858"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.sun.max.symbolset/Contents.json",
+      "sha256": "79d8e2734c9768bcf0651ef2e58742675907d60ddb43b7d5a028f27dda0dd4b8"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.sun.max.symbolset/reynard.sun.max.svg",
+      "sha256": "8b209600a79522bfa65bb428502c1d0afcfacda66c29644d35ed4881aa08688b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.sun.min.fill.symbolset/Contents.json",
+      "sha256": "f7dae9bf4412153b15d64e635552bf808bf7feec21af555a948321a96c0d1e40"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.sun.min.fill.symbolset/reynard.sun.min.fill.svg",
+      "sha256": "2247a10ea984dbe686369429be097d3cb14f95b4ab46a2efdd3958ae1ae483e4"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.sun.min.symbolset/Contents.json",
+      "sha256": "9d8523e9b1f681e2bd0c80e38817deca3ac79a74bd88e2dc90432fc4891d04fd"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.sun.min.symbolset/reynard.sun.min.svg",
+      "sha256": "3f2db48fe70fc9bd8edd4af979124e7db351bde3c85f7c5995f5f28fc8ccba26"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.text.page.slash.fill.symbolset/Contents.json",
+      "sha256": "55713937d47bc9ca60b9b87ea9b7dade68cccfbf01074ac41dcd71fb11e98ea2"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.text.page.slash.fill.symbolset/reynard.text.page.slash.fill.svg",
+      "sha256": "7ef36bd510a4037e8fefdf591cdc1a495d87e551ba2fc8853f5b48cbad426f5d"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.textformat.size.larger.symbolset/Contents.json",
+      "sha256": "45b86f1f963862b568f0c69b125b2426a55b57ae3704f987d88c7bd0edeba416"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.textformat.size.larger.symbolset/reynard.textformat.size.larger.svg",
+      "sha256": "a407d74c4bc8d5f1e9015e6e69e76a0f508dabddb676c79020c32e849dec85a7"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.textformat.size.smaller.symbolset/Contents.json",
+      "sha256": "340cd7de721b4249b8b6211ad86091a25d5b121649226540433b2cfb72f2a78c"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.textformat.size.smaller.symbolset/reynard.textformat.size.smaller.svg",
+      "sha256": "33e2332b47811783c6785f2ef49291c3d3636771fc3fbfc819edea0d8f729fc8"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.xmark.symbolset/Contents.json",
+      "sha256": "41595f357581e1ddd2df18cb96993d198f41d91de1e3ff4e40a5808e018411f2"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/misc/reynard.xmark.symbolset/xmark.svg",
+      "sha256": "3974e8d909e198b9df31e4ec51ea7bcc65fea62d7be64a8733fb5bea4e70ce58"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.document.on.document.symbolset/Contents.json",
+      "sha256": "3bb2676fa51a6dbb9a0aeb9a396566af8dff50eb4f9642ca101c0545be352a5e"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.document.on.document.symbolset/document.on.document.svg",
+      "sha256": "2cfab5bcb243a928a82259452cdd36e43d46b4e8dc24f7eb0463db64d821f5e7"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.plus.square.dashed.symbolset/Contents.json",
+      "sha256": "eb0c69efa85552e4b8b7dc461728785e5e239a33e87f2ab43537bee328ab91f4"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.plus.square.dashed.symbolset/reynard.plus.square.dashed.svg",
+      "sha256": "278bdf29de5cd149c7fefdfcdc1133e601ceb4bf4cf6ed05ec5f720114096928"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.plus.square.fill.on.square.fill.symbolset/Contents.json",
+      "sha256": "edb0242a887261e84c26d76018f99d734391eb65e5edbc620610a23b1456c094"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.plus.square.fill.on.square.fill.symbolset/reynard.plus.square.fill.on.square.fill.svg",
+      "sha256": "dfd293cb91fa8b52e280e97d9a9249aa67a13815981c9d0d3c7fa9e008698f83"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.plus.square.fill.symbolset/Contents.json",
+      "sha256": "351078ecb1977ff5e9930f60a1c60a417d90efc76112a5765d883e53c2a8c988"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.plus.square.fill.symbolset/reynard.plus.square.fill.svg",
+      "sha256": "bdcb326537dbdae2d8964a4308e9ec871cec15444846ee25837bdb5d085b33ad"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.plus.square.on.square.symbolset/Contents.json",
+      "sha256": "bc88a0a679272d572b2a0de077afc32d6f75ccd9020dd4af429db7d1faa7d7b9"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.plus.square.on.square.symbolset/plus.square.on.square.svg",
+      "sha256": "007d3833ee670120f199b3e963c8c9ae8a48c8ee6ec7d2c4c0cf3dcd36660c2f"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.plus.square.symbolset/Contents.json",
+      "sha256": "5873c78045eb639b3d76a61c76ccd4e3fc5c89802daaf37c3de24bd21dc3cbc7"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.plus.square.symbolset/reynard.plus.square.svg",
+      "sha256": "bbe7e948af5a339f3f5ace224f6e428c7126636f214a5edf1cc1852600823e00"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.square.and.arrow.down.symbolset/Contents.json",
+      "sha256": "26d6515c3cfd92c334e8182e6bc089b6cdbbfeaa976623f15a03334ccc0059be"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/previews/reynard.square.and.arrow.down.symbolset/square.and.arrow.down.svg",
+      "sha256": "dc6f30d5a9d489be2a873404e973fddc4d961021567be37ca62eb609a833b0fe"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/search/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/search/reynard.arrow.down.left.circle.symbolset/Contents.json",
+      "sha256": "221ab45eeb0fbde22cd08bdbebf86cae0bee0d64f45ea58d83b7f26f34fe5e9a"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/search/reynard.arrow.down.left.circle.symbolset/arrow.down.left.circle.svg",
+      "sha256": "e59a0ad651c815da6a75a98015b865df7621daef085f006cee0584c8415d7f32"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/search/reynard.arrow.up.left.circle.symbolset/Contents.json",
+      "sha256": "7d5c70d317d69b3d17ea7d987448c40ca657a452c18f0cdceab2577f69924f75"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/search/reynard.arrow.up.left.circle.symbolset/arrow.up.left.circle.svg",
+      "sha256": "b44b3f21d07db06a039322de0491527dbd5ef17f638c3ca73d48414721559f39"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.checkmark.circle.fill.symbolset/Contents.json",
+      "sha256": "f8d576f439465dbbcd99588f7dfab2634ced69b4f614bf94819af8315876072e"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.checkmark.circle.fill.symbolset/checkmark.circle.fill.svg",
+      "sha256": "571bbf95e36e00dbc888ff00befd5934af28eb08c98cf8ba14fe5b6f029d2047"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.chevron.up.chevron.down.symbolset/Contents.json",
+      "sha256": "9fe9df50b8c768ee1fd1623cd0700e426deda6ba63d7527d95097c7375223248"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.chevron.up.chevron.down.symbolset/chevron.up.chevron.down.svg",
+      "sha256": "f959a5c896b26d91b2dbfa85e8db87c0a472ac2ba32f81efaf01a3c6d923b89c"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.circle.lefthalf.filled.symbolset/Contents.json",
+      "sha256": "773aee9544db085a015a874b6c03bfab0576e9a3a2923b89d237a9ab5da814d0"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.circle.lefthalf.filled.symbolset/circle.lefthalf.filled.svg",
+      "sha256": "703d84153bca71cba7d9f705e320be368e03892dad8940f5b182b549c674d7c1"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.circle.symbolset/Contents.json",
+      "sha256": "4d39609c318ddbd679b3bfcc0d645e2ad63156bdbd66e53c8709a59dea182fe3"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.circle.symbolset/circle.svg",
+      "sha256": "eb7163077e0a1ec2e8dfadac88bd7ae751aa6ca03fe21492fd7985b59170f7f3"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.gear.symbolset/Contents.json",
+      "sha256": "b3a6c96ec0ee3609b904dbe7ce9cdf9fef34c51f82177a0d834994180f16a02f"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.gear.symbolset/gear.svg",
+      "sha256": "f2d4a679898fbafb519084064775483c786c03ae7b497ec2ea66eb7abddbc81c"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.gearshape.fill.symbolset/Contents.json",
+      "sha256": "74d6df156915261da57ce787a89ee07c185f91ddbc56224e31ba554bf69f1ca5"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.gearshape.fill.symbolset/gearshape.fill.svg",
+      "sha256": "a2cf806e308a60c255e54056b9c78890063f34b518277ce4b2404e2c98a8c051"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.gearshape.symbolset/Contents.json",
+      "sha256": "2b89bd8a2a4fd94a2dcd1d652f6310b20dbe7710fd492a44f422debf52aedcce"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.gearshape.symbolset/gearshape.svg",
+      "sha256": "8a4f3625c4addddb8b26ca264a56d8c1ee0e10062fd47127d9a14431cfded4e7"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.moon.fill.symbolset/Contents.json",
+      "sha256": "98836117bf209226eae25bdf99818da0926eec807c8c6d32d24c33616c1c4811"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.moon.fill.symbolset/moon.fill.svg",
+      "sha256": "b23599650f92ae81b0122ddc31a2bbba2eb49accaba230872c1b4151b472d425"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.platter.filled.bottom.iphone.symbolset/Contents.json",
+      "sha256": "218ac1c6e618c636f4e782aef7a0f9ebe6d7a9ffee6aa570e82f5d01e1990135"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.platter.filled.bottom.iphone.symbolset/platter.filled.bottom.iphone.svg",
+      "sha256": "3aee4b9e451dac0b65138365df106cf4b07e0dd7fe0c83729b1f274ee1e28250"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.platter.filled.top.iphone.symbolset/Contents.json",
+      "sha256": "508076173246b8845c47f94d87c83eedadaf1c5e95b0758b9c546c04fc7698b6"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.platter.filled.top.iphone.symbolset/platter.filled.top.iphone.svg",
+      "sha256": "cd95620b3aaff100d6d7b5274c40f3b74288dc6a4e0832da4e264de44b9e4659"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.sun.max.fill.symbolset/Contents.json",
+      "sha256": "59bae5707f3a376971c22626633e0c029b39004be507cccbce44689ee5e24b0b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/settings/reynard.sun.max.fill.symbolset/sun.max.fill.svg",
+      "sha256": "dc67ee9b40207ab6c92ae2a6626dbf11220299fc85ccfb167f51582769a56858"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/tabbar/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/tabbar/reynard.x.square.fill.symbolset/Contents.json",
+      "sha256": "fc952d4242c9e60b33cfbcbfb1f9d64fc16cbf471c53577d6f320bbd555ac7fd"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/tabbar/reynard.x.square.fill.symbolset/x.square.fill.svg",
+      "sha256": "6df792613a60d0eaa700cfb0bae414132a17be079d1bb48c9649a80663a42290"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/tabbar/reynard.xmark.circle.fill.symbolset/Contents.json",
+      "sha256": "d3f752463646c8a2cfd6927926a111a0fb9efc74b047aecd72c49cc19d28c757"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/tabbar/reynard.xmark.circle.fill.symbolset/reynard.xmark.circle.fill.svg",
+      "sha256": "35f3337d4775b66d35f5b9a91fe7ee1c570856d152cd2465d0a7043677fd5faa"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/taboverview/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/taboverview/reynard.checkmark.symbolset/Contents.json",
+      "sha256": "da6190313defe180d160dce09a3ab0fc30e5d59483a8ff20fd35ed6641a7ca4a"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/taboverview/reynard.checkmark.symbolset/checkmark.svg",
+      "sha256": "2d40db4ff5606132dd50be47be5d6630980daf302acc877962fa57ff40de3807"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/taboverview/reynard.trash.symbolset/Contents.json",
+      "sha256": "d819ffb902e48e0515a66c23f848476cceea091e9b20e3335056271bf731ea58"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/taboverview/reynard.trash.symbolset/trash.svg",
+      "sha256": "126b65c0205623fdcf9a631c858c60e1cccc912f7cf2e1b2e913f8f82a3ed770"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/Contents.json",
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.chevron.backward.symbolset/Contents.json",
+      "sha256": "e37fb1f1bbccd8d82f8b579c673c7dbce3d084c45dcf11ea22766a81ce6ce349"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.chevron.backward.symbolset/chevron.left.svg",
+      "sha256": "8ed50e109ab17991111c29c46d465375458c06c23894213ac5b85daa72db6c29"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.chevron.down.symbolset/Contents.json",
+      "sha256": "55a1ab8bb0b684eb78e2beb71478e95f85fae0098ffd69c46e04ae140211e05d"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.chevron.down.symbolset/reynard.chevron.down.svg",
+      "sha256": "74f7a50ac4ea1a52e164a4567eb3b0933dc160c680a7fd3f64d94546f62784b7"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.chevron.forward.symbolset/Contents.json",
+      "sha256": "e640720e50b1c58f42737995ecac3d5a173700a1c3d53d17526d14494a9fdfe3"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.chevron.forward.symbolset/chevron.right.svg",
+      "sha256": "f7bd57151bab817e2e533fff2f1bd435111f0943c2f8e7027643a587ef4936fe"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.chevron.up.symbolset/Contents.json",
+      "sha256": "9dbeec0bde42a6bbbf73baeab5cb0ff4d2bd3481efbd49dd8af4cdb01b00af57"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.chevron.up.symbolset/reynard.chevron.up.svg",
+      "sha256": "79d9b1c79a4e2f237bd3348b511e027482d3e0afadbc65b1b7f7adbedfe76540"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.ellipsis.circle.badge.symbolset/Contents.json",
+      "sha256": "ff9c7af4497b7500c3e5272f7f1e5ce8011b922561e22ee74e291cc4d3321012"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.ellipsis.circle.badge.symbolset/ellipsis.circle.badge.svg",
+      "sha256": "23cc14d0c61aeccffd0fff127ca49dabbb47d9a1d3c03746c6a7ee45216a77cf"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.ellipsis.circle.symbolset/Contents.json",
+      "sha256": "95baf67c937cb588c06fa911fb14d3f50c0d7421c5669f4a0147c95e622efe3d"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.ellipsis.circle.symbolset/ellipsis.circle.svg",
+      "sha256": "acd2e9a5b195adefd6737c849cb1435dc861e1fea4aa55d2da5403c91649af56"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.plus.symbolset/Contents.json",
+      "sha256": "f0c511b795f0c951b7a7abe7b33cdc31e2631a6f056a7920c042314573c58861"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.plus.symbolset/plus.svg",
+      "sha256": "b03883ac1858b7a96e63b886af7c4a2ca8ed9d56f5afe4486e9f572bd1c5da3b"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.sidebar.left.symbolset/Contents.json",
+      "sha256": "dae00662b4e777fadaaa06eb328185fa4d57fc67ad770edc58339a361fb24fd8"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.sidebar.left.symbolset/sidebar.left.svg",
+      "sha256": "fb0d21b646331225ac4fcb78a0737567c70b355946d4bb5086cd307d8d09c106"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.square.and.arrow.up.symbolset/Contents.json",
+      "sha256": "cefd3b903e9915133f57641eed99917e8aa831e3c8a0be35076bd59bbd757848"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.square.and.arrow.up.symbolset/square.and.arrow.up.svg",
+      "sha256": "a54bf63e49e9d8fb8776c54e0a8594e7ab63c1a9c8f693840385483d802382c7"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.square.on.square.symbolset/Contents.json",
+      "sha256": "2f899085952acfa267b2e39671b75c3b9a90170c340e8e2f5db8d041425166ff"
+    },
+    {
+      "path": "browser/Reynard/Resources/Assets.xcassets/symbols/toolbar/reynard.square.on.square.symbolset/square.on.square.svg",
+      "sha256": "7632a2ae040f125318860cd7be0c6abd349b49ed965b13011cce5d28fb624b76"
+    },
+    {
+      "path": "browser/Reynard/Resources/Info.plist",
+      "sha256": "34f676ba5fd4cf5205f146ecc46a48a9d001f016c187a7356712706b876c16a3"
+    },
+    {
+      "path": "browser/Reynard/Resources/LaunchScreen.storyboard",
+      "sha256": "0d6c7150dd05357b3b70da228be36cddfcc70b7a69694de656c799343c496008"
+    },
+    {
+      "path": "browser/Reynard/Resources/Localizable.xcstrings",
+      "sha256": "2519e13860149623d062114845a986c71ea4850dcff09b643c3b08d758e5b194"
+    },
+    {
+      "path": "browser/Reynard/SceneDelegate.swift",
+      "sha256": "9fda15b31011ff8c43262b90b20a123fd9bde61a7c4dfcddf1b3ceb7d4f88dac"
+    },
+    {
+      "path": "browser/Reynard/Shared/Utils.h",
+      "sha256": "2394b2ced11daf50866ef78208bd5f27dd9f8ad6d9c61caf7c87db5566243a32"
+    },
+    {
+      "path": "browser/Reynard/Shared/Utils.m",
+      "sha256": "b681d4d0be9355a926454f0056467a2fd3955f8ca837f9eb66bf7f72d6e3893b"
+    },
+    {
+      "path": "browser/Reynard/ThirdParty/BlurUIKit/Internal/BlurFilterProvider.swift",
+      "sha256": "c6f104bf3d4a734b0432e03d39954ee0c4695e1aea89d0363c59d793387bdeba"
+    },
+    {
+      "path": "browser/Reynard/ThirdParty/BlurUIKit/Internal/GradientImageRenderer.swift",
+      "sha256": "3dae4299b5aa0c8dd500674f706d3a9392607034696fa78f1899169e672f0f77"
+    },
+    {
+      "path": "browser/Reynard/ThirdParty/BlurUIKit/LICENSE",
+      "sha256": "51a30918a15b33dee5905749c1c9dba823ed561c55aeeaf988005e0f325385ef"
+    },
+    {
+      "path": "browser/Reynard/ThirdParty/BlurUIKit/UIKit/VariableBlurView.swift",
+      "sha256": "82f764524e019ecaebaf2e98f33be9bb9b6a78379105b3ee9e90cb149b74e647"
+    },
+    {
+      "path": "browser/Reynard/main.swift",
+      "sha256": "9be8bfcaea4794449f6fa904ec4acad5565750ebe9309b678cadc625ef471538"
+    },
+    {
+      "path": "browser/Scripts/AddGecko.sh",
+      "sha256": "91193a661beffd7a31db65dfa3fc96736308cc1c1dea41ae5be03afd1ce60fdd"
+    },
+    {
+      "path": "tools/release/build-app.sh",
+      "sha256": "d5ff102e745c871e51012f3b6698e7c3663792b9ad4b5a991e1c585412cbb6ad"
+    },
+    {
+      "path": "tools/release/create-ipa.sh",
+      "sha256": "31df0f89c88bc5a6961f86073344bf38f5a01e770971915cfdfbbd7a3779d28f"
+    }
+  ]
+}
