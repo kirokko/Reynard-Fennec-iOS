@@ -1,0 +1,9 @@
+{
+  "manifest_version": 2,
+  "name": "Reynard full uBO prerequisite probe",
+  "description": "Tests actual page request cancellation, not mere API existence.",
+  "version": "1.0",
+  "permissions": ["storage", "webRequest", "webRequestBlocking", "http://127.0.0.1/*"],
+  "background": {"scripts": ["background.js"], "persistent": false},
+  "content_scripts": [{"matches": ["http://127.0.0.1/*"], "js": ["content.js"], "run_at": "document_idle"}]
+}

@@ -20,6 +20,8 @@ xcrun swiftc -sdk "$ios_sdk" -target arm64-apple-ios17.0 -emit-module \
   -module-name ReynardWebKitEngine browser/WebKitEngine/*.swift -o "$work/ReynardWebKitEngine.swiftmodule"
 xcrun --sdk iphoneos clang -fobjc-arc -fmodules -isysroot "$ios_sdk" -target arm64-apple-ios18.4 \
   -c tests/webkit-smoke/Extensions.m -o "$work/Extensions-arm64.o"
+xcrun --sdk iphoneos clang -fobjc-arc -fmodules -isysroot "$ios_sdk" -target arm64-apple-ios18.4 \
+  -c tests/webkit-smoke/FullUBlockProbe.m -o "$work/FullUBlockProbe-arm64.o"
 xcrun simctl list devices available --json > "$work/devices.json"
 device=$(node - "$work/devices.json" <<'NODE'
 const fs = require('node:fs');
@@ -37,7 +39,7 @@ python3 tests/webkit-smoke/server.py > "$work/results/server.log" 2>&1 &
 server_pid=$!
 cleanup() {
   kill "$server_pid" 2>/dev/null || true
-  for id in local.reynard.WebKitSmoke local.reynard.ExtensionProbe; do
+  for id in local.reynard.WebKitSmoke local.reynard.ExtensionProbe local.reynard.FullUBlockProbe; do
     xcrun simctl terminate "$device" "$id" >/dev/null 2>&1 || true
   done
 }
@@ -70,8 +72,18 @@ done
 xcrun --sdk iphonesimulator clang -fobjc-arc -fmodules -isysroot "$sdk" \
   -target "$(uname -m)-apple-ios18.4-simulator" -framework UIKit -framework WebKit \
   tests/webkit-smoke/Extensions.m -o "$work/ExtensionProbe.app/ExtensionProbe"
+make_app FullUBlockProbe
+cp -R tests/webkit-smoke/blocking "$work/FullUBlockProbe.app/"
+cp tests/webkit-smoke/ublock-package.json "$work/results/ublock-package.json"
+package_url=$(node -p "require('./tests/webkit-smoke/ublock-package.json').url")
+package_hash=$(node -p "require('./tests/webkit-smoke/ublock-package.json').sha256")
+curl --fail --location --retry 2 --max-time 120 "$package_url" -o "$work/FullUBlockProbe.app/ublock-full.zip"
+printf '%s  %s\n' "$package_hash" "$work/FullUBlockProbe.app/ublock-full.zip" | shasum -a 256 -c -
+xcrun --sdk iphonesimulator clang -fobjc-arc -fmodules -isysroot "$sdk" \
+  -target "$(uname -m)-apple-ios18.4-simulator" -framework UIKit -framework WebKit \
+  tests/webkit-smoke/FullUBlockProbe.m -o "$work/FullUBlockProbe.app/FullUBlockProbe"
 xcrun simctl bootstatus "$device" -b
-for name in WebKitSmoke ExtensionProbe; do
+for name in WebKitSmoke ExtensionProbe FullUBlockProbe; do
   codesign --force --sign - "$work/$name.app"
   xcrun simctl install "$device" "$work/$name.app"
   container=$(xcrun simctl get_app_container "$device" "local.reynard.$name" data)
@@ -93,6 +105,9 @@ const core = JSON.parse(fs.readFileSync(`${dir}/WebKitSmoke.json`));
 console.log(JSON.stringify(core, null, 2));
 const ext = JSON.parse(fs.readFileSync(`${dir}/ExtensionProbe.json`));
 console.log(JSON.stringify(ext, null, 2));
+const full = JSON.parse(fs.readFileSync(`${dir}/FullUBlockProbe.json`));
+console.log(JSON.stringify(full, null, 2));
+if (full.blockingHonored !== true) console.log('::warning::Full uBO prerequisite NOT satisfied: native blocking did not pass. Do not release as full uBO compatible.');
 // Native incompatibility is a recorded feasibility finding, not a browser pass.
 const compatible = ext.results.every(item => {
   if (item.stage !== 'content-message-storage' || !item.unloaded) return false;
