@@ -22,5 +22,17 @@
     "old": "const i18n$ = (...args) => i18n.getMessage(...args);",
     "new": "// Unofficial WebKit port: empty label attributes mean no translation.\nconst i18n$ = (name, ...args) => name === '' ? '' : i18n.getMessage(name, ...args);",
     "reason": "WebKit throws on an empty message name; retain empty UI labels without suppressing real translation/API errors for nonempty names."
+  },
+  {
+    "path": "js/vapi.js",
+    "old": "// For background page, auxiliary pages, and content scripts.",
+    "insertFile": "scheduling.js",
+    "reason": "Cooperative timer-based idle fallback executes real scheduled work when native requestIdleCallback is absent. Not a native idle-time or performance claim."
+  },
+  {
+    "path": "js/vapi-scripting.js",
+    "old": "    browser.webNavigation.onCreatedNavigationTarget.addListener(onCreatedNavigationTarget);",
+    "new": "    vAPI.webKitPlatform.listenForNavigationTargets(onCreatedNavigationTarget);",
+    "reason": "Use the same real tab-event platform adapter in the original scriptlet engine; source-frame attribution limitations remain explicit."
   }
 ]

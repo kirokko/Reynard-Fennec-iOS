@@ -67,7 +67,13 @@ def prepare(package, target):
         text = file.read_bytes().decode('utf-8')
         if text.count(patch['old']) != 1:
             raise ValueError('Pinned upstream patch no longer matches: ' + name)
-        file.write_bytes(text.replace(patch['old'], patch['new']).encode('utf-8'))
+        replacement = patch.get('new')
+        if 'insertFile' in patch:
+            insert_file = patch['insertFile']
+            if Path(insert_file).name != insert_file:
+                raise ValueError('Unsafe patch insertion path')
+            replacement = (REPO / 'ports/ublock-webkit' / insert_file).read_text(encoding='utf-8') + '\n' + patch['old']
+        file.write_bytes(text.replace(patch['old'], replacement).encode('utf-8'))
         entry = patched.setdefault(name, {'before': original[name], 'reasons': []})
         entry['after'] = hashlib.sha256(file.read_bytes()).hexdigest()
         entry['reasons'].append(patch['reason'])

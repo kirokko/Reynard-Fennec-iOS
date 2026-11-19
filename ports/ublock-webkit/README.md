@@ -13,10 +13,13 @@ the staging tool removes `META-INF` and records this explicitly.
 1. Download the pinned official **full Firefox XPI** described in
    `tests/webkit-smoke/ublock-package.json`. Verify SHA-256 before extraction.
 2. Keep upstream content scripts, popup/dashboard HTML/CSS and engine assets
-   byte-for-byte, except for declared patches to three shared JS files:
+   byte-for-byte, except for declared patches to five shared JS files:
    `vapi-common.js` forwards `getURL` with the native receiver;
    `vapi-background.js` uses real platform event/rule-rebuild adapters;
-   `i18n.js` handles empty labels without calling an API that rejects empty IDs.
+   `i18n.js` handles empty labels without calling an API that rejects empty IDs;
+   `vapi.js` adds a real cooperative timer fallback when idle scheduling is absent;
+   `vapi-scripting.js` uses the same native tab-event adapter.
+   The fallback budgets a measured 5ms of task time, NOT true native idle time.
    The tab-event fallback lacks opener-frame attribution and is NOT equivalent
    to Firefox popup tracking. No fake browser API is added. Modify the manifest explicitly for a non-persistent iOS research
    background, add this overlay, and verify original/modified source hashes.

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Unofficial research port of FULL uBO. Does not emulate missing browser APIs.
 import { installPlatform } from './platform.mjs';
+import { isUpstreamReady } from './readiness.mjs';
 const status = {
     experimental: true, fullUBlockOriginVerified: false, errors: [],
     backend: 'full-uBO-compiler-to-native-WebKit-DNR', network: { stage: 'starting' },
@@ -131,7 +132,7 @@ async function start() {
         const poll = () => {
             status.upstream.readyToFilter = ubo.readyToFilter === true;
             status.upstream.allReadyAfter = ubo.supportStats?.allReadyAfter || '';
-            if (status.upstream.readyToFilter && status.upstream.allReadyAfter) { status.upstream.stage = 'ready'; return; }
+            if (isUpstreamReady(ubo, status.errors)) { status.upstream.stage = 'ready'; return; }
             if (Date.now() >= deadline) { status.upstream.stage = 'initialization-timeout'; return; }
             setTimeout(poll, 100);
         };

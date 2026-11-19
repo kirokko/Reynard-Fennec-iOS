@@ -79,7 +79,7 @@ const verdict = {
   staticNetworkPassed: blocked.every(k=>n[k]?.loaded === false) && allowed.every(k=>n[k]?.loaded === true),
   atomicRejectionPassed: result.transaction?.rejected === true && result.transaction?.oldRulesUnchanged === true,
   storageRuleUpdatePassed: result.update?.storageChangeApplied === true && result.updatedFetch?.loaded === false,
-  originalBackgroundReady: result.port?.upstream?.stage === 'ready',
+  originalBackgroundReady: result.port?.upstream?.stage === 'ready' && result.port?.errors?.length === 0 && result.runtimeErrors?.length === 0,
   originalCosmeticPassed: result.content?.cosmeticDisplay === 'none',
   originalScriptletPassed: result.content?.scriptletObserved === true,
   originalPopupRenderedVersion: result.originalPopup?.version?.includes('1.76.4') === true,

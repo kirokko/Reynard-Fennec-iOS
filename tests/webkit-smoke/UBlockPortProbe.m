@@ -13,6 +13,7 @@
 @property NSString *phase;
 @property BOOL finished;
 @property BOOL fetchStarted;
+@property BOOL contentReloaded;
 @property BOOL updateStarted;
 @property BOOL updatedFetchStarted;
 @property NSUInteger popupTicks;
@@ -99,6 +100,14 @@
         if ([networkStage isEqual:@"failed"]) { self.report[@"fatalError"] = @"Port network setup failed"; [self finish]; return; }
         NSString *upstreamStage = status[@"upstream"][@"stage"];
         BOOL upstreamSettled = [@[@"ready", @"failed", @"initialization-timeout"] containsObject:upstreamStage ?: @""];
+        if ([networkStage isEqual:@"installed"] && upstreamSettled && !self.contentReloaded) {
+            // Observe original content scripts on a warm page, not a page whose
+            // startup reply arrived before the upstream core initialized.
+            // Cold-start correctness is a separate, explicitly pending test.
+            self.contentReloaded = YES;
+            self.report[@"beforeWarmReload"] = status;
+            [self.webView reload]; [self later]; return;
+        }
         if ([networkStage isEqual:@"installed"] && upstreamSettled && !self.fetchStarted) {
             self.fetchStarted = YES;
             NSString *script = @"void(async()=>{const token=Date.now();const out={};for(const name of ['control','blocked','allowed','important','xhr-only','image-only','new-rule']){try{const r=await fetch('/port/'+name+'.txt?token='+token,{cache:'no-store'});out[name]={loaded:true,status:r.status,body:(await r.text()).slice(0,128)};}catch(e){out[name]={loaded:false,error:String(e)}}}for(const name of ['control.png','image-only.txt']){out['image:'+name]=await new Promise(resolve=>{const img=new Image();const t=setTimeout(()=>resolve({timeout:true}),5000);img.onload=()=>{clearTimeout(t);resolve({loaded:true})};img.onerror=()=>{clearTimeout(t);resolve({loaded:false})};img.src='/port/'+name+'?image='+token;});}document.documentElement.setAttribute('data-ubo-port-fetch',JSON.stringify(out));})()";

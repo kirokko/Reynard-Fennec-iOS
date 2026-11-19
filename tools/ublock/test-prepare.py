@@ -44,7 +44,7 @@ with tempfile.TemporaryDirectory(prefix='reynard-ubo-stage-test-') as temporary:
     assert provenance['licenseRetained'] is True
     assert provenance['mozillaSignatureRemoved'] is True
     assert provenance['upstreamHTMLCSSPatched'] is False
-    assert set(provenance['upstreamJavaScriptPatches']) == {'js/vapi-common.js', 'js/vapi-background.js', 'js/i18n.js'}
+    assert set(provenance['upstreamJavaScriptPatches']) == {'js/vapi-common.js', 'js/vapi-background.js', 'js/i18n.js', 'js/vapi.js', 'js/vapi-scripting.js'}
     assert not (stage / 'META-INF').exists()
     assert 'vAPI.getURL = (...args) => browser.runtime.getURL(...args);' in (stage / 'js/vapi-common.js').read_text(encoding='utf-8')
     passed.append('explicit platform patches, unchanged-source verification, GPL and signature provenance')
