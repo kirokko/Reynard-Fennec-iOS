@@ -58,16 +58,29 @@ def prepare(package, target):
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     shutil.rmtree(target / 'META-INF')
     shutil.copytree(REPO / 'ports/ublock-webkit', target / 'port')
+    patched = {}
+    for patch in json.loads((REPO / 'ports/ublock-webkit/patches.json').read_text(encoding='utf-8')):
+        name = patch['path']
+        if name not in original or name in patched:
+            raise ValueError('Patch target not unique in original package')
+        file = target / name
+        text = file.read_bytes().decode('utf-8')
+        if text.count(patch['old']) != 1:
+            raise ValueError('Pinned upstream patch no longer matches: ' + name)
+        file.write_bytes(text.replace(patch['old'], patch['new']).encode('utf-8'))
+        patched[name] = {'before': original[name], 'after': hashlib.sha256(file.read_bytes()).hexdigest(), 'reason': patch['reason']}
     unchanged = 0
     for name, expected in original.items():
         if name == 'manifest.json' or name.startswith('META-INF/'):
+            continue
+        if name in patched:
             continue
         if hashlib.sha256((target / name).read_bytes()).hexdigest() != expected:
             raise ValueError('Unexpected upstream source modification: ' + name)
         unchanged += 1
     provenance = {
         'officialInput': metadata, 'unmodifiedUpstreamFiles': unchanged,
-        'upstreamJavaScriptPatched': False, 'upstreamUIFilesPatched': False,
+        'upstreamJavaScriptPatches': patched, 'upstreamHTMLCSSPatched': False,
         'modifiedManifestFields': ['name', 'description', 'background', 'permissions', 'commands', 'content_scripts'],
         'removedEmptyReservedCommands': removed_commands,
         'mozillaSignatureRemoved': True, 'licenseRetained': (target / 'LICENSE.txt').is_file(),

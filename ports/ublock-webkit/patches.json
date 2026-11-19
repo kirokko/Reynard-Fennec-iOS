@@ -1,0 +1,8 @@
+[
+  {
+    "path": "js/vapi-common.js",
+    "old": "vAPI.getURL = browser.runtime.getURL;",
+    "new": "// Unofficial WebKit port: preserve the native API receiver.\nvAPI.getURL = (...args) => browser.runtime.getURL(...args);",
+    "reason": "WebKit native API functions require their original receiver; forwarding to the real API fixes binding without synthesizing any missing capability."
+  }
+]

@@ -3,17 +3,20 @@
 **Research prototype, not an official uBO build, not uBO Lite, not a production
 browser/IPA, and not full Firefox API compatibility.** GPL-3.0-or-later overlay;
 upstream remains Copyright Raymond Hill and contributors, GPL-3.0-or-later.
-Upstream `LICENSE.txt`, attribution and all original JavaScript/UI assets remain
-in the staged package. Source modifications invalidate Mozilla's signature:
+Upstream `LICENSE.txt`, attribution and original assets remain in the staged
+package; the single explicit API-binding patch is recorded in `patches.json`
+and provenance hashes. Source modifications invalidate Mozilla's signature:
 the staging tool removes `META-INF` and records this explicitly.
 
 ## What actually runs
 
 1. Download the pinned official **full Firefox XPI** described in
    `tests/webkit-smoke/ublock-package.json`. Verify SHA-256 before extraction.
-2. Keep upstream JavaScript, content scripts, popup, dashboard and assets
-   byte-for-byte. Modify the manifest explicitly for a non-persistent iOS
-   research background and add this platform overlay. Verify original hashes.
+2. Keep upstream content scripts, popup/dashboard HTML/CSS and engine assets
+   byte-for-byte, except for the declared shared `vapi-common.js` forwarding
+   patch preserving WebKit's native API receiver (`getURL`). No fake API is
+   added. Modify the manifest explicitly for a non-persistent iOS research
+   background, add this overlay, and verify original/modified source hashes.
 3. In a dedicated module Worker, run **the converter included in the full uBO
    package**, `js/static-dnr-filtering.js`, using its original parser/compiler.
    It shares upstream code with other uBO projects; this does not download,

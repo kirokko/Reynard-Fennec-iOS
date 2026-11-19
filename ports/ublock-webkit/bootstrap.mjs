@@ -6,7 +6,7 @@ const status = {
     upstream: { stage: 'not-started', readyToFilter: false },
     warning: 'Prototype only. Original popup switches/dynamic rules do NOT yet control the DNR backend. No production release.',
 };
-const errorText = error => String(error?.stack || error?.message || error);
+const errorText = error => String(error) + (error?.stack ? '\n' + error.stack : '');
 addEventListener('error', event => status.errors.push(errorText(event.error || event.message)));
 addEventListener('unhandledrejection', event => status.errors.push(errorText(event.reason)));
 browser.runtime.onMessage.addListener((message, sender) => {
@@ -115,6 +115,13 @@ async function start() {
     await scheduleSync();
     status.upstream.stage = 'importing-original-start';
     try {
+        const unboundGetURL = browser.runtime.getURL;
+        status.nativeReceiver = { directURL: browser.runtime.getURL('') };
+        try { status.nativeReceiver.unboundURL = unboundGetURL('') ?? 'undefined'; }
+        catch (error) { status.nativeReceiver.unboundError = errorText(error); }
+        await import('../js/vapi-common.js');
+        // Truthful platform flavor, not a pretend Firefox/Chromium version.
+        vAPI.webextFlavor.soup.add('safari');
         await import('../js/start.js');
         const { default: ubo } = await import('../js/background.js');
         status.upstream.stage = 'initializing';

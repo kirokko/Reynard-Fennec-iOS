@@ -3,7 +3,7 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 
-@interface UBlockPortProbe : UIResponder <UIApplicationDelegate, WKWebExtensionControllerDelegate, WKWebExtensionTab, WKWebExtensionWindow>
+@interface UBlockPortProbe : UIResponder <UIApplicationDelegate, WKWebExtensionControllerDelegate, WKWebExtensionTab, WKWebExtensionWindow, WKNavigationDelegate>
 @property (nonatomic, strong) UIWindow *window;
 @property WKWebView *webView;
 @property WKWebView *popup;
@@ -41,6 +41,7 @@
         self.controller = [[WKWebExtensionController alloc] initWithConfiguration:host];
         self.controller.delegate = self;
         self.webView = [[WKWebView alloc] initWithFrame:self.window.bounds configuration:[self webConfiguration]];
+        self.webView.navigationDelegate = self;
         [self.window.rootViewController.view addSubview:self.webView];
         [self.controller didOpenWindow:self]; [self.controller didOpenTab:self];
         [self.controller didFocusWindow:self]; [self.controller didActivateTab:self previousActiveTab:nil];
@@ -133,14 +134,19 @@
 - (void)later { dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC/5), dispatch_get_main_queue(), ^{ [self poll]; }); }
 - (void)probePopup {
     self.phase = @"original-popup";
-    self.popup = [[WKWebView alloc] initWithFrame:self.window.bounds configuration:[self webConfiguration]];
+    WKWebViewConfiguration *configuration = self.context.webViewConfiguration;
+    if (!configuration) { self.report[@"popupError"] = @"No extension-owned webViewConfiguration"; [self finish]; return; }
+    WKUserScript *errors = [[WKUserScript alloc] initWithSource:@"window.__portUIErrors=[];addEventListener('error',e=>window.__portUIErrors.push(String(e.error||e.message)));addEventListener('unhandledrejection',e=>window.__portUIErrors.push(String(e.reason)))" injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+    [configuration.userContentController addUserScript:errors];
+    self.popup = [[WKWebView alloc] initWithFrame:self.window.bounds configuration:configuration];
+    self.popup.navigationDelegate = self;
     [self.window.rootViewController.view addSubview:self.popup];
     [self.popup loadRequest:[NSURLRequest requestWithURL:[self.context.baseURL URLByAppendingPathComponent:@"popup-fenix.html"]]];
     [self pollPopup];
 }
 - (void)pollPopup {
     if (self.finished) return;
-    [self.popup evaluateJavaScript:@"({url:location.href,version:document.querySelector('#version')?.textContent||'',hostname:document.querySelector('#hostname')?.textContent||'',hasOriginalSwitch:!!document.querySelector('#switch'),bodyClass:document.body.className})" completionHandler:^(id value, NSError *error) {
+    [self.popup evaluateJavaScript:@"({url:location.href,version:document.querySelector('#version')?.textContent||'',hostname:document.querySelector('#hostname')?.textContent||'',hasOriginalSwitch:!!document.querySelector('#switch'),bodyClass:document.body.className,errors:window.__portUIErrors||[]})" completionHandler:^(id value, NSError *error) {
         if (self.finished) return;
         if ([value isKindOfClass:NSDictionary.class]) self.report[@"originalPopup"] = value;
         if (([value isKindOfClass:NSDictionary.class] && [value[@"version"] containsString:@"1.76.4"]) || ++self.popupTicks >= 50) {
@@ -152,6 +158,12 @@
             }];
         } else dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC/5), dispatch_get_main_queue(), ^{ [self pollPopup]; });
     }];
+}
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
+    self.report[webView == self.popup ? @"popupNavigationError" : @"pageNavigationError"] = error.description;
+}
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
+    [self webView:webView didFailProvisionalNavigation:navigation withError:error];
 }
 - (void)finish {
     if (self.finished) return;

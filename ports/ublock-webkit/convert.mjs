@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Platform boundary around the converter shipped INSIDE full Firefox uBO.
 // No replacement parser, Lite package, or fake webRequest implementation.
-export const environment = ['safari', 'native_css_has'];
+export const environment = ['ublock', 'webext', 'ipaddress', 'mobile', 'safari', 'native_css_has'];
 
 export async function compileFilters(text, { dnrRulesetFromRawLists, AstFilterParser }, name = 'user-filters') {
     if (typeof text !== 'string') throw new TypeError('Filter source must be text');
