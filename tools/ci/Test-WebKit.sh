@@ -104,5 +104,6 @@ fs.writeFileSync(`${dir}/extension-verdict.json`, JSON.stringify({
   sideStoreVerified: false, uBlockOriginVerified: false,
   note: 'Probe finding only. A green workflow does not assert extension compatibility.'
 }, null, 2));
+if (!compatible) console.log('::warning::Native WebExtensions fixtures did NOT all pass; see ExtensionProbe.json. No Firefox compatibility acceptance.');
 if (core.failures.length || core.passed.length < 23) throw new Error('WebKit integration failed');
 NODE

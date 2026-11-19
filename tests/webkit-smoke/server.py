@@ -10,7 +10,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header('Cache-Control', 'no-store')
             self.end_headers()
             try:
-                self.wfile.write(b'<!doctype html><html><head><title>Slow</title></head><body>')
+                self.wfile.write(b'<!doctype html><html><head><title>Slow</title></head><body>' + b' ' * 8192)
                 self.wfile.flush()
                 sleep(12)
                 self.wfile.write(b'Complete</body></html>')

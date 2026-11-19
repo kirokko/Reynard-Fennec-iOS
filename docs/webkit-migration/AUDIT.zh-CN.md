@@ -73,11 +73,12 @@ WebContentView 的下拉刷新依赖 `GeckoInputHandling`、scrollableEdges、ov
 ### 尚未核实/尚未实现的部分
 
 - `.xpi`/ZIP 用户导入、安全解包、AMO 网络安装、稳定扩展身份、权限 UI 桥接、enable/disable/update、持久恢复和升级事务。
+- 已读原 `Client/Utilities/ZipArchiveReader.swift`：中央目录/name 范围在读整数/subdata 前缺少完整边界验证，inflate 依据不可信 expectedSize 分配且没有总输出上限；不能直接复用于任意不可信 XPI 导入。应优先让官方解析器处理受限的暂存 ZIP，并另外实施包大小/结构和失败事务验证；不能仅检查 PK 文件头就声称安全。
 - 目标 iOS + SideStore 的实际 provision/sign 后 controller load。模拟器不需要设备签名，不能用于推出侧载 entitlement 一定通过。
 - `browser.*` 不等于 Firefox 所有 API；Gecko-only 实现（例如特定实验 API）不能靠创建同名 JS 对象补齐。
 - `webRequest`/阻断、DNR 规则/配额、Firefox 特有过滤语法、后台生命周期、native messaging 必须做各自测试，当前无兼容承诺。
 - **uBlock Origin 未安装、未运行、未做拦截验证，不标记兼容。** 不可将 uBO Lite 或 WKContentRuleList 说成完整 uBO 的等价替代。
-- Floorp 仅是允许参考方向；本轮未引入其代码，也未完成 Floorp 实现/许可证审计。
+- Floorp 参考固定到 `7070ffcc950a9f5a1695610a0f881ea71ed3322b`，已阅读其 installer、部分 host/adapters 和原生扩展文档；未引入其代码，未完整审计整套实现。该版本只提供受控内置扩展，不支持任意 XPI 产品入口，且其 uBO 是 Lite，不等价于本任务。详见 `FLOORP-REFERENCE.zh-CN.md`。
 
 ## 4. 视频与方向控制
 
