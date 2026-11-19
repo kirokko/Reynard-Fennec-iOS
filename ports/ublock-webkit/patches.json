@@ -4,5 +4,23 @@
     "old": "vAPI.getURL = browser.runtime.getURL;",
     "new": "// Unofficial WebKit port: preserve the native API receiver.\nvAPI.getURL = (...args) => browser.runtime.getURL(...args);",
     "reason": "WebKit native API functions require their original receiver; forwarding to the real API fixes binding without synthesizing any missing capability."
+  },
+  {
+    "path": "js/vapi-background.js",
+    "old": "        browser.webNavigation.onCreatedNavigationTarget.addListener(details => {\n            this.onCreatedNavigationTargetHandler(details);\n        });",
+    "new": "        vAPI.webKitPlatform.listenForNavigationTargets(details => {\n            this.onCreatedNavigationTargetHandler(details);\n        });",
+    "reason": "Use real native tab creation events when webNavigation lacks the target event. Opener frame identity is unavailable and explicitly not invented or claimed equivalent."
+  },
+  {
+    "path": "js/vapi-background.js",
+    "old": "        browser.webRequest.handlerBehaviorChanged();",
+    "new": "        return vAPI.webKitPlatform.handlerBehaviorChanged();",
+    "reason": "Map cache/rule-change notification onto real compilation and atomic native DNR replacement, not a fake webRequest method. Only user-filter rules are bridged at this milestone."
+  },
+  {
+    "path": "js/i18n.js",
+    "old": "const i18n$ = (...args) => i18n.getMessage(...args);",
+    "new": "// Unofficial WebKit port: empty label attributes mean no translation.\nconst i18n$ = (name, ...args) => name === '' ? '' : i18n.getMessage(name, ...args);",
+    "reason": "WebKit throws on an empty message name; retain empty UI labels without suppressing real translation/API errors for nonempty names."
   }
 ]

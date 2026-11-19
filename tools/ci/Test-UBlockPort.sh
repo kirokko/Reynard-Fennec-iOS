@@ -15,6 +15,7 @@ app="$work/UBlockPortProbe.app"
 mkdir -p "$app"
 url=$(node -p "require('./tests/webkit-smoke/ublock-package.json').url")
 curl --fail --location --retry 2 --max-time 120 "$url" -o "$work/upstream.xpi"
+python3 tools/ublock/test-prepare.py "$work/upstream.xpi" > "$results/staging-tests.json"
 python3 tools/ublock/prepare.py "$work/upstream.xpi" "$app/ubo" > "$results/provenance.json"
 node tools/ublock/test-compiler.mjs "$app/ubo" "$results"
 python3 - "$app/Info.plist" <<'PY'

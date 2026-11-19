@@ -61,14 +61,16 @@ def prepare(package, target):
     patched = {}
     for patch in json.loads((REPO / 'ports/ublock-webkit/patches.json').read_text(encoding='utf-8')):
         name = patch['path']
-        if name not in original or name in patched:
-            raise ValueError('Patch target not unique in original package')
+        if name not in original:
+            raise ValueError('Patch target not in original package')
         file = target / name
         text = file.read_bytes().decode('utf-8')
         if text.count(patch['old']) != 1:
             raise ValueError('Pinned upstream patch no longer matches: ' + name)
         file.write_bytes(text.replace(patch['old'], patch['new']).encode('utf-8'))
-        patched[name] = {'before': original[name], 'after': hashlib.sha256(file.read_bytes()).hexdigest(), 'reason': patch['reason']}
+        entry = patched.setdefault(name, {'before': original[name], 'reasons': []})
+        entry['after'] = hashlib.sha256(file.read_bytes()).hexdigest()
+        entry['reasons'].append(patch['reason'])
     unchanged = 0
     for name, expected in original.items():
         if name == 'manifest.json' or name.startswith('META-INF/'):

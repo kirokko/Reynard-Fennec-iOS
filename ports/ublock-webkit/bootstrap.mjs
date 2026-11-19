@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Unofficial research port of FULL uBO. Does not emulate missing browser APIs.
+import { installPlatform } from './platform.mjs';
 const status = {
     experimental: true, fullUBlockOriginVerified: false, errors: [],
     backend: 'full-uBO-compiler-to-native-WebKit-DNR', network: { stage: 'starting' },
@@ -122,6 +123,7 @@ async function start() {
         await import('../js/vapi-common.js');
         // Truthful platform flavor, not a pretend Firefox/Chromium version.
         vAPI.webextFlavor.soup.add('safari');
+        installPlatform(vAPI, status, scheduleSync);
         await import('../js/start.js');
         const { default: ubo } = await import('../js/background.js');
         status.upstream.stage = 'initializing';

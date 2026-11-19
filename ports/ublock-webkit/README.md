@@ -4,8 +4,8 @@
 browser/IPA, and not full Firefox API compatibility.** GPL-3.0-or-later overlay;
 upstream remains Copyright Raymond Hill and contributors, GPL-3.0-or-later.
 Upstream `LICENSE.txt`, attribution and original assets remain in the staged
-package; the single explicit API-binding patch is recorded in `patches.json`
-and provenance hashes. Source modifications invalidate Mozilla's signature:
+package; the explicit API-binding/platform patches are recorded in
+`patches.json` and provenance hashes. Source modifications invalidate Mozilla's signature:
 the staging tool removes `META-INF` and records this explicitly.
 
 ## What actually runs
@@ -13,9 +13,12 @@ the staging tool removes `META-INF` and records this explicitly.
 1. Download the pinned official **full Firefox XPI** described in
    `tests/webkit-smoke/ublock-package.json`. Verify SHA-256 before extraction.
 2. Keep upstream content scripts, popup/dashboard HTML/CSS and engine assets
-   byte-for-byte, except for the declared shared `vapi-common.js` forwarding
-   patch preserving WebKit's native API receiver (`getURL`). No fake API is
-   added. Modify the manifest explicitly for a non-persistent iOS research
+   byte-for-byte, except for declared patches to three shared JS files:
+   `vapi-common.js` forwards `getURL` with the native receiver;
+   `vapi-background.js` uses real platform event/rule-rebuild adapters;
+   `i18n.js` handles empty labels without calling an API that rejects empty IDs.
+   The tab-event fallback lacks opener-frame attribution and is NOT equivalent
+   to Firefox popup tracking. No fake browser API is added. Modify the manifest explicitly for a non-persistent iOS research
    background, add this overlay, and verify original/modified source hashes.
 3. In a dedicated module Worker, run **the converter included in the full uBO
    package**, `js/static-dnr-filtering.js`, using its original parser/compiler.
