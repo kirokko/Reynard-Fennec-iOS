@@ -1,0 +1,52 @@
+{
+  "capabilities" : {
+    "afterFetch" : true,
+    "registrationError" : null,
+    "dnsResolve" : "undefined",
+    "blockedRequestsObserved" : 1,
+    "publicSuffix" : "undefined",
+    "filterResponseData" : "undefined"
+  },
+  "scope" : "Full Firefox uBO package parsing and independent native blocking prerequisite test; NOT full uBO execution or browser acceptance",
+  "officialPackageExecuted" : false,
+  "officialPackage" : {
+    "manifestVersion" : 2,
+    "errors" : [
+      "Error Domain=WKWebExtensionErrorDomain Code=8 \"Invalid `persistent` manifest entry. A non-persistent background is required on iOS and iPadOS.\" UserInfo={NSLocalizedDescription=Invalid `persistent` manifest entry. A non-persistent background is required on iOS and iPadOS.}",
+      "Error Domain=WKWebExtensionErrorDomain Code=6 \"Empty or invalid command in the `commands` manifest entry.\" UserInfo={NSLocalizedDescription=Empty or invalid command in the `commands` manifest entry.}"
+    ],
+    "parsedPermissions" : [
+      "alarms",
+      "menus",
+      "storage",
+      "webNavigation",
+      "tabs",
+      "unlimitedStorage",
+      "webRequest"
+    ],
+    "name" : "uBlock Origin",
+    "fatalError" : "",
+    "version" : "1.76.4"
+  },
+  "runtimeErrors" : [
+
+  ],
+  "blockingHonored" : 0,
+  "unloaded" : true,
+  "blockingFixtureParseErrors" : [
+
+  ],
+  "network" : {
+    "control" : {
+      "status" : 200,
+      "loaded" : true,
+      "body" : "<!doctype html><html><head><title>One<\/title><\/head><body>One<\/body><\/html>"
+    },
+    "blocked" : {
+      "status" : 200,
+      "loaded" : true,
+      "body" : "<!doctype html><html><head><title>One<\/title><\/head><body>One<\/body><\/html>"
+    }
+  },
+  "fullUBlockOriginVerified" : false
+}

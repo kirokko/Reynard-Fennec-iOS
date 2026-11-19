@@ -84,11 +84,22 @@ iphoneos SDK 26.5
 | MV3 service worker 后台 → 内容脚本/消息/存储 | 未通过：background callback 超过45秒未返回；不能推及所有 MV3 或所有设备 |
 | 用户 XPI、AMO 导入/更新/卸载管理 | 尚未实现，不冒充 fixture 是安装管理系统 |
 | Firefox 专属 API、webRequest 阻断、DNR | 未完成具体兼容测试 |
-| uBlock Origin | 未安装/运行/拦截验证，**不标记兼容** |
+| uBlock Origin | 官方1.76.4 XPI已原生解析；独立最小 blocking 实验确认取消返回值不生效。完整扩展未执行，**不兼容验收、不发布完整版**；见 FULL-UBLOCK-ORIGIN.zh-CN.md |
 | 普通/私密扩展权限/后台数据隔离 | 未完成产品实现与验收；Cookie隔离通过不等于扩展隔离通过 |
 | SideStore 重签后原生 extension load | 待实机验证 |
 
 测试脚本会单独保存 `extension-verdict.json`，原生 fixture 失败会有 warning。绿色流程表示 WK 核心 gate/探测流程本身完成，**不自动等于 Firefox 扩展兼容**。
+
+## 追加：完整版 uBO 的必要能力验证
+
+代码 `518cff7`，Actions <https://github.com/kirokko/Reynard-Fennec-iOS/actions/runs/44500800485>。
+使用官方签名 Firefox XPI（非 Lite），独立校验哈希与上游 release asset digest 一致。原生 parser 报非持久后台要求及 commands 错误，未将其标为安装成功。
+
+最小原生阻断实验中 `webRequest.onBeforeRequest` 注册不报错，目标 callback 实际触发1次并返回 `{cancel:true}`，但网页仍获取到 HTTP200 和正文。control 正常，context.errors 为空，因而不能用“API存在/没有错误”声称可以阻断。`filterResponseData` 等也未暴露。
+
+**这不是完整 uBO 的运行测试，而是它所依赖的必要能力失败的实测。** 不拿 Lite 代替，不发布声称完整版的第二项目/IPA。新建 fork 或 SideStore 重签不能补出该 API；若要改为保留 Gecko，须先由用户明确调整先前“完全移除 Gecko”的要求。
+
+原始证据和源码对应详见 `FULL-UBLOCK-ORIGIN.zh-CN.md` 及 `evidence/44500800485/`。这一轮核心 WK 23项和原44项检查仍通过；绿色探测流程不是兼容性验收。
 
 ## 视频与性能报告
 
